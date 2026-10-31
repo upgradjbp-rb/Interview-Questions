@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft Excel Interview Questions & Answers (100 Q&A Guide)</title>
+  <style>
+    :root {
+      --primary: #107c41; /* Excel Green */
+      --primary-dark: #0b5a2e;
+      --secondary: #185c37;
+      --secondary-dark: #0e3922;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --badge-bg: #e8f5e9;
+      --badge-text: #1b5e20;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Header Banner */
+    header {
+      background: linear-gradient(135deg, var(--secondary), #062413);
+      color: white;
+      padding: 36px 30px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header p {
+      color: #cbd5e1;
+      font-size: 1.05rem;
+      max-width: 850px;
+    }
+
+    .header-badge {
+      background: rgba(16, 124, 65, 0.35);
+      border: 1px solid #4ade80;
+      color: #dcfce7;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    /* Controls & Navigation */
+    .controls-panel {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 124, 65, 0.15);
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .status-bar {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Cards Layout */
+    .qa-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .qa-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .qa-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .qa-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      user-select: none;
+      background: #ffffff;
+    }
+
+    .qa-title-wrapper {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .q-id {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 0.95rem;
+      min-width: 42px;
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .q-toggle-icon {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .qa-card.open .q-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .qa-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .cat-tag {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-weight: 600;
+    }
+
+    .qa-content {
+      display: none;
+      padding: 0 20px 20px 20px;
+      background: #fafdfa;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .qa-card.open .qa-content {
+      display: block;
+    }
+
+    .answer-box {
+      margin-top: 16px;
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .answer-box p {
+      margin-bottom: 8px;
+    }
+
+    .answer-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .answer-box ul {
+      margin-left: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .qa-card-actions {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-copy-card {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-card:hover {
+      background: var(--badge-bg);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Print / PDF Mode */
+    @media print {
+      body {
+        background: white;
+        color: black;
+        padding: 0;
+      }
+      .controls-panel, .qa-card-actions, header p, .header-badge {
+        display: none !important;
+      }
+      header {
+        background: none;
+        color: black;
+        box-shadow: none;
+        padding: 10px 0;
+        border-bottom: 2px solid #000;
+      }
+      header h1 {
+        color: black;
+        font-size: 1.6rem;
+      }
+      .qa-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+        margin-bottom: 12px;
+      }
+      .qa-content {
+        display: block !important;
+        background: white;
+      }
+      .q-toggle-icon {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+      <h1>Excel Interview Master Guide</h1>
+      <span class="header-badge">100 Question Curriculum</span>
+    </div>
+    <p>A comprehensive, accessible interview bank covering CRISP-DM Problem Solving, Sorting & Filtering, Formatting, Formulas & Cell Referencing, Logical Functions, Pivot Tables, Lookups (VLOOKUP, INDEX-MATCH, IFERROR), Power Query, and What-If Scenario Analysis.</p>
+  </header>
+
+  <section class="controls-panel">
+    <div class="search-row">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search keywords (e.g., VLOOKUP, CRISP-DM, INDEX-MATCH, absolute, scenario)..." />
+      </div>
+      <button class="btn btn-secondary" id="toggleAllBtn" onclick="toggleAll()">Expand All</button>
+      <button class="btn btn-secondary" id="studyModeBtn" onclick="toggleStudyMode()">Study Mode: OFF</button>
+      <button class="btn btn-primary" onclick="copyAllFiltered()">Copy Filtered for Docs</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+    </div>
+
+    <div class="category-chips" id="categoryChips">
+      <button class="chip active" onclick="filterCategory('All')">All (100)</button>
+      <button class="chip" onclick="filterCategory('CRISP-DM')">CRISP-DM & Problem Solving (10)</button>
+      <button class="chip" onclick="filterCategory('Interface & Sort/Filter')">Interface, Sort & Filter (8)</button>
+      <button class="chip" onclick="filterCategory('Formatting')">Formatting & Rules (8)</button>
+      <button class="chip" onclick="filterCategory('Formulas & References')">Formulas & References (14)</button>
+      <button class="chip" onclick="filterCategory('Logic & Conditions')">Logic & IF / AND / OR (10)</button>
+      <button class="chip" onclick="filterCategory('Communication')">Interview Communication (2)</button>
+      <button class="chip" onclick="filterCategory('Charts & Dashboards')">Charts & Dashboards (9)</button>
+      <button class="chip" onclick="filterCategory('Pivot Tables')">Pivot Tables & Charts (7)</button>
+      <button class="chip" onclick="filterCategory('Lookups')">Lookups & IFERROR (10)</button>
+      <button class="chip" onclick="filterCategory('Power Query')">Power Query ETL (10)</button>
+      <button class="chip" onclick="filterCategory('Forecasting & What-If')">Gantt, Forecast & Scenarios (12)</button>
+    </div>
+
+    <div class="status-bar">
+      <span id="resultCount">Showing 100 of 100 questions</span>
+      <span>Click any question to view the answer</span>
+    </div>
+  </section>
+
+  <main class="qa-container" id="qaList"></main>
+</div>
+
+<div id="toast">Copied to clipboard!</div>
+
+<script>
+// Complete dataset of 100 Excel questions, answers, and syllabus mapping
+const qaData = [
+  // A. CRISP-DM & Business Problem Solving (Q1 - Q10)
+  {
+    id: "Q1",
+    cat: "CRISP-DM",
+    q: "A retail company states, 'We want to use data to improve sales.' From a CRISP-DM perspective, what is the best immediate next step?",
+    a: "Define a specific, measurable business objective first. A broad aspiration like 'improve sales' must be translated into clear goals (e.g., 'reduce regional churn by 5%' or 'identify low-performing categories') before gathering data or creating charts."
+  },
+  {
+    id: "Q2",
+    cat: "CRISP-DM",
+    q: "A company wants to identify regions where sales declined over the last six months. What specific data requirements directly support this objective?",
+    a: "The dataset must contain Region, Sales Amount, and Transaction Date/Month. Without both geographic and chronological dimensions alongside the financial metric, regional trends over time cannot be evaluated."
+  },
+  {
+    id: "Q3",
+    cat: "CRISP-DM",
+    q: "What is the logical 6-phase sequence of the CRISP-DM framework?",
+    a: "Business Understanding -> Data Understanding -> Data Preparation -> Modeling -> Evaluation -> Deployment. This ensures analytical efforts remain grounded in business goals."
+  },
+  {
+    id: "Q4",
+    cat: "CRISP-DM",
+    q: "A manager sets the objective: 'Reduce product returns.' What data points are most useful to collect?",
+    a: "Product return logs containing Return Reason, Product Category, Region, Sale Date, Return Date, and Customer Feedback. Gathering irrelevant details like employee photos or font styles distracts from root-cause analysis."
+  },
+  {
+    id: "Q5",
+    cat: "CRISP-DM",
+    q: "During Business Understanding, an analyst defines the goal as 'increase sales,' but later delivers an employee attendance report. What is the fundamental logical flaw?",
+    a: "Lack of alignment with the business objective. Every analytical deliverable, chart, and query must remain logically tied to solving the original problem identified in phase one."
+  },
+  {
+    id: "Q6",
+    cat: "CRISP-DM",
+    q: "A company wants to know why revenue dropped in March. What data requirements are essential?",
+    a: "Historical sales transactions broken down across relevant dimensions such as Product Category, Customer Segment, Regional Units Sold, and Discount Rates for March compared against prior months."
+  },
+  {
+    id: "Q7",
+    cat: "CRISP-DM",
+    q: "Give an example of translating a high-level business goal into a concrete data requirement.",
+    a: "Business Goal: 'Reduce regional sales decline.'\nData Requirement: 'Collect monthly sales transactions grouped by Region, Product, and Sales Volume over the preceding 12 months.'"
+  },
+  {
+    id: "Q8",
+    cat: "CRISP-DM",
+    q: "What does it indicate if an analyst discovers mid-project that the collected data cannot answer the business question?",
+    a: "The data requirements were inadequately defined during the initial Business and Data Understanding phases. The analyst must revisit the data scope before proceeding with modeling or dashboarding."
+  },
+  {
+    id: "Q9",
+    cat: "CRISP-DM",
+    q: "Why must logical thinking be maintained throughout all CRISP-DM stages rather than only at the start?",
+    a: "Because subsequent decisions—such as data cleaning steps, model selection, chart design, and final recommendations—must consistently support the core business question without drifting off course."
+  },
+  {
+    id: "Q10",
+    cat: "CRISP-DM",
+    q: "If the business objective is 'identify low-performing regions,' what report output directly supports management?",
+    a: "A regional sales summary table or bar chart ranking regions by total sales, growth percentages, and target variances, making underperforming territories instantly visible."
+  },
+
+  // B. Excel Interface, Sorting & Filtering (Q11 - Q18)
+  {
+    id: "Q11",
+    cat: "Interface & Sort/Filter",
+    q: "Which Excel interface feature can be customized to provide one-click access to frequently used commands like Sort, Filter, and Freeze Panes?",
+    a: "The Quick Access Toolbar (QAT), located above or below the Ribbon. You can add any ribbon command or macro to it for fast access."
+  },
+  {
+    id: "Q12",
+    cat: "Interface & Sort/Filter",
+    q: "What is multiple-column sorting in Excel?",
+    a: "Sorting data using two or more criteria in a hierarchical order—for instance, sorting primary records alphabetically by 'Region' (A to Z) and secondary records by 'Sales' (Largest to Smallest) within each region."
+  },
+  {
+    id: "Q13",
+    cat: "Interface & Sort/Filter",
+    q: "Consider: North (80,000), South (55,000), North (40,000), South (90,000). If sorted by Region ascending and then Sales descending, which record appears first?",
+    a: "North with 80,000. 'North' precedes 'South' alphabetically, and 80,000 is higher than 40,000 within the North partition."
+  },
+  {
+    id: "Q14",
+    cat: "Interface & Sort/Filter",
+    q: "How can a manager display only records where Sales > 50,000 and Region = North without altering formulas?",
+    a: "Apply Excel AutoFilter: select the Region dropdown and check 'North', then click the Sales dropdown, choose 'Number Filters' -> 'Greater Than', and enter 50000."
+  },
+  {
+    id: "Q15",
+    cat: "Interface & Sort/Filter",
+    q: "After applying a filter, an analyst notices rows are missing from view. Were these rows deleted?",
+    a: "No. Filtering simply hides rows that do not satisfy the active criteria. The hidden row numbers turn blue, and removing the filter restores all rows immediately."
+  },
+  {
+    id: "Q16",
+    cat: "Interface & Sort/Filter",
+    q: "How do you isolate East and West region records in a 4-region dataset without deleting North and South?",
+    a: "Use the Filter dropdown on the Region header, uncheck 'Select All', and check only 'East' and 'West'."
+  },
+  {
+    id: "Q17",
+    cat: "Interface & Sort/Filter",
+    q: "What is the key difference between Sorting and Filtering in Excel?",
+    a: "Sorting reorganizes the physical order of records (e.g., highest to lowest or A to Z) while keeping all rows visible. Filtering restricts row visibility by hiding records that do not meet specified criteria."
+  },
+  {
+    id: "Q18",
+    cat: "Interface & Sort/Filter",
+    q: "A manager says: 'Show me sales above 50,000, but do not change the order of the rows.' Should you sort or filter?",
+    a: "Use Filtering. Applying a Number Filter (Greater Than 50,000) conceals values below the threshold while preserving the exact chronological or entry sequence of qualifying records."
+  },
+
+  // C. Basic Formatting & Conditional Formatting (Q19 - Q26)
+  {
+    id: "Q19",
+    cat: "Formatting",
+    q: "A long table header is truncated because the column is narrow. Which feature displays it across multiple lines in the same cell?",
+    a: "Wrap Text. It increases row height automatically and breaks the text into multiple lines within the cell boundaries."
+  },
+  {
+    id: "Q20",
+    cat: "Formatting",
+    q: "How can a report title be placed centrally across columns A through F?",
+    a: "Select cells A1:F1 and click 'Merge & Center' on the Home tab (or choose 'Center Across Selection' in Format Cells for a cleaner structure)."
+  },
+  {
+    id: "Q21",
+    cat: "Formatting",
+    q: "What feature dynamically applies colors to cells exceeding 75,000 without altering the numbers themselves?",
+    a: "Conditional Formatting (Highlight Cells Rules -> Greater Than -> 75,000). It changes formatting purely based on cell values."
+  },
+  {
+    id: "Q22",
+    cat: "Formatting",
+    q: "Given values: 45,000, 80,000, 65,000, 95,000, 30,000. How many cells get highlighted under the rule: Value > 60,000?",
+    a: "3 cells (80,000, 65,000, and 95,000 satisfy the condition)."
+  },
+  {
+    id: "Q23",
+    cat: "Formatting",
+    q: "Which Conditional Formatting category automatically flags the top 5 highest sales numbers without manual filtering?",
+    a: "Top/Bottom Rules -> Top 10 Items (adjusted from 10 down to 5)."
+  },
+  {
+    id: "Q24",
+    cat: "Formatting",
+    q: "What formatting elements contribute most to making an executive sales sheet clean and readable?",
+    a: "Consistent font hierarchy, clean borders, number formatting (commas and currency signs), alternating row shading, text wrapping, and proper alignment."
+  },
+  {
+    id: "Q25",
+    cat: "Formatting",
+    q: "How should an analyst resolve long text entries that visually spill over into adjacent empty columns?",
+    a: "Enable Wrap Text and adjust column width, or widen the column by double-clicking the column border (AutoFit)."
+  },
+  {
+    id: "Q26",
+    cat: "Formatting",
+    q: "How does Conditional Formatting differ fundamentally from Sorting?",
+    a: "Sorting alters row position; Conditional Formatting alters visual appearance (fill color, text color, data bars) based on logical rules without moving rows."
+  },
+
+  // D. Formulas & Cell References (Q27 - Q40)
+  {
+    id: "Q27",
+    cat: "Formulas & References",
+    q: "Which formula calculates the total sum of monthly sales stored in cells B2 through B7?",
+    a: "=SUM(B2:B7)"
+  },
+  {
+    id: "Q28",
+    cat: "Formulas & References",
+    q: "If sales for four quarters are 20,000, 30,000, 40,000, and 50,000, what does =AVERAGE(A1:A4) return?",
+    a: "35,000. Sum = 140,000; divided by 4 = 35,000."
+  },
+  {
+    id: "Q29",
+    cat: "Formulas & References",
+    q: "Given the numbers 25, 80, 45, 60, and 10, which formula returns 80?",
+    a: "=MAX(A1:A5)"
+  },
+  {
+    id: "Q30",
+    cat: "Formulas & References",
+    q: "A column contains: 100, 200, 'Sales', empty/blank, and 300. What does =COUNT(A1:A5) return?",
+    a: "3. The COUNT function counts only numeric values (100, 200, and 300), ignoring text and blank cells."
+  },
+  {
+    id: "Q31",
+    cat: "Formulas & References",
+    q: "How do you check if average sales in B2:B10 reached the 50,000 target and display 'Achieved' or 'Not Achieved'?",
+    a: "=IF(AVERAGE(B2:B10)>=50000, 'Achieved', 'Not Achieved')"
+  },
+  {
+    id: "Q32",
+    cat: "Formulas & References",
+    q: "Cell B2 contains 100 and C2 contains 10. If =$B$2*C2 is copied to row 3, how does the formula adapt?",
+    a: "It becomes =$B$2*C3. $B$2 is an absolute reference and stays fixed, while C2 is relative and increments to C3."
+  },
+  {
+    id: "Q33",
+    cat: "Formulas & References",
+    q: "What is a Mixed Cell Reference in Excel? Give an example.",
+    a: "A mixed reference locks either the column or the row, but not both. Examples: =A$1 (row 1 is locked, column is relative) or =$A1 (column A is locked, row is relative)."
+  },
+  {
+    id: "Q34",
+    cat: "Formulas & References",
+    q: "A fixed GST/tax rate is stored in cell B1. How should it be referenced so that copying the formula down column C doesn't break?",
+    a: "Use an absolute reference: $B$1. The dollar signs lock both the column and row."
+  },
+  {
+    id: "Q35",
+    cat: "Formulas & References",
+    q: "If formula =A2*$B$1 is copied from row 2 down to row 5, what is the resulting formula in row 5?",
+    a: "=A5*$B$1"
+  },
+  {
+    id: "Q36",
+    cat: "Formulas & References",
+    q: "If cell A1 contains 'DATA SCIENCE', what does =LEFT(A1, 4) return?",
+    a: "'DATA' (it extracts the first 4 characters starting from the left)."
+  },
+  {
+    id: "Q37",
+    cat: "Formulas & References",
+    q: "If cell A1 contains 'JABALPUR', what does =RIGHT(A1, 4) return?",
+    a: "'LPUR' (it extracts the last 4 characters from the right)."
+  },
+  {
+    id: "Q38",
+    cat: "Formulas & References",
+    q: "If A1 contains 'DATA SCIENCE', what does =MID(A1, 6, 7) do?",
+    a: "It extracts 7 characters starting from the 6th position, returning 'SCIENCE'."
+  },
+  {
+    id: "Q39",
+    cat: "Formulas & References",
+    q: "First Name is in A2 and Last Name is in B2. How do you combine them into a single cell with a space?",
+    a: "=CONCATENATE(A2, ' ', B2) or using the ampersand operator: =A2 & ' ' & B2"
+  },
+  {
+    id: "Q40",
+    cat: "Formulas & References",
+    q: "What is the shortcut to toggle between relative, absolute, and mixed references while editing a formula in Excel?",
+    a: "Press the F4 key (or Fn + F4 on certain keyboards) while the cursor is on the cell reference."
+  },
+
+  // E. Logic & Conditions: IF, Nested IF, AND/OR (Q41 - Q50)
+  {
+    id: "Q41",
+    cat: "Logic & Conditions",
+    q: "How do you categorize an order as 'Large' if Sales >= 100,000, and 'Regular' otherwise?",
+    a: "=IF(A2>=100000, 'Large', 'Regular')"
+  },
+  {
+    id: "Q42",
+    cat: "Logic & Conditions",
+    q: "A business assigns performance tiers: >= 100k -> 'Excellent', >= 50k -> 'Good', else -> 'Needs Improvement'. Which formula structure is required?",
+    a: "A Nested IF statement:\n=IF(A2>=100000, 'Excellent', IF(A2>=50000, 'Good', 'Needs Improvement'))"
+  },
+  {
+    id: "Q43",
+    cat: "Logic & Conditions",
+    q: "A discount applies only when Sales > 50,000 AND Customer Rating >= 4. Which logical function combines these conditions?",
+    a: "The AND function inside an IF:\n=IF(AND(Sales>50000, Rating>=4), 'Discount', 'No Discount')"
+  },
+  {
+    id: "Q44",
+    cat: "Logic & Conditions",
+    q: "A promotional offer applies if a customer is from North OR South. Which logical operator is used?",
+    a: "The OR function:\n=IF(OR(Region='North', Region='South'), 'Eligible', 'Ineligible')"
+  },
+  {
+    id: "Q45",
+    cat: "Logic & Conditions",
+    q: "Records: Row 1 (60k, 4), Row 2 (55k, 3), Row 3 (40k, 5), Row 4 (80k, 5). Rule: Sales > 50k AND Rating >= 4. How many qualify?",
+    a: "2 records qualify (Row 1 and Row 4 satisfy both conditions simultaneously)."
+  },
+  {
+    id: "Q46",
+    cat: "Logic & Conditions",
+    q: "A company flags clients as 'Priority' if City is 'Mumbai' OR Purchases > 100,000. How is this written?",
+    a: "=IF(OR(City='Mumbai', Purchases>100000), 'Priority', 'Standard')"
+  },
+  {
+    id: "Q47",
+    cat: "Logic & Conditions",
+    q: "Write a formula to return 'Bonus' when Department is 'Sales' and Sales exceed 75,000.",
+    a: "=IF(AND(A2='Sales', B2>75000), 'Bonus', 'No Bonus')"
+  },
+  {
+    id: "Q48",
+    cat: "Logic & Conditions",
+    q: "When should an analyst use Nested IF vs IFS?",
+    a: "Nested IF nests standard IF formulas inside one another across older Excel versions; IFS (Excel 2019/365) evaluates multiple conditions cleanly without multiple closing brackets."
+  },
+  {
+    id: "Q49",
+    cat: "Logic & Conditions",
+    q: "Employees: A (60k, 3), B (45k, 5), C (55k, 4), D (40k, 3). Who qualifies under: Sales >= 50,000 AND Rating >= 4?",
+    a: "Employee C qualifies (Sales: 55,000 >= 50,000 and Rating: 4 >= 4)."
+  },
+  {
+    id: "Q50",
+    cat: "Logic & Conditions",
+    q: "Why are boolean combinations (IF + AND / OR) critical for business analytics?",
+    a: "They translate complex, multi-tiered business policies (commissions, fraud checks, customer tiers) into automated evaluation rules inside datasets."
+  },
+
+  // F. Communication & Interview Problem Solving (Q51 - Q52)
+  {
+    id: "Q51",
+    cat: "Communication",
+    q: "An interviewer asks: 'Why did you use a Pivot Table instead of manually adding up regional totals?' What is the best answer?",
+    a: "'A Pivot Table summarizes large volumes of data dynamically, eliminating formula calculation errors, supporting multidimensional slicing, and updating instantly when source data is refreshed.'"
+  },
+  {
+    id: "Q52",
+    cat: "Communication",
+    q: "If an interviewer hands you a business problem without defining the expected output, what should you do first?",
+    a: "Clarify the core business question, key stakeholders, required KPIs, and desired format before writing formulas or building visuals."
+  },
+
+  // G. Charts & Dashboard Creation (Q53 - Q61)
+  {
+    id: "Q53",
+    cat: "Charts & Dashboards",
+    q: "Which chart type is best suited to compare sales across 5 geographic regions?",
+    a: "A Clustered Column or Bar Chart. Discrete categorical lengths are easy to compare accurately against a baseline."
+  },
+  {
+    id: "Q54",
+    cat: "Charts & Dashboards",
+    q: "Which chart is most effective for visualizing monthly sales movement over a 12-month period?",
+    a: "A Line Chart. It connects points along a continuous timeline, highlighting trends, seasonality, spikes, and declines."
+  },
+  {
+    id: "Q55",
+    cat: "Charts & Dashboards",
+    q: "When is a Pie Chart appropriate to use, and what is its main limitation?",
+    a: "It is appropriate for displaying parts of a whole across 2 to 4 distinct categories. Its limitation is that humans struggle to compare angles accurately when categories increase."
+  },
+  {
+    id: "Q56",
+    cat: "Charts & Dashboards",
+    q: "Sales: Jan (40), Feb (55), Mar (50), Apr (70). Which chart best communicates this pattern?",
+    a: "A Line Chart (or Column Chart with a trendline) shows the climb, the slight dip in March, and the recovery in April."
+  },
+  {
+    id: "Q57",
+    cat: "Charts & Dashboards",
+    q: "A chart displays numbers along its axes, but users cannot tell what units are shown. Which chart element is missing?",
+    a: "Axis Titles (Primary Horizontal and Primary Vertical Axis Titles)."
+  },
+  {
+    id: "Q58",
+    cat: "Charts & Dashboards",
+    q: "How can you show exact numeric values directly on top of chart bars without viewers having to estimate from the vertical axis?",
+    a: "Enable 'Data Labels' via the Chart Elements (+) menu."
+  },
+  {
+    id: "Q59",
+    cat: "Charts & Dashboards",
+    q: "Why is a Pie Chart considered unsuitable for displaying 12-month sequential sales trends?",
+    a: "Pie slices cannot communicate time sequence or chronological progression. Line charts are standard for time-series data."
+  },
+  {
+    id: "Q60",
+    cat: "Charts & Dashboards",
+    q: "A chart compares regional revenues, but its title reads 'Employee Performance.' What design principle has been violated?",
+    a: "Accuracy and clarity of visual storytelling. Titles must clearly explain the metric and dimension displayed."
+  },
+  {
+    id: "Q61",
+    cat: "Charts & Dashboards",
+    q: "What is the primary golden rule for choosing chart types on an executive dashboard?",
+    a: "Chart choice must be dictated by the business question being answered (comparison, composition, trend, or distribution), rather than visual decoration."
+  },
+
+  // H. Pivot Tables & Pivot Charts (Q62 - Q68)
+  {
+    id: "Q62",
+    cat: "Pivot Tables",
+    q: "Data: North (100), North (200), South (150), South (300), East (250). If summarized in a Pivot Table by Region using SUM, what is South's total?",
+    a: "450 (150 + 300 = 450)."
+  },
+  {
+    id: "Q63",
+    cat: "Pivot Tables",
+    q: "From the previous dataset, which region produced the highest total sales volume?",
+    a: "South (Total: 450; North: 300; East: 250)."
+  },
+  {
+    id: "Q64",
+    cat: "Pivot Tables",
+    q: "How can an analyst filter a Pivot Table to show only North and West regions interactively?",
+    a: "Insert a Slicer for 'Region' and select North and West, or use the built-in Row Label filter dropdown."
+  },
+  {
+    id: "Q65",
+    cat: "Pivot Tables",
+    q: "A dataset has daily dates across Jan, Feb, Mar, and Apr. How can a Pivot Table summarize them by Quarter without creating helper columns?",
+    a: "Right-click any date in the Pivot Table rows, select 'Group...', and choose 'Quarters' and 'Years'."
+  },
+  {
+    id: "Q66",
+    cat: "Pivot Tables",
+    q: "What are three key advantages of a Pivot Table over manually written SUMIF/COUNTIF formulas?",
+    a: "1. Speed and flexibility in rearranging dimensions.\n2. Built-in interactive drill-downs and slicers.\n3. Automatic multi-level grouping (e.g., dates into months/quarters)."
+  },
+  {
+    id: "Q67",
+    cat: "Pivot Tables",
+    q: "What is a Pivot Chart, and how does it behave when Pivot Table slicers are clicked?",
+    a: "A Pivot Chart is a dynamic visual connected directly to a Pivot Table. When slicers or filters are applied, the chart updates automatically."
+  },
+  {
+    id: "Q68",
+    cat: "Pivot Tables",
+    q: "Pivot Summary: North (500), South (700), East (400), West (900). What is the highest performing territory?",
+    a: "West, with 900 in total sales."
+  },
+
+  // I. VLOOKUP, HLOOKUP, INDEX-MATCH & IFERROR (Q69 - Q78)
+  {
+    id: "Q69",
+    cat: "Lookups",
+    q: "Table: P101 (Laptop, 50k), P102 (Monitor, 15k), P103 (Keyboard, 2k). If P102 is looked up using VLOOKUP for column 2, what returns?",
+    a: "'Monitor'"
+  },
+  {
+    id: "Q70",
+    cat: "Lookups",
+    q: "Table 1 has Employee ID. Table 2 has Employee ID and Department. How do you bring Department into Table 1?",
+    a: "Use a lookup function:\n=VLOOKUP(A2, Table2!A:B, 2, FALSE)"
+  },
+  {
+    id: "Q71",
+    cat: "Lookups",
+    q: "When is HLOOKUP used instead of VLOOKUP?",
+    a: "When comparison values are organized horizontally across the top row of a table rather than vertically down the first column."
+  },
+  {
+    id: "Q72",
+    cat: "Lookups",
+    q: "What is the syntax of VLOOKUP, and what does the fourth argument (range_lookup) do?",
+    a: "=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])\nThe 4th argument determines match type: FALSE (or 0) for an exact match, TRUE (or 1) for an approximate match."
+  },
+  {
+    id: "Q73",
+    cat: "Lookups",
+    q: "Why do analysts often prefer INDEX-MATCH over VLOOKUP?",
+    a: "INDEX-MATCH can look to the left (VLOOKUP only searches rightward), does not break when columns are inserted or deleted, and performs faster on large datasets."
+  },
+  {
+    id: "Q74",
+    cat: "Lookups",
+    q: "A VLOOKUP returns #N/A because an ID is missing. How do you replace the error with 'Product Not Found'?",
+    a: "Wrap the formula in IFERROR:\n=IFERROR(VLOOKUP(A2, Products!A:C, 3, FALSE), 'Product Not Found')"
+  },
+  {
+    id: "Q75",
+    cat: "Lookups",
+    q: "What does it mean to link two workbooks using a lookup formula?",
+    a: "Referencing an external closed or open workbook as the table array, allowing related data to update across separate files."
+  },
+  {
+    id: "Q76",
+    cat: "Lookups",
+    q: "How does the MATCH function work in tandem with INDEX?",
+    a: "MATCH finds the numerical position (row or column number) of a lookup value, and INDEX retrieves the value located at that coordinate."
+  },
+  {
+    id: "Q77",
+    cat: "Lookups",
+    q: "Table contains IDs 101, 102, 103. If ID 104 is queried with =IFERROR(VLOOKUP(104, A:B, 2, 0), 'Not Found'), what displays?",
+    a: "'Not Found'"
+  },
+  {
+    id: "Q78",
+    cat: "Lookups",
+    q: "Summarize the core orientation of VLOOKUP, HLOOKUP, and INDEX-MATCH in one sentence.",
+    a: "VLOOKUP searches vertically down columns, HLOOKUP searches horizontally across rows, and INDEX-MATCH provides coordinate-based retrieval in any direction."
+  },
+
+  // J. Power Query (Q79 - Q88)
+  {
+    id: "Q79",
+    cat: "Power Query",
+    q: "What is Power Query, and what is the first step in its ETL workflow?",
+    a: "Power Query is Excel's data transformation and ingestion engine. The first step is Data Acquisition / Extraction (importing files such as CSVs, Excel files, or SQL tables)."
+  },
+  {
+    id: "Q80",
+    cat: "Power Query",
+    q: "How do you eliminate duplicate customer records in Power Query?",
+    a: "Select the primary key column (e.g., CustomerID) and click 'Remove Rows' -> 'Remove Duplicates'."
+  },
+  {
+    id: "Q81",
+    cat: "Power Query",
+    q: "You have two monthly tables with identical columns (Customer, Product, Sales). How do you stack them into one master table?",
+    a: "Use the 'Append Queries' feature. Append stacks tables vertically like a SQL UNION."
+  },
+  {
+    id: "Q82",
+    cat: "Power Query",
+    q: "Table 1 has Customer ID and Name; Table 2 has Customer ID and Sales. How do you bring Customer Name into Table 2 in Power Query?",
+    a: "Use 'Merge Queries', select Customer ID as the matching key between both tables, and expand the Customer Name column (similar to a SQL JOIN)."
+  },
+  {
+    id: "Q83",
+    cat: "Power Query",
+    q: "What is the key difference between Merge Queries and Append Queries in Power Query?",
+    a: "Merge joins tables horizontally side-by-side using a common matching column. Append stacks tables vertically on top of each other using matching headers."
+  },
+  {
+    id: "Q84",
+    cat: "Power Query",
+    q: "A raw table has 1,000 rows. Power Query removes 80 duplicate records. How many clean rows remain?",
+    a: "920 clean rows (1,000 - 80 = 920)."
+  },
+  {
+    id: "Q85",
+    cat: "Power Query",
+    q: "A sales CSV has null/blank cells in the Region column. How can this be handled in Power Query?",
+    a: "Filter out blanks, use 'Replace Values' to substitute 'Unknown', or apply 'Fill Down' if values are grouped."
+  },
+  {
+    id: "Q86",
+    cat: "Power Query",
+    q: "How do you combine three separate monthly CSV files into one unified table automatically?",
+    a: "Import them into Power Query and use 'Append Queries as New', or place all CSVs in a single folder and use 'Get Data from Folder' -> 'Combine Files'."
+  },
+  {
+    id: "Q87",
+    cat: "Power Query",
+    q: "Appending 500 January rows and 600 February rows yields 1,100 rows. What does this confirm?",
+    a: "All records from both months were successfully combined into a single continuous vertical dataset."
+  },
+  {
+    id: "Q88",
+    cat: "Power Query",
+    q: "Why is Power Query preferable to manual cleaning inside Excel worksheets?",
+    a: "Power Query records every cleaning step in an automated pipeline. When fresh data arrives, clicking 'Refresh' replays all steps automatically."
+  },
+
+  // K. Gantt Charts, Forecasting & What-If Analysis (Q89 - Q100)
+  {
+    id: "Q89",
+    cat: "Forecasting & What-If",
+    q: "Tasks: Requirement (3 days), Development (8 days), Testing (5 days), Deployment (2 days). Which task is on the longest path?",
+    a: "Development, with a duration of 8 days."
+  },
+  {
+    id: "Q90",
+    cat: "Forecasting & What-If",
+    q: "What chart type best visualizes project schedules, milestone start/end dates, and task overlaps?",
+    a: "A Gantt Chart (commonly built in Excel using a stacked horizontal bar chart with the start-date series made transparent)."
+  },
+  {
+    id: "Q91",
+    cat: "Forecasting & What-If",
+    q: "Sales: Jan (100), Feb (110), Mar (120), Apr (130). What pattern is observed?",
+    a: "A consistent upward linear trend increasing by 10 units each month."
+  },
+  {
+    id: "Q92",
+    cat: "Forecasting & What-If",
+    q: "Based on the linear pattern in Q91, what is the expected projection for May?",
+    a: "140 units (130 + 10 = 140)."
+  },
+  {
+    id: "Q93",
+    cat: "Forecasting & What-If",
+    q: "Why are historical baselines critical for sales forecasting?",
+    a: "Past trends, seasonality, and volume baselines provide an empirical foundation for projecting future performance."
+  },
+  {
+    id: "Q94",
+    cat: "Forecasting & What-If",
+    q: "A manager wants to compare outcomes under Conservative (40L), Expected (60L), and Aggressive (80L) sales. Which Excel tool is built for this?",
+    a: "Scenario Manager (Data tab -> What-If Analysis -> Scenario Manager)."
+  },
+  {
+    id: "Q95",
+    cat: "Forecasting & What-If",
+    q: "What is What-If Analysis in Excel?",
+    a: "The process of experimenting with different input values in cells to see how those changes impact dependent formula results (e.g., assessing profit changes if raw material costs rise by 15%)."
+  },
+  {
+    id: "Q96",
+    cat: "Forecasting & What-If",
+    q: "What is the primary benefit of Scenario Manager over manually typing different inputs into a sheet?",
+    a: "It stores multiple sets of assumptions in a single model and generates an automated Scenario Summary Report comparing results side-by-side without overwriting original inputs."
+  },
+  {
+    id: "Q97",
+    cat: "Forecasting & What-If",
+    q: "What is Goal Seek, and how does it differ from Scenario Manager?",
+    a: "Goal Seek works backward from a target result to find the required single input value (e.g., 'What sales volume is needed to reach 100k profit?'). Scenario Manager compares multiple inputs across scenarios."
+  },
+  {
+    id: "Q98",
+    cat: "Forecasting & What-If",
+    q: "Annual Sales: 2022 (80), 2023 (100), 2024 (120), 2025 (140). Continuing this pattern, what is the estimate for 2026?",
+    a: "160 (sales increase steadily by 20 units per year; 140 + 20 = 160)."
+  },
+  {
+    id: "Q99",
+    cat: "Forecasting & What-If",
+    q: "A project has sequential tasks lasting 2, 5, 3, and 4 days with zero overlap. What is the total timeline?",
+    a: "14 days (2 + 5 + 3 + 4 = 14 days)."
+  },
+  {
+    id: "Q100",
+    cat: "Forecasting & What-If",
+    q: "How do Pivot Tables, Forecasting, and Scenario Manager combine to support business decisions?",
+    a: "Pivot Tables summarize historical performance ('What happened?'), Forecasting estimates future trends ('What might happen?'), and Scenario Manager evaluates outcomes under different assumptions ('What if conditions change?')."
+  }
+];
+
+let currentCategory = "All";
+let studyMode = false;
+
+// Render Cards
+function renderList() {
+  const container = document.getElementById("qaList");
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  container.innerHTML = "";
+
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.a.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  document.getElementById("resultCount").innerText = `Showing ${filtered.length} of ${qaData.length} questions`;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted); background: white; border-radius: var(--radius); border: 1px solid var(--border);">No questions match your search or filter.</div>`;
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = `qa-card ${studyMode ? "" : "open"}`;
+    card.id = `card-${item.id}`;
+
+    const formattedAnswer = item.a.split('\n').map(p => `<p>${escapeHTML(p)}</p>`).join('');
+
+    card.innerHTML = `
+      <div class="qa-header" onclick="toggleCard('${item.id}')">
+        <div class="qa-title-wrapper">
+          <span class="q-id">${item.id}</span>
+          <div>
+            <div class="q-text">${escapeHTML(item.q)}</div>
+            <div class="qa-meta">
+              <span class="cat-tag">${item.cat}</span>
+            </div>
+          </div>
+        </div>
+        <div class="q-toggle-icon">▼</div>
+      </div>
+      <div class="qa-content">
+        <div class="answer-box">
+          ${formattedAnswer}
+        </div>
+        <div class="qa-card-actions">
+          <button class="btn-copy-card" onclick="copySingleCard('${item.id}', event)">
+            📋 Copy for Docs / Word
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  card.classList.toggle("open");
+}
+
+function toggleAll() {
+  const btn = document.getElementById("toggleAllBtn");
+  const cards = document.querySelectorAll(".qa-card");
+  const shouldOpen = btn.innerText === "Expand All";
+
+  cards.forEach(card => {
+    if (shouldOpen) card.classList.add("open");
+    else card.classList.remove("open");
+  });
+
+  btn.innerText = shouldOpen ? "Collapse All" : "Expand All";
+}
+
+function toggleStudyMode() {
+  studyMode = !studyMode;
+  const btn = document.getElementById("studyModeBtn");
+  btn.innerText = `Study Mode: ${studyMode ? "ON" : "OFF"}`;
+  btn.classList.toggle("btn-primary", studyMode);
+  btn.classList.toggle("btn-secondary", !studyMode);
+
+  const cards = document.querySelectorAll(".qa-card");
+  cards.forEach(c => {
+    if (studyMode) c.classList.remove("open");
+    else c.classList.add("open");
+  });
+
+  document.getElementById("toggleAllBtn").innerText = studyMode ? "Expand All" : "Collapse All";
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  const chips = document.querySelectorAll(".chip");
+  chips.forEach(chip => {
+    if (chip.innerText.startsWith(cat) || (cat === "All" && chip.innerText.startsWith("All"))) {
+      chip.classList.add("active");
+    } else {
+      chip.classList.remove("active");
+    }
+  });
+  renderList();
+}
+
+document.getElementById("searchInput").addEventListener("input", renderList);
+
+// Clipboard Helpers
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 2500);
+}
+
+function copySingleCard(id, event) {
+  event.stopPropagation();
+  const item = qaData.find(d => d.id === id);
+  if (!item) return;
+
+  const textToCopy = `${item.id}. ${item.q}\nAnswer:\n${item.a}\n`;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast(`Copied ${item.id} for Docs / Word!`);
+  });
+}
+
+function copyAllFiltered() {
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.a.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    showToast("No questions to copy!");
+    return;
+  }
+
+  const bulkText = filtered.map(item => `${item.id}. ${item.q}\nAnswer:\n${item.a}\n\n`).join("---\n\n");
+  navigator.clipboard.writeText(bulkText).then(() => {
+    showToast(`Copied all ${filtered.length} questions to clipboard!`);
+  });
+}
+
+// Initial Render
+renderList();
+</script>
+
+</body>
+</html>

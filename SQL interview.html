@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL & Data Warehousing Interview Master Guide (150 Q&A Guide)</title>
+  <style>
+    :root {
+      --primary: #0284c7; /* Sky / SQL Blue */
+      --primary-dark: #0369a1;
+      --secondary: #0f172a; /* Slate Dark */
+      --secondary-dark: #020617;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --badge-bg: #e0f2fe;
+      --badge-text: #0369a1;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0369a1, #0f172a);
+      color: white;
+      padding: 36px 30px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header p {
+      color: #cbd5e1;
+      font-size: 1.05rem;
+      max-width: 850px;
+    }
+
+    .header-badge {
+      background: rgba(2, 132, 199, 0.35);
+      border: 1px solid #38bdf8;
+      color: #e0f2fe;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    .controls-panel {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .status-bar {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qa-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .qa-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .qa-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .qa-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      user-select: none;
+      background: #ffffff;
+    }
+
+    .qa-title-wrapper {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .q-id {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 0.95rem;
+      min-width: 48px;
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .q-toggle-icon {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .qa-card.open .q-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .qa-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .cat-tag {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-weight: 600;
+    }
+
+    .qa-content {
+      display: none;
+      padding: 0 20px 20px 20px;
+      background: #f8fafc;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .qa-card.open .qa-content {
+      display: block;
+    }
+
+    .answer-box {
+      margin-top: 16px;
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .answer-box p {
+      margin-bottom: 8px;
+    }
+
+    .answer-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .qa-card-actions {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-copy-card {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-card:hover {
+      background: var(--badge-bg);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+        padding: 0;
+      }
+      .controls-panel, .qa-card-actions, header p, .header-badge {
+        display: none !important;
+      }
+      header {
+        background: none;
+        color: black;
+        box-shadow: none;
+        padding: 10px 0;
+        border-bottom: 2px solid #000;
+      }
+      header h1 {
+        color: black;
+        font-size: 1.6rem;
+      }
+      .qa-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+        margin-bottom: 12px;
+      }
+      .qa-content {
+        display: block !important;
+        background: white;
+      }
+      .q-toggle-icon {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+      <h1>SQL & Data Warehouse Interview Master Guide</h1>
+      <span class="header-badge">150 Questions & Answers</span>
+    </div>
+    <p>A comprehensive, accessible interview bank covering Data Warehousing, Star/Snowflake Schemas, OLTP vs OLAP, DDL/DML, Filtering, Aggregations, Subqueries, CTEs, Joins, Window Functions, Stored Procedures, and Query Optimization.</p>
+  </header>
+
+  <section class="controls-panel">
+    <div class="search-row">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search topics (e.g., Star Schema, CTE, DENSE_RANK, LAG, Index, Stored Procedure)..." />
+      </div>
+      <button class="btn btn-secondary" id="toggleAllBtn" onclick="toggleAll()">Expand All</button>
+      <button class="btn btn-secondary" id="studyModeBtn" onclick="toggleStudyMode()">Study Mode: OFF</button>
+      <button class="btn btn-primary" onclick="copyAllFiltered()">Copy Filtered for Docs</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+    </div>
+
+    <div class="category-chips" id="categoryChips">
+      <button class="chip active" onclick="filterCategory('All')">All (150)</button>
+      <button class="chip" onclick="filterCategory('Data Warehouse & Schemas')">Data Warehouse & Schemas (20)</button>
+      <button class="chip" onclick="filterCategory('Constraints & Integrity')">SETL & Constraints (15)</button>
+      <button class="chip" onclick="filterCategory('DDL & DML')">DDL & DML Statements (15)</button>
+      <button class="chip" onclick="filterCategory('Basic Querying & Aggregation')">SELECT, WHERE & GROUP BY (20)</button>
+      <button class="chip" onclick="filterCategory('Strings & Dates')">Strings, Dates & REGEX (15)</button>
+      <button class="chip" onclick="filterCategory('Subqueries & CTEs')">Subqueries, CTEs & Views (15)</button>
+      <button class="chip" onclick="filterCategory('Joins & Sets')">Joins & Set Operations (15)</button>
+      <button class="chip" onclick="filterCategory('Window Functions')">Window Functions (15)</button>
+      <button class="chip" onclick="filterCategory('Procedures & Optimization')">Procedures, Cursors & Tuning (20)</button>
+    </div>
+
+    <div class="status-bar">
+      <span id="resultCount">Showing 150 of 150 questions</span>
+      <span>Click any question to view the answer</span>
+    </div>
+  </section>
+
+  <main class="qa-container" id="qaList"></main>
+</div>
+
+<div id="toast">Copied to clipboard!</div>
+
+<script>
+// Complete dataset of 150 SQL & Data Warehouse questions mapped to the syllabus
+const qaData = [
+  // SECTION 1: Data Warehouse & Schemas (Q1 - Q20)
+  {
+    id: "Q1",
+    cat: "Data Warehouse & Schemas",
+    q: "A retail company stores historical sales across multiple years for managers to analyze trends by region and product. Which system is most appropriate?",
+    a: "A Data Warehouse. It integrates historical, time-stamped data from diverse operational systems into a central repository optimized for multi-year analytical reporting."
+  },
+  {
+    id: "Q2",
+    cat: "Data Warehouse & Schemas",
+    q: "What is an OLTP system, and what is its primary characteristic?",
+    a: "OLTP stands for Online Transaction Processing. It is designed to handle high volumes of fast, day-to-day business transactions (such as customer checkouts and ATM cash withdrawals) using normalized tables."
+  },
+  {
+    id: "Q3",
+    cat: "Data Warehouse & Schemas",
+    q: "When thousands of ATM deposits and withdrawals occur every minute, which system handles them?",
+    a: "An OLTP system. It ensures ACID compliance, rapid row inserts, and immediate balance updates."
+  },
+  {
+    id: "Q4",
+    cat: "Data Warehouse & Schemas",
+    q: "When executive management wants to compare annual revenues across ten years, which system type is required?",
+    a: "An OLAP (Online Analytical Processing) system or Data Warehouse, which is optimized for aggregation, historical trends, and complex queries."
+  },
+  {
+    id: "Q5",
+    cat: "Data Warehouse & Schemas",
+    q: "How do OLTP and OLAP differ fundamentally in workload and design?",
+    a: "OLTP processes operational transactions with frequent row-level inserts and updates. OLAP processes analytical queries across historical data, reading millions of rows to compute aggregations."
+  },
+  {
+    id: "Q6",
+    cat: "Data Warehouse & Schemas",
+    q: "What is a Star Schema in a data warehouse?",
+    a: "A relational schema featuring a central Fact Table (containing numeric metrics and foreign keys) connected directly to surrounding, denormalized Dimension Tables (containing descriptive context)."
+  },
+  {
+    id: "Q7",
+    cat: "Data Warehouse & Schemas",
+    q: "A database layout contains Sales_Fact connected to Product_Dim, Customer_Dim, Time_Dim, and Region_Dim. What schema is this?",
+    a: "A Star Schema. The fact table sits in the center with direct one-to-many connections to independent dimension tables resembling a star."
+  },
+  {
+    id: "Q8",
+    cat: "Data Warehouse & Schemas",
+    q: "In a Star Schema, which table stores numeric business measurements like SalesAmount and Quantity?",
+    a: "The Fact Table. It contains quantifiable quantitative measures and foreign keys pointing to dimension lookup tables."
+  },
+  {
+    id: "Q9",
+    cat: "Data Warehouse & Schemas",
+    q: "In a retail warehouse, is 'Product' a fact or a dimension?",
+    a: "It is a Dimension. Product provides descriptive textual attributes (such as ProductName, Brand, and Category) used to segment and slice facts."
+  },
+  {
+    id: "Q10",
+    cat: "Data Warehouse & Schemas",
+    q: "Consider a Sales Fact Table with three rows: Row 1 Sales = 500, Row 2 Sales = 900, Row 3 Sales = 250. What is Total Sales?",
+    a: "Total Sales = 1,650 (calculated as 500 + 900 + 250)."
+  },
+  {
+    id: "Q11",
+    cat: "Data Warehouse & Schemas",
+    q: "How are dimension tables organized in a Snowflake Schema compared to a Star Schema?",
+    a: "In a Snowflake Schema, dimension tables are normalized into sub-dimensions (e.g., Product connects to SubCategory, which connects to Category), splitting tables to eliminate redundancy."
+  },
+  {
+    id: "Q12",
+    cat: "Data Warehouse & Schemas",
+    q: "What is the primary advantage of a Star Schema over a normalized Snowflake Schema?",
+    a: "Query simplicity and performance. Queries require fewer joins between tables, making SQL queries simpler to write and faster to execute."
+  },
+  {
+    id: "Q13",
+    cat: "Data Warehouse & Schemas",
+    q: "If a Product dimension is split into Product -> Category -> Department, which schema design is being applied?",
+    a: "A Snowflake Schema, because the dimension hierarchy is normalized across multiple related tables."
+  },
+  {
+    id: "Q14",
+    cat: "Data Warehouse & Schemas",
+    q: "Is recording an online e-commerce order an OLTP or OLAP operation?",
+    a: "It is an OLTP operation, because it involves recording an immediate, transactional operational record."
+  },
+  {
+    id: "Q15",
+    cat: "Data Warehouse & Schemas",
+    q: "Why are Dimension tables critical in business analytics?",
+    a: "They provide the qualitative context ('who, what, where, and when') needed to filter, group, and interpret the raw numeric numbers stored in fact tables."
+  },
+  {
+    id: "Q16",
+    cat: "Data Warehouse & Schemas",
+    q: "Between Sales_Fact (Quantity, SalesAmount) and Customer_Dim (CustomerName, City), which is the Fact table and why?",
+    a: "Sales_Fact is the Fact table because it stores measurable transactional events and numeric metrics."
+  },
+  {
+    id: "Q17",
+    cat: "Data Warehouse & Schemas",
+    q: "Which architecture is better suited for complex multi-year trend queries: OLTP or a Data Warehouse?",
+    a: "A Data Warehouse, because it is structured and indexed specifically for heavy analytical scans across large volumes of historical data without slowing down production systems."
+  },
+  {
+    id: "Q18",
+    cat: "Data Warehouse & Schemas",
+    q: "What is a Surrogate Key in a data warehouse dimension table?",
+    a: "An artificial, system-generated integer key assigned to each dimension record, independent of natural operational system keys, to manage history over time."
+  },
+  {
+    id: "Q19",
+    cat: "Data Warehouse & Schemas",
+    q: "What does Denormalization mean in analytical reporting?",
+    a: "Denormalization intentionally combines related tables to reduce the number of joins required during analytical querying, trading storage space for faster query execution."
+  },
+  {
+    id: "Q20",
+    cat: "Data Warehouse & Schemas",
+    q: "Why should operational OLTP databases avoid running massive analytical aggregation reports during peak hours?",
+    a: "Heavy analytical queries can lock database tables, consume server CPU and memory, and degrade the responsiveness of customer-facing transactions."
+  },
+
+  // SECTION 2: SETL, Constraints & Integrity (Q21 - Q35)
+  {
+    id: "Q21",
+    cat: "Constraints & Integrity",
+    q: "What is the primary role of a SETL / ETL pipeline?",
+    a: "To extract data from diverse operational source systems, clean and standardize it (Transformation), and load it into an analytical data warehouse."
+  },
+  {
+    id: "Q22",
+    cat: "Constraints & Integrity",
+    q: "In an ETL pipeline, where is source data initially retrieved from?",
+    a: "Operational source systems, such as transactional relational databases, CRM platforms, ERP logs, CSV files, and third-party APIs."
+  },
+  {
+    id: "Q23",
+    cat: "Constraints & Integrity",
+    q: "If raw data contains duplicate rows and inconsistent city spellings, which ETL stage addresses these issues?",
+    a: "The Transformation stage. This stage cleans, de-duplicates, validates, and standardizes data before loading it into destination tables."
+  },
+  {
+    id: "Q24",
+    cat: "Constraints & Integrity",
+    q: "What is the standard logical sequence of an ETL pipeline?",
+    a: "Extract -> Transform -> Load."
+  },
+  {
+    id: "Q25",
+    cat: "Constraints & Integrity",
+    q: "What is the purpose of database constraints?",
+    a: "Constraints enforce rules on table columns to maintain data integrity, preventing invalid, duplicate, or orphaned values."
+  },
+  {
+    id: "Q26",
+    cat: "Constraints & Integrity",
+    q: "Which constraint uniquely identifies each row in a database table?",
+    a: "The PRIMARY KEY constraint. It ensures that every record has a unique, non-null identifier."
+  },
+  {
+    id: "Q27",
+    cat: "Constraints & Integrity",
+    q: "In a Student table with columns Student_ID and Name, which is the best candidate for a Primary Key?",
+    a: "Student_ID, because names can be duplicated across individuals, whereas Student_ID provides a guaranteed unique identifier."
+  },
+  {
+    id: "Q28",
+    cat: "Constraints & Integrity",
+    q: "Which constraint guarantees that a column cannot contain empty or missing NULL values?",
+    a: "The NOT NULL constraint."
+  },
+  {
+    id: "Q29",
+    cat: "Constraints & Integrity",
+    q: "Which constraint establishes a relationship between records across two separate tables?",
+    a: "The FOREIGN KEY constraint. It links a child table's column to the primary key of a parent table."
+  },
+  {
+    id: "Q30",
+    cat: "Constraints & Integrity",
+    q: "What is Referential Integrity in relational databases?",
+    a: "A rule ensuring that relationships between tables remain consistent; a foreign key value must match an existing primary key value in the referenced parent table or be NULL."
+  },
+  {
+    id: "Q31",
+    cat: "Constraints & Integrity",
+    q: "If an Order table contains Customer_ID = 105, but Customer 105 does not exist in the Customer table, what rule is violated?",
+    a: "Referential Integrity is violated, because the child table references an orphaned, non-existent parent key."
+  },
+  {
+    id: "Q32",
+    cat: "Constraints & Integrity",
+    q: "What does an Entity represent in an Entity-Relationship (ER) diagram?",
+    a: "A real-world object or concept about which data is captured (such as Customer, Product, or Order)."
+  },
+  {
+    id: "Q33",
+    cat: "Constraints & Integrity",
+    q: "What do Attributes represent in an ER diagram?",
+    a: "The properties or characteristics that describe an entity (such as CustomerName, Age, or Email)."
+  },
+  {
+    id: "Q34",
+    cat: "Constraints & Integrity",
+    q: "What does a 1:N relationship mean in database design?",
+    a: "A One-to-Many relationship, meaning a single record in the parent table can be associated with multiple records in the related child table (e.g., one Customer having many Orders)."
+  },
+  {
+    id: "Q35",
+    cat: "Constraints & Integrity",
+    q: "What is the difference between a Primary Key and a Unique Key?",
+    a: "A Primary Key uniquely identifies each row and does not permit any NULL values (only one primary key per table). A Unique Key also enforces uniqueness, but permits one NULL value (and multiple unique constraints can exist on a table)."
+  },
+
+  // SECTION 3: DDL & DML Statements (Q36 - Q50)
+  {
+    id: "Q36",
+    cat: "DDL & DML",
+    q: "Which SQL command is used to create a new database table?",
+    a: "CREATE TABLE. It defines the table name, column names, data types, and column constraints."
+  },
+  {
+    id: "Q37",
+    cat: "DDL & DML",
+    q: "What does DDL stand for, and which key commands belong to this family?",
+    a: "DDL stands for Data Definition Language. Commands include CREATE, ALTER, DROP, and TRUNCATE, which define and alter database structure."
+  },
+  {
+    id: "Q38",
+    cat: "DDL & DML",
+    q: "What does DML stand for, and which commands belong to this family?",
+    a: "DML stands for Data Manipulation Language. Commands include INSERT, UPDATE, and DELETE, which manage data values inside tables."
+  },
+  {
+    id: "Q39",
+    cat: "DDL & DML",
+    q: "Which SQL command permanently removes a table structure and all its data from the database?",
+    a: "DROP TABLE. It deletes both the data rows and the underlying table definition."
+  },
+  {
+    id: "Q40",
+    cat: "DDL & DML",
+    q: "Which command modifies the structure of an existing table without deleting it?",
+    a: "ALTER TABLE. It can add, delete, or modify columns and table constraints."
+  },
+  {
+    id: "Q41",
+    cat: "DDL & DML",
+    q: "How do you add an 'Email' column of type VARCHAR(100) to an existing 'Student' table?",
+    a: "ALTER TABLE Student ADD Email VARCHAR(100);"
+  },
+  {
+    id: "Q42",
+    cat: "DDL & DML",
+    q: "Which SQL statement inserts new rows into a database table?",
+    a: "INSERT INTO table_name (column1, column2) VALUES (val1, val2);"
+  },
+  {
+    id: "Q43",
+    cat: "DDL & DML",
+    q: "Which SQL command modifies existing column values in table rows?",
+    a: "UPDATE table_name SET column_name = new_value WHERE condition;"
+  },
+  {
+    id: "Q44",
+    cat: "DDL & DML",
+    q: "Which SQL statement removes specific rows from a table while preserving the table structure?",
+    a: "DELETE FROM table_name WHERE condition;"
+  },
+  {
+    id: "Q45",
+    cat: "DDL & DML",
+    q: "What is the critical difference between DROP TABLE and DELETE FROM table?",
+    a: "DROP TABLE destroys the table definition and metadata permanently. DELETE removes data rows while leaving the empty table structure intact."
+  },
+  {
+    id: "Q46",
+    cat: "DDL & DML",
+    q: "What happens if you execute 'DELETE FROM Employee;' without specifying a WHERE clause?",
+    a: "Every row in the Employee table is deleted, resulting in an empty table."
+  },
+  {
+    id: "Q47",
+    cat: "DDL & DML",
+    q: "How does TRUNCATE TABLE differ from DELETE FROM table?",
+    a: "TRUNCATE is a DDL operation that drops and re-creates the table structure, removing all rows rapidly with minimal logging. DELETE is a DML operation that removes rows one by one."
+  },
+  {
+    id: "Q48",
+    cat: "DDL & DML",
+    q: "Write the SQL statement to update Employee 101's salary to 50,000.",
+    a: "UPDATE Employee SET Salary = 50000 WHERE Employee_ID = 101;"
+  },
+  {
+    id: "Q49",
+    cat: "DDL & DML",
+    q: "How do you drop an existing column named 'Age' from the 'Student' table?",
+    a: "ALTER TABLE Student DROP COLUMN Age;"
+  },
+  {
+    id: "Q50",
+    cat: "DDL & DML",
+    q: "What is the difference between DDL and DML in terms of transactions?",
+    a: "DML operations (INSERT, UPDATE, DELETE) can typically be rolled back within a transaction. DDL operations (CREATE, ALTER, DROP) trigger an implicit commit in MySQL and cannot be rolled back."
+  },
+
+  // SECTION 4: Basic Querying & Aggregation (Q51 - Q70)
+  {
+    id: "Q51",
+    cat: "Basic Querying & Aggregation",
+    q: "Which query retrieves all columns and all rows from a table named 'Employee'?",
+    a: "SELECT * FROM Employee;"
+  },
+  {
+    id: "Q52",
+    cat: "Basic Querying & Aggregation",
+    q: "How do you filter query results to return only employees earning more than 50,000?",
+    a: "SELECT * FROM Employee WHERE Salary > 50000;"
+  },
+  {
+    id: "Q53",
+    cat: "Basic Querying & Aggregation",
+    q: "Which clause sorts the output records of a SQL query?",
+    a: "ORDER BY column_name [ASC|DESC];"
+  },
+  {
+    id: "Q54",
+    cat: "Basic Querying & Aggregation",
+    q: "What is the default sort direction of an ORDER BY clause if ASC or DESC is omitted?",
+    a: "Ascending order (ASC)."
+  },
+  {
+    id: "Q55",
+    cat: "Basic Querying & Aggregation",
+    q: "Write a query returning all employees with Salary > 50,000, sorted from highest salary to lowest.",
+    a: "SELECT * FROM Employee WHERE Salary > 50000 ORDER BY Salary DESC;"
+  },
+  {
+    id: "Q56",
+    cat: "Basic Querying & Aggregation",
+    q: "Which clause groups rows sharing common column values into summary rows for calculation?",
+    a: "The GROUP BY clause."
+  },
+  {
+    id: "Q57",
+    cat: "Basic Querying & Aggregation",
+    q: "Name the five primary aggregate functions available in standard SQL.",
+    a: "COUNT(), SUM(), AVG(), MIN(), and MAX()."
+  },
+  {
+    id: "Q58",
+    cat: "Basic Querying & Aggregation",
+    q: "What is the difference between COUNT(*) and COUNT(column_name)?",
+    a: "COUNT(*) counts all rows in the table or group, including rows with NULLs. COUNT(column_name) counts only rows where the specified column contains non-NULL values."
+  },
+  {
+    id: "Q59",
+    cat: "Basic Querying & Aggregation",
+    q: "Given sales numbers: 100, 200, 300, 400. What are SUM(Sales) and AVG(Sales)?",
+    a: "SUM(Sales) = 1,000 (100+200+300+400) and AVG(Sales) = 250 (1,000 / 4)."
+  },
+  {
+    id: "Q60",
+    cat: "Basic Querying & Aggregation",
+    q: "How do you calculate the total sales for each distinct sales region?",
+    a: "SELECT Region, SUM(Sales) FROM Sales GROUP BY Region;"
+  },
+  {
+    id: "Q61",
+    cat: "Basic Querying & Aggregation",
+    q: "What is the fundamental difference between the WHERE clause and the HAVING clause?",
+    a: "WHERE filters individual rows before grouping and aggregation takes place. HAVING filters aggregated group metrics after GROUP BY has executed."
+  },
+  {
+    id: "Q62",
+    cat: "Basic Querying & Aggregation",
+    q: "Why does writing 'WHERE SUM(Salary) > 100000' cause a syntax error?",
+    a: "Aggregate functions like SUM() cannot appear in a WHERE clause because WHERE evaluates row-by-row before aggregates are computed. You must use HAVING SUM(Salary) > 100000."
+  },
+  {
+    id: "Q63",
+    cat: "Basic Querying & Aggregation",
+    q: "Write a query to find departments where total salary expense exceeds 200,000.",
+    a: "SELECT Department, SUM(Salary) FROM Employee GROUP BY Department HAVING SUM(Salary) > 200000;"
+  },
+  {
+    id: "Q64",
+    cat: "Basic Querying & Aggregation",
+    q: "What is the standard execution order of clauses in an SQL query?",
+    a: "FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT."
+  },
+  {
+    id: "Q65",
+    cat: "Basic Querying & Aggregation",
+    q: "What is the result of applying AVG() to a column containing values: 10, 20, and NULL?",
+    a: "15. Aggregate functions in SQL automatically ignore NULL values, so it evaluates (10 + 20) / 2 = 15."
+  },
+  {
+    id: "Q66",
+    cat: "Basic Querying & Aggregation",
+    q: "Write a query to find the minimum and maximum salary in each department.",
+    a: "SELECT Department, MIN(Salary) AS MinSal, MAX(Salary) AS MaxSal FROM Employee GROUP BY Department;"
+  },
+  {
+    id: "Q67",
+    cat: "Basic Querying & Aggregation",
+    q: "How do you count the number of unique customers who placed orders?",
+    a: "SELECT COUNT(DISTINCT Customer_ID) FROM Orders;"
+  },
+  {
+    id: "Q68",
+    cat: "Basic Querying & Aggregation",
+    q: "Table contains: IT: 100, IT: 150, HR: 300, HR: 100, Sales: 80. Which departments satisfy HAVING SUM(Salary) > 200?",
+    a: "IT (total = 250) and HR (total = 400). Sales (total = 80) is excluded."
+  },
+  {
+    id: "Q69",
+    cat: "Basic Querying & Aggregation",
+    q: "Can you use column aliases defined in SELECT inside a WHERE clause in standard SQL?",
+    a: "No, because the WHERE clause executes before the SELECT clause, meaning column aliases have not yet been evaluated when WHERE runs."
+  },
+  {
+    id: "Q70",
+    cat: "Basic Querying & Aggregation",
+    q: "Write a query showing departments having at least 5 employees, ordered from highest average salary to lowest.",
+    a: "SELECT Department, COUNT(*) AS EmpCount, AVG(Salary) AS AvgSal FROM Employee GROUP BY Department HAVING COUNT(*) >= 5 ORDER BY AvgSal DESC;"
+  },
+
+  // SECTION 5: Strings, Dates & REGEX (Q71 - Q85)
+  {
+    id: "Q71",
+    cat: "Strings & Dates",
+    q: "Which MySQL function returns the length of a string in characters or bytes?",
+    a: "LENGTH() returns string length in bytes, and CHAR_LENGTH() returns length in character count."
+  },
+  {
+    id: "Q72",
+    cat: "Strings & Dates",
+    q: "What do UPPER() and LOWER() do in MySQL?",
+    a: "UPPER() converts all alphabetic characters in a string to uppercase; LOWER() converts them to lowercase."
+  },
+  {
+    id: "Q73",
+    cat: "Strings & Dates",
+    q: "How do you combine FirstName and LastName with a space between them in MySQL?",
+    a: "SELECT CONCAT(FirstName, ' ', LastName) FROM Employees;"
+  },
+  {
+    id: "Q74",
+    cat: "Strings & Dates",
+    q: "What does SUBSTRING('DATABASE', 1, 4) return in MySQL?",
+    a: "'DATA' (it extracts 4 characters starting from index position 1)."
+  },
+  {
+    id: "Q75",
+    cat: "Strings & Dates",
+    q: "Which function removes accidental leading and trailing whitespace from strings?",
+    a: "TRIM(). For example: SELECT TRIM('  MySQL  '); returns 'MySQL'."
+  },
+  {
+    id: "Q76",
+    cat: "Strings & Dates",
+    q: "What does SELECT REPLACE('Data Analyst', 'Analyst', 'Scientist'); produce?",
+    a: "'Data Scientist'."
+  },
+  {
+    id: "Q77",
+    cat: "Strings & Dates",
+    q: "What is the difference between NOW() and CURDATE() in MySQL?",
+    a: "NOW() returns the current date and time ('YYYY-MM-DD HH:MM:SS'); CURDATE() returns only the current date ('YYYY-MM-DD')."
+  },
+  {
+    id: "Q78",
+    cat: "Strings & Dates",
+    q: "Which functions extract year and month components from a date field?",
+    a: "YEAR(date_column) and MONTH(date_column)."
+  },
+  {
+    id: "Q79",
+    cat: "Strings & Dates",
+    q: "How do you filter records for orders placed exclusively in the year 2026?",
+    a: "SELECT * FROM Orders WHERE YEAR(Order_Date) = 2026;"
+  },
+  {
+    id: "Q80",
+    cat: "Strings & Dates",
+    q: "What does DATE_ADD(Order_Date, INTERVAL 7 DAY) do?",
+    a: "It adds seven days to the specified date value."
+  },
+  {
+    id: "Q81",
+    cat: "Strings & Dates",
+    q: "How do you calculate elapsed delivery days between Order_Date and Delivery_Date?",
+    a: "SELECT DATEDIFF(Delivery_Date, Order_Date) AS DeliveryDays FROM Orders;"
+  },
+  {
+    id: "Q82",
+    cat: "Strings & Dates",
+    q: "In MySQL Regular Expressions (REGEXP), what do anchors '^' and '$' represent?",
+    a: "'^' anchors the match to the beginning of the string; '$' anchors the match to the end of the string."
+  },
+  {
+    id: "Q83",
+    cat: "Strings & Dates",
+    q: "Which regular expression pattern filters records where an email ends in '.com'?",
+    a: "SELECT * FROM Users WHERE Email REGEXP '\\.com$';"
+  },
+  {
+    id: "Q84",
+    cat: "Strings & Dates",
+    q: "How do you find customer names starting with the letter 'R' using REGEXP in MySQL?",
+    a: "SELECT * FROM Customers WHERE Name REGEXP '^R';"
+  },
+  {
+    id: "Q85",
+    cat: "Strings & Dates",
+    q: "What does the regular expression pattern '[0-9]+' match?",
+    a: "It matches one or more consecutive numerical digits."
+  },
+
+  // SECTION 6: Subqueries, CTEs & Views (Q86 - Q100)
+  {
+    id: "Q86",
+    cat: "Subqueries & CTEs",
+    q: "What is a Subquery in SQL?",
+    a: "A query nested inside another SQL statement (such as inside a WHERE, FROM, or HAVING clause) to provide intermediate values for the outer query."
+  },
+  {
+    id: "Q87",
+    cat: "Subqueries & CTEs",
+    q: "Write a query to find all employees earning more than the company's average salary.",
+    a: "SELECT * FROM Employee WHERE Salary > (SELECT AVG(Salary) FROM Employee);"
+  },
+  {
+    id: "Q88",
+    cat: "Subqueries & CTEs",
+    q: "In a non-correlated scalar subquery, which part executes first: the outer query or inner query?",
+    a: "The inner subquery executes first, computing the scalar value that is then used by the outer query."
+  },
+  {
+    id: "Q89",
+    cat: "Subqueries & CTEs",
+    q: "What is a Correlated Subquery?",
+    a: "A subquery that references columns from the outer query. It executes repeatedly, once for every candidate row evaluated by the outer query."
+  },
+  {
+    id: "Q90",
+    cat: "Subqueries & CTEs",
+    q: "What does CTE stand for, and which keyword defines it?",
+    a: "Common Table Expression. It is defined using the WITH keyword."
+  },
+  {
+    id: "Q91",
+    cat: "Subqueries & CTEs",
+    q: "What is the basic syntax of a Common Table Expression (CTE)?",
+    a: "WITH cte_name AS (SELECT ... FROM ...) SELECT * FROM cte_name;"
+  },
+  {
+    id: "Q92",
+    cat: "Subqueries & CTEs",
+    q: "Why are CTEs often preferred over deeply nested subqueries?",
+    a: "They improve query readability, break complex logic into modular named steps, and can be referenced multiple times within the subsequent query."
+  },
+  {
+    id: "Q93",
+    cat: "Subqueries & CTEs",
+    q: "Is a CTE stored permanently on disk in the database catalog?",
+    a: "No. A CTE exists temporarily and is valid only for the scope of the immediate query execution."
+  },
+  {
+    id: "Q94",
+    cat: "Subqueries & CTEs",
+    q: "What is a SQL View?",
+    a: "A virtual table defined by a stored SELECT query. It contains no data on disk itself; rather, it dynamically runs its underlying query whenever accessed."
+  },
+  {
+    id: "Q95",
+    cat: "Subqueries & CTEs",
+    q: "How do you create a view that displays only high-salary employees earning above 100,000?",
+    a: "CREATE VIEW HighSalaryEmployees AS SELECT * FROM Employee WHERE Salary > 100000;"
+  },
+  {
+    id: "Q96",
+    cat: "Subqueries & CTEs",
+    q: "What is the primary difference between a View and a CTE?",
+    a: "A View is a permanent, reusable database object stored in the database schema. A CTE is temporary and defined only for the lifespan of a single query."
+  },
+  {
+    id: "Q97",
+    cat: "Subqueries & CTEs",
+    q: "Name two major business security advantages of using Views.",
+    a: "1. Data security: Restricting user access to specific rows and columns without exposing underlying base tables.\n2. Query abstraction: Simplifying complex multi-table joins for business end-users."
+  },
+  {
+    id: "Q98",
+    cat: "Subqueries & CTEs",
+    q: "How do you query data from an existing view named 'SalesSummaryView'?",
+    a: "SELECT * FROM SalesSummaryView;"
+  },
+  {
+    id: "Q99",
+    cat: "Subqueries & CTEs",
+    q: "Can you perform an UPDATE operation on a View in MySQL?",
+    a: "Yes, but only if the view is updatable (i.e., it maps directly to a single table without aggregates, DISTINCT, GROUP BY, or UNION clauses)."
+  },
+  {
+    id: "Q100",
+    cat: "Subqueries & CTEs",
+    q: "Write a CTE that calculates average salary per department and filters departments above 60,000.",
+    a: "WITH DeptAvg AS (SELECT Department, AVG(Salary) AS AvgSal FROM Employee GROUP BY Department) SELECT * FROM DeptAvg WHERE AvgSal > 60000;"
+  },
+
+  // SECTION 7: Joins & Set Operations (Q101 - Q115)
+  {
+    id: "Q101",
+    cat: "Joins & Sets",
+    q: "What does an INNER JOIN return?",
+    a: "It returns only the rows where there is a matching value in both the left and right participating tables."
+  },
+  {
+    id: "Q102",
+    cat: "Joins & Sets",
+    q: "Customers: IDs (1, 2, 3). Orders: CustomerIDs (1, 2, 4). How many rows does an INNER JOIN produce?",
+    a: "2 rows (matching Customer IDs 1 and 2)."
+  },
+  {
+    id: "Q103",
+    cat: "Joins & Sets",
+    q: "What does a LEFT JOIN (or LEFT OUTER JOIN) return?",
+    a: "It returns all rows from the left table, along with matching rows from the right table. If no match exists, NULL values are returned for right-table columns."
+  },
+  {
+    id: "Q104",
+    cat: "Joins & Sets",
+    q: "Using Customers (1, 2, 3) and Orders (1, 2, 4), how many rows does a LEFT JOIN from Customers to Orders return?",
+    a: "3 rows. Customers 1 and 2 match orders; Customer 3 is preserved with NULL order details."
+  },
+  {
+    id: "Q105",
+    cat: "Joins & Sets",
+    q: "What does a RIGHT JOIN return?",
+    a: "All rows from the right table, plus matched rows from the left table (with NULLs for unmatched left records)."
+  },
+  {
+    id: "Q106",
+    cat: "Joins & Sets",
+    q: "What does a FULL OUTER JOIN return conceptually?",
+    a: "All rows from both tables, combining matched rows and filling NULLs wherever a row on either side lacks a match."
+  },
+  {
+    id: "Q107",
+    cat: "Joins & Sets",
+    q: "How is a FULL OUTER JOIN simulated in MySQL, which lacks native FULL OUTER JOIN syntax?",
+    a: "By combining a LEFT JOIN and a RIGHT JOIN using the UNION operator."
+  },
+  {
+    id: "Q108",
+    cat: "Joins & Sets",
+    q: "How do you identify customers who have NEVER placed an order?",
+    a: "SELECT C.CustomerID, C.Name FROM Customers C LEFT JOIN Orders O ON C.CustomerID = O.CustomerID WHERE O.OrderID IS NULL;"
+  },
+  {
+    id: "Q109",
+    cat: "Joins & Sets",
+    q: "What is a CROSS JOIN?",
+    a: "It produces the Cartesian product of two tables, pairing every row from the first table with every row from the second table."
+  },
+  {
+    id: "Q110",
+    cat: "Joins & Sets",
+    q: "What is the key functional difference between a JOIN and a UNION?",
+    a: "A JOIN combines columns horizontally from two tables based on a matching key. A UNION combines rows vertically from two queries into a single result set."
+  },
+  {
+    id: "Q111",
+    cat: "Joins & Sets",
+    q: "What is the difference between UNION and UNION ALL?",
+    a: "UNION combines result sets and removes duplicate rows. UNION ALL combines result sets while preserving all duplicates, making it faster to execute."
+  },
+  {
+    id: "Q112",
+    cat: "Joins & Sets",
+    q: "Query 1 returns {A, B, C}; Query 2 returns {B, C, D}. What do UNION and UNION ALL return?",
+    a: "UNION returns 4 distinct rows: {A, B, C, D}. UNION ALL returns 6 rows: {A, B, C, B, C, D}."
+  },
+  {
+    id: "Q113",
+    cat: "Joins & Sets",
+    q: "What does the INTERSECT operator do?",
+    a: "It returns only the distinct common rows that appear in both participating query results."
+  },
+  {
+    id: "Q114",
+    cat: "Joins & Sets",
+    q: "What two conditions must be met for a UNION or INTERSECT operation to work across two SELECT statements?",
+    a: "1. Both queries must select the exact same number of columns.\n2. The corresponding columns must have compatible data types."
+  },
+  {
+    id: "Q115",
+    cat: "Joins & Sets",
+    q: "What is a Self Join, and when would you use one?",
+    a: "A regular join where a table is joined with itself. It is commonly used for hierarchical data (e.g., joining an Employee table to itself to match employees with their Managers via ManagerID)."
+  },
+
+  // SECTION 8: Window Functions (Q116 - Q130)
+  {
+    id: "Q116",
+    cat: "Window Functions",
+    q: "What is a Window Function in SQL, and how does it differ from GROUP BY?",
+    a: "A window function performs calculations across a set of related rows while retaining the identity of each individual row. Unlike GROUP BY, it does not collapse rows into a single summary line."
+  },
+  {
+    id: "Q117",
+    cat: "Window Functions",
+    q: "Which clause defines the row partitioning and ordering for a window function?",
+    a: "The OVER() clause."
+  },
+  {
+    id: "Q118",
+    cat: "Window Functions",
+    q: "What does ROW_NUMBER() do?",
+    a: "It assigns a unique, sequential integer (1, 2, 3...) to every row within a window partition, without ties or gaps."
+  },
+  {
+    id: "Q119",
+    cat: "Window Functions",
+    q: "How do RANK() and DENSE_RANK() handle identical tied values?",
+    a: "RANK() assigns the same rank to ties and skips subsequent numbers (e.g., 1, 2, 2, 4). DENSE_RANK() assigns the same rank to ties but does not skip numbers (e.g., 1, 2, 2, 3)."
+  },
+  {
+    id: "Q120",
+    cat: "Window Functions",
+    q: "Salaries are: 90k, 80k, 80k, 70k. What ranks are generated by ROW_NUMBER, RANK, and DENSE_RANK?",
+    a: "ROW_NUMBER: 1, 2, 3, 4.\nRANK: 1, 2, 2, 4.\nDENSE_RANK: 1, 2, 2, 3."
+  },
+  {
+    id: "Q121",
+    cat: "Window Functions",
+    q: "What is the purpose of PARTITION BY inside an OVER() clause?",
+    a: "It divides rows into separate logical subsets so calculations (like ranking or running totals) restart independently for each partition group."
+  },
+  {
+    id: "Q122",
+    cat: "Window Functions",
+    q: "Write a query to rank employees by salary separately within each department.",
+    a: "SELECT Employee_ID, Department, Salary, DENSE_RANK() OVER (PARTITION BY Department ORDER BY Salary DESC) AS DeptRank FROM Employee;"
+  },
+  {
+    id: "Q123",
+    cat: "Window Functions",
+    q: "What does the NTILE(n) window function do?",
+    a: "It divides an ordered dataset into 'n' approximately equal-sized numbered buckets (e.g., NTILE(4) divides rows into quartiles)."
+  },
+  {
+    id: "Q124",
+    cat: "Window Functions",
+    q: "What does the LAG() function do, and where is it useful?",
+    a: "LAG() retrieves a value from a previous row in the ordered window. It is commonly used to compare current sales against prior-period sales."
+  },
+  {
+    id: "Q125",
+    cat: "Window Functions",
+    q: "What does LEAD() do?",
+    a: "LEAD() accesses a column value from a subsequent row in the ordered window without needing a self-join."
+  },
+  {
+    id: "Q126",
+    cat: "Window Functions",
+    q: "How do you calculate the day-over-day difference in sales using a window function?",
+    a: "SELECT SaleDate, Sales, Sales - LAG(Sales, 1) OVER (ORDER BY SaleDate) AS DailyGrowth FROM DailySales;"
+  },
+  {
+    id: "Q127",
+    cat: "Window Functions",
+    q: "What value does LAG() return for the very first row in an ordered partition by default?",
+    a: "It returns NULL, because no preceding row exists (unless an optional default value argument is supplied)."
+  },
+  {
+    id: "Q128",
+    cat: "Window Functions",
+    q: "What is a Window Frame specification (ROWS BETWEEN ...)?",
+    a: "It defines the specific physical or logical subset of rows relative to the current row used for evaluation (such as a 3-day moving average)."
+  },
+  {
+    id: "Q129",
+    cat: "Window Functions",
+    q: "Write the window frame clause to compute a cumulative running total from the partition start to the current row.",
+    a: "SUM(Sales) OVER (ORDER BY SaleDate ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)"
+  },
+  {
+    id: "Q130",
+    cat: "Window Functions",
+    q: "What is a Named Window in MySQL?",
+    a: "A reusable window defined using a WINDOW clause at the end of the query (e.g., WINDOW w AS (PARTITION BY Dept ORDER BY Salary DESC)), avoiding repetition."
+  },
+
+  // SECTION 9: Procedures, Cursors & Optimization (Q131 - Q150)
+  {
+    id: "Q131",
+    cat: "Procedures & Optimization",
+    q: "What is the purpose of a CASE statement in SQL?",
+    a: "It provides conditional IF-THEN-ELSE logic within SQL expressions to return values based on evaluated criteria."
+  },
+  {
+    id: "Q132",
+    cat: "Procedures & Optimization",
+    q: "Write a searched CASE statement classifying salary: >= 80k as 'High', >= 50k as 'Medium', else 'Low'.",
+    a: "CASE WHEN Salary >= 80000 THEN 'High' WHEN Salary >= 50000 THEN 'Medium' ELSE 'Low' END"
+  },
+  {
+    id: "Q133",
+    cat: "Procedures & Optimization",
+    q: "What is a Stored Procedure in MySQL?",
+    a: "A prepared, reusable batch of SQL statements and procedural logic saved in the database catalog that can be called by name with parameters."
+  },
+  {
+    id: "Q134",
+    cat: "Procedures & Optimization",
+    q: "What is the fundamental difference between a Stored Procedure and a User-Defined Function (UDF)?",
+    a: "A Function must return a value and can be embedded directly inside SELECT queries. A Procedure executes broader operations via CALL, can return multiple result sets, and can execute transactions."
+  },
+  {
+    id: "Q135",
+    cat: "Procedures & Optimization",
+    q: "How do you execute/invoke a stored procedure named 'GetMonthlyReport' in MySQL?",
+    a: "CALL GetMonthlyReport();"
+  },
+  {
+    id: "Q136",
+    cat: "Procedures & Optimization",
+    q: "What is a Cursor in database programming?",
+    a: "A procedural mechanism that allows stored procedures to iterate through query results row by row rather than operating on the entire set at once."
+  },
+  {
+    id: "Q137",
+    cat: "Procedures & Optimization",
+    q: "What is the standard lifecycle sequence of a database Cursor?",
+    a: "DECLARE -> OPEN -> FETCH -> CLOSE."
+  },
+  {
+    id: "Q138",
+    cat: "Procedures & Optimization",
+    q: "Why should Cursors generally be avoided when a set-based SQL statement can accomplish the same task?",
+    a: "Cursors process rows procedurally one-by-one, which incurs substantial CPU and memory overhead compared to set-based operations optimized by the query engine."
+  },
+  {
+    id: "Q139",
+    cat: "Procedures & Optimization",
+    q: "What is an Index in a database, and what is its primary purpose?",
+    a: "A data structure (commonly a B-Tree) created on table columns to speed up row retrieval during WHERE, JOIN, and ORDER BY operations."
+  },
+  {
+    id: "Q140",
+    cat: "Procedures & Optimization",
+    q: "What is the primary trade-off of creating too many indexes on a table?",
+    a: "Indexes consume additional disk space and slow down write operations (INSERT, UPDATE, DELETE), because every index must be updated whenever data changes."
+  },
+  {
+    id: "Q141",
+    cat: "Procedures & Optimization",
+    q: "What is the difference between a Clustered Index and a Non-Clustered Index?",
+    a: "A Clustered Index dictates the physical storage order of rows on disk (only one per table, typically the Primary Key). A Non-Clustered Index is a separate lookup structure containing pointers back to the base table rows."
+  },
+  {
+    id: "Q142",
+    cat: "Procedures & Optimization",
+    q: "What is a Query Execution Plan, and how do you view it in MySQL?",
+    a: "A detailed breakdown showing how the database optimizer executes a query (which indexes are used, join types, row estimates). You view it by prefixing the query with EXPLAIN."
+  },
+  {
+    id: "Q143",
+    cat: "Procedures & Optimization",
+    q: "What does a 'Full Table Scan' indicate in an execution plan?",
+    a: "It means the database engine scans every single row in the table from start to finish because no suitable index was found, which can slow down large tables."
+  },
+  {
+    id: "Q144",
+    cat: "Procedures & Optimization",
+    q: "What does Index Selectivity mean?",
+    a: "The ratio of unique values in a column to the total row count. Columns with high selectivity (like unique emails or IDs) benefit far more from indexing than columns with low selectivity (like gender or booleans)."
+  },
+  {
+    id: "Q145",
+    cat: "Procedures & Optimization",
+    q: "Why can wrapping an indexed column in a function (e.g., WHERE YEAR(OrderDate) = 2026) degrade performance?",
+    a: "It prevents the engine from utilizing the index directly (making the query non-sargable), forcing a full table scan across the rows."
+  },
+  {
+    id: "Q146",
+    cat: "Procedures & Optimization",
+    q: "How can you rewrite 'WHERE YEAR(OrderDate) = 2026' to ensure the index on OrderDate is used?",
+    a: "WHERE OrderDate >= '2026-01-01' AND OrderDate < '2027-01-01'. This allows the index to perform an efficient range scan."
+  },
+  {
+    id: "Q147",
+    cat: "Procedures & Optimization",
+    q: "When can rewriting a subquery as a JOIN improve performance?",
+    a: "When dealing with correlated subqueries that execute repeatedly for every outer row; rewriting as a set-based JOIN allows the optimizer to join datasets more efficiently in memory."
+  },
+  {
+    id: "Q148",
+    cat: "Procedures & Optimization",
+    q: "What is a Composite Index (Multi-Column Index)?",
+    a: "An index created on two or more columns together (e.g., INDEX idx_dept_sal (Department, Salary)), which optimizes queries filtering on those combined columns according to the leftmost prefix rule."
+  },
+  {
+    id: "Q149",
+    cat: "Procedures & Optimization",
+    q: "Why is using 'SELECT *' considered poor practice in high-volume production applications?",
+    a: "It fetches unneeded columns, increases network bandwidth consumption, prevents index-only covering scans, and risks application errors if table schemas change."
+  },
+  {
+    id: "Q150",
+    cat: "Procedures & Optimization",
+    q: "What four best practices optimize SQL queries on large-scale analytical databases?",
+    a: "1. Select only required columns instead of SELECT *.\n2. Ensure foreign keys and selective filter columns are indexed.\n3. Inspect query execution plans with EXPLAIN to spot full table scans.\n4. Prefer set-based operations over row-by-row procedural cursors."
+  }
+];
+
+let currentCategory = "All";
+let studyMode = false;
+
+function renderList() {
+  const container = document.getElementById("qaList");
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  container.innerHTML = "";
+
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.a.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  document.getElementById("resultCount").innerText = `Showing ${filtered.length} of ${qaData.length} questions`;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted); background: white; border-radius: var(--radius); border: 1px solid var(--border);">No questions match your search or filter.</div>`;
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = `qa-card ${studyMode ? "" : "open"}`;
+    card.id = `card-${item.id}`;
+
+    const formattedAnswer = item.a.split('\n').map(p => `<p>${escapeHTML(p)}</p>`).join('');
+
+    card.innerHTML = `
+      <div class="qa-header" onclick="toggleCard('${item.id}')">
+        <div class="qa-title-wrapper">
+          <span class="q-id">${item.id}</span>
+          <div>
+            <div class="q-text">${escapeHTML(item.q)}</div>
+            <div class="qa-meta">
+              <span class="cat-tag">${item.cat}</span>
+            </div>
+          </div>
+        </div>
+        <div class="q-toggle-icon">▼</div>
+      </div>
+      <div class="qa-content">
+        <div class="answer-box">
+          ${formattedAnswer}
+        </div>
+        <div class="qa-card-actions">
+          <button class="btn-copy-card" onclick="copySingleCard('${item.id}', event)">
+            📋 Copy for Docs / Word
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  card.classList.toggle("open");
+}
+
+function toggleAll() {
+  const btn = document.getElementById("toggleAllBtn");
+  const cards = document.querySelectorAll(".qa-card");
+  const shouldOpen = btn.innerText === "Expand All";
+
+  cards.forEach(card => {
+    if (shouldOpen) card.classList.add("open");
+    else card.classList.remove("open");
+  });
+
+  btn.innerText = shouldOpen ? "Collapse All" : "Expand All";
+}
+
+function toggleStudyMode() {
+  studyMode = !studyMode;
+  const btn = document.getElementById("studyModeBtn");
+  btn.innerText = `Study Mode: ${studyMode ? "ON" : "OFF"}`;
+  btn.classList.toggle("btn-primary", studyMode);
+  btn.classList.toggle("btn-secondary", !studyMode);
+
+  const cards = document.querySelectorAll(".qa-card");
+  cards.forEach(c => {
+    if (studyMode) c.classList.remove("open");
+    else c.classList.add("open");
+  });
+
+  document.getElementById("toggleAllBtn").innerText = studyMode ? "Expand All" : "Collapse All";
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  const chips = document.querySelectorAll(".chip");
+  chips.forEach(chip => {
+    if (chip.innerText.startsWith(cat) || (cat === "All" && chip.innerText.startsWith("All"))) {
+      chip.classList.add("active");
+    } else {
+      chip.classList.remove("active");
+    }
+  });
+  renderList();
+}
+
+document.getElementById("searchInput").addEventListener("input", renderList);
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 2500);
+}
+
+function copySingleCard(id, event) {
+  event.stopPropagation();
+  const item = qaData.find(d => d.id === id);
+  if (!item) return;
+
+  const textToCopy = `${item.id}. ${item.q}\nAnswer:\n${item.a}\n`;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast(`Copied ${item.id} for Docs / Word!`);
+  });
+}
+
+function copyAllFiltered() {
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.a.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    showToast("No questions to copy!");
+    return;
+  }
+
+  const bulkText = filtered.map(item => `${item.id}. ${item.q}\nAnswer:\n${item.a}\n\n`).join("---\n\n");
+  navigator.clipboard.writeText(bulkText).then(() => {
+    showToast(`Copied all ${filtered.length} questions to clipboard!`);
+  });
+}
+
+renderList();
+</script>
+
+</body>
+</html>

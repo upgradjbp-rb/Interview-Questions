@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau Interview Questions & Answers (100 Q&A Guide)</title>
+  <style>
+    :root {
+      --primary: #e97627; /* Tableau Orange */
+      --primary-dark: #c25914;
+      --secondary: #1f4788; /* Tableau Blue */
+      --secondary-dark: #14305e;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --badge-bg: #eef2ff;
+      --badge-text: #1f4788;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Header Banner */
+    header {
+      background: linear-gradient(135deg, var(--secondary), #0f172a);
+      color: white;
+      padding: 36px 30px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header p {
+      color: #cbd5e1;
+      font-size: 1.05rem;
+      max-width: 800px;
+    }
+
+    .header-badge {
+      background: rgba(233, 118, 39, 0.25);
+      border: 1px solid var(--primary);
+      color: #ffedd5;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    /* Controls & Navigation */
+    .controls-panel {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(31, 71, 136, 0.15);
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .chip.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+
+    .status-bar {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Cards Grid */
+    .qa-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .qa-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .qa-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .qa-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      user-select: none;
+      background: #ffffff;
+    }
+
+    .qa-title-wrapper {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .q-id {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 0.95rem;
+      min-width: 40px;
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .q-toggle-icon {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .qa-card.open .q-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .qa-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .cat-tag {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-weight: 600;
+    }
+
+    .qa-content {
+      display: none;
+      padding: 0 20px 20px 20px;
+      background: #fafcff;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .qa-card.open .qa-content {
+      display: block;
+    }
+
+    .answer-box {
+      margin-top: 16px;
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .answer-box p {
+      margin-bottom: 8px;
+    }
+
+    .answer-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .answer-box ul {
+      margin-left: 20px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .answer-box code, .code-snippet {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.9rem;
+      color: #0f172a;
+    }
+
+    .qa-card-actions {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-copy-card {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-card:hover {
+      background: var(--badge-bg);
+      color: var(--secondary);
+      border-color: var(--secondary);
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Print / PDF Mode */
+    @media print {
+      body {
+        background: white;
+        color: black;
+        padding: 0;
+      }
+      .controls-panel, .qa-card-actions, header p, .header-badge {
+        display: none !important;
+      }
+      header {
+        background: none;
+        color: black;
+        box-shadow: none;
+        padding: 10px 0;
+        border-bottom: 2px solid #000;
+      }
+      header h1 {
+        color: black;
+        font-size: 1.6rem;
+      }
+      .qa-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+        margin-bottom: 12px;
+      }
+      .qa-content {
+        display: block !important;
+        background: white;
+      }
+      .q-toggle-icon {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+      <h1>Tableau Interview Master Guide</h1>
+      <span class="header-badge">100 Essential Questions</span>
+    </div>
+    <p>A comprehensive, accessible interview bank covering Data Storytelling, Interface Mechanics, Calculated Fields, Dual-Axis Visuals, Parameters, Table Calculations, and Dashboard Actions.</p>
+  </header>
+
+  <section class="controls-panel">
+    <div class="search-row">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search keywords (e.g., dual-axis, LOD, YoY, parameters, actions)..." />
+      </div>
+      <button class="btn btn-secondary" id="toggleAllBtn" onclick="toggleAll()">Expand All</button>
+      <button class="btn btn-secondary" id="studyModeBtn" onclick="toggleStudyMode()">Study Mode: OFF</button>
+      <button class="btn btn-primary" onclick="copyAllFiltered()">Copy Filtered for Docs</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+    </div>
+
+    <div class="category-chips" id="categoryChips">
+      <button class="chip active" onclick="filterCategory('All')">All (100)</button>
+      <button class="chip" onclick="filterCategory('Storytelling')">Storytelling & Narratives (15)</button>
+      <button class="chip" onclick="filterCategory('Fundamentals')">Interface & Types (15)</button>
+      <button class="chip" onclick="filterCategory('Calculations')">Calculated Fields (15)</button>
+      <button class="chip" onclick="filterCategory('Visualizations')">Dual-Axis & Charts (15)</button>
+      <button class="chip" onclick="filterCategory('Calculations & Params')">Params & Table Calcs (15)</button>
+      <button class="chip" onclick="filterCategory('Dashboards & Actions')">Actions & Dashboards (15)</button>
+      <button class="chip" onclick="filterCategory('Case Studies')">Scenarios & Cases (10)</button>
+    </div>
+
+    <div class="status-bar">
+      <span id="resultCount">Showing 100 of 100 questions</span>
+      <span>Click any question to view the answer</span>
+    </div>
+  </section>
+
+  <main class="qa-container" id="qaList"></main>
+</div>
+
+<div id="toast">Copied to clipboard!</div>
+
+<script>
+// Complete dataset of 100 Tableau questions and answers
+const qaData = [
+  // Section 1: Storytelling (Q1 - Q15)
+  {
+    id: "Q1",
+    cat: "Storytelling",
+    q: "What is narrative visualization in simple words?",
+    a: "Narrative visualization combines visual evidence (charts, tables, KPIs) with a structured, step-by-step storyline to communicate insights clearly and prompt business action."
+  },
+  {
+    id: "Q2",
+    cat: "Storytelling",
+    q: "What is the fundamental 4-step framework of a business data story?",
+    a: "Context -> Evidence -> Insight -> Action. You establish the background problem, present supporting data, explain what the numbers mean, and recommend what the business should do next."
+  },
+  {
+    id: "Q3",
+    cat: "Storytelling",
+    q: "What is the role of 'Context' in a data story?",
+    a: "Context sets the stage by explaining why the numbers matter and gives benchmarks for comparison (prior periods, budgets, or targets) so the audience understands the business situation."
+  },
+  {
+    id: "Q4",
+    cat: "Storytelling",
+    q: "What is the difference between 'Evidence' and 'Insight'?",
+    a: "Evidence is the objective data observation (e.g., 'Sales fell by 18% in Q3'). Insight explains the business meaning or underlying cause behind it (e.g., 'Sales fell because delivery delays in the North region caused customer churn')."
+  },
+  {
+    id: "Q5",
+    cat: "Storytelling",
+    q: "Why is a statement like 'Our sales are bad' considered poor data storytelling?",
+    a: "It is vague and lacks both measurable evidence and context. Strong storytelling uses precise, quantifiable facts, such as: 'Sales dropped 12% compared to Q2 targets due to supply shortages'."
+  },
+  {
+    id: "Q6",
+    cat: "Storytelling",
+    q: "What does 'Visual Emphasis' mean in dashboard design?",
+    a: "Visual emphasis uses deliberate design choices—such as a single accent color against neutral grays—to direct the viewer's eyes toward the most critical piece of data or anomaly."
+  },
+  {
+    id: "Q7",
+    cat: "Storytelling",
+    q: "What problem arises when a dashboard includes 15 to 20 different charts on one screen?",
+    a: "It causes cognitive overload and violates the principle of focus. The audience gets overwhelmed by visual noise and cannot identify the primary message or decision to make."
+  },
+  {
+    id: "Q8",
+    cat: "Storytelling",
+    q: "Why should an analyst avoid starting a business presentation with 10 minutes of technical explanations?",
+    a: "Business stakeholders care about problems, outcomes, and decisions. Leading with ETL, database architecture, or software syntax delays the narrative and risks losing the audience's attention."
+  },
+  {
+    id: "Q9",
+    cat: "Storytelling",
+    q: "What does 'Audience-Centered Storytelling' mean?",
+    a: "It means designing the presentation around what the specific audience needs to know and decide, rather than showing every single calculation or data field you analyzed."
+  },
+  {
+    id: "Q10",
+    cat: "Storytelling",
+    q: "How does narrative flow differ from random exploratory analysis?",
+    a: "Exploratory analysis is the analyst's behind-the-scenes search through data to discover patterns. Narrative flow is the curated, logical sequence built afterward to guide stakeholders through the findings."
+  },
+  {
+    id: "Q11",
+    cat: "Storytelling",
+    q: "Why should decorative formatting and excessive colors be minimized?",
+    a: "Decorative elements distract from data clarity. Every color, line, and label should serve a purpose in highlighting data; otherwise, it becomes clutter."
+  },
+  {
+    id: "Q12",
+    cat: "Storytelling",
+    q: "What question should every business data story ultimately answer for management?",
+    a: "'What does the data tell us, why does it matter, and what action should we take?'"
+  },
+  {
+    id: "Q13",
+    cat: "Storytelling",
+    q: "How do you tell an effective story when an executive has only two minutes?",
+    a: "Lead directly with the headline insight and the primary supporting KPI metric, leaving supporting details and secondary charts for follow-up questions."
+  },
+  {
+    id: "Q14",
+    cat: "Storytelling",
+    q: "What is the risk of presenting a recommendation without supporting data?",
+    a: "Without measurable evidence, a recommendation appears to be personal opinion rather than an objective, data-backed business decision."
+  },
+  {
+    id: "Q15",
+    cat: "Storytelling",
+    q: "Why is a line chart generally preferred over a pie chart when showing performance trends?",
+    a: "Line charts connect sequential time periods, making trends, seasonality, spikes, and dips immediately visible. Pie charts cannot represent continuous time sequences."
+  },
+
+  // Section 2: Fundamentals (Q16 - Q30)
+  {
+    id: "Q16",
+    cat: "Fundamentals",
+    q: "What is Tableau, and what is its primary business function?",
+    a: "Tableau is a visual analytics platform that connects to data from multiple sources to create interactive charts, dashboards, and stories that simplify decision-making."
+  },
+  {
+    id: "Q17",
+    cat: "Fundamentals",
+    q: "What is the first operational step when starting a new workbook in Tableau?",
+    a: "Connecting to a data source (such as an Excel spreadsheet, CSV file, or SQL database) on the Start screen."
+  },
+  {
+    id: "Q18",
+    cat: "Fundamentals",
+    q: "What is the fundamental difference between a Dimension and a Measure in Tableau?",
+    a: "Dimensions contain categorical, qualitative data used to slice or group numbers (like Region, Category, or Date). Measures contain numerical, quantitative data that can be aggregated mathematically (like Sales, Profit, or Quantity)."
+  },
+  {
+    id: "Q19",
+    cat: "Fundamentals",
+    q: "What do the colors Blue and Green represent in Tableau?",
+    a: "Blue represents Discrete data (fields that create distinct headers or categories). Green represents Continuous data (fields that form an unbroken, continuous axis)."
+  },
+  {
+    id: "Q20",
+    cat: "Fundamentals",
+    q: "Can a Dimension be Continuous or a Measure be Discrete?",
+    a: "Yes. For example, a Date dimension can be continuous (creating a timeline axis) or discrete (creating individual year headers). Similarly, a Measure can be converted to discrete to display distinct numeric values as headers."
+  },
+  {
+    id: "Q21",
+    cat: "Fundamentals",
+    q: "What happens if a numeric field is mistakenly assigned a 'String/Text' data type upon connection?",
+    a: "Tableau will treat it as a category, meaning you cannot sum, average, or plot it along a numeric continuous axis until you change its data type back to a Number."
+  },
+  {
+    id: "Q22",
+    cat: "Fundamentals",
+    q: "What is the difference between a Live Connection and an Extract (.hyper) in Tableau?",
+    a: "A Live Connection queries the underlying database directly in real time whenever a visual updates. An Extract is an optimized, local snapshot of the data saved in Tableau's high-speed memory engine, improving query performance and enabling offline work."
+  },
+  {
+    id: "Q23",
+    cat: "Fundamentals",
+    q: "What are the Rows and Columns shelves in Tableau?",
+    a: "They are the structural zones where you drop fields: fields placed on Columns define the horizontal axis or columns, while fields on Rows define the vertical axis or rows."
+  },
+  {
+    id: "Q24",
+    cat: "Fundamentals",
+    q: "What is the 'Marks Card' in Tableau?",
+    a: "The Marks Card controls the visual encoding of data points on your worksheet, including Mark Type (Bar, Line, Circle), Color, Size, Label, Detail, and Tooltip."
+  },
+  {
+    id: "Q25",
+    cat: "Fundamentals",
+    q: "Why is a horizontal or vertical bar chart the standard choice for comparing categories?",
+    a: "The human eye evaluates length and position from a common baseline accurately, making bar charts the most reliable way to compare values across categories like regions or products."
+  },
+  {
+    id: "Q26",
+    cat: "Fundamentals",
+    q: "What is the purpose of the 'Show Me' panel?",
+    a: "It is a built-in helper menu that displays available chart types and highlights which ones you can build based on the combination of dimensions and measures currently selected."
+  },
+  {
+    id: "Q27",
+    cat: "Fundamentals",
+    q: "What is the difference between Tableau Desktop, Tableau Server/Cloud, and Tableau Public?",
+    a: "Tableau Desktop is the authoring software on your PC. Tableau Server/Cloud provides enterprise hosting, governance, and scheduled refresh. Tableau Public is a free cloud platform for public sharing."
+  },
+  {
+    id: "Q28",
+    cat: "Fundamentals",
+    q: "What is the difference between a Worksheet, a Dashboard, and a Story in Tableau?",
+    a: "A Worksheet contains a single view or chart. A Dashboard combines multiple worksheets and web elements on one interactive screen. A Story arranges worksheets and dashboards into an ordered sequence of narrative slides called Story Points."
+  },
+  {
+    id: "Q29",
+    cat: "Fundamentals",
+    q: "What is the 'Detail' shelf on the Marks Card used for?",
+    a: "Dropping a dimension onto Detail increases the level of granularity in the visualization without altering the visual mark's color, shape, or size."
+  },
+  {
+    id: "Q30",
+    cat: "Fundamentals",
+    q: "What is a Tooltip, and how does it support clean dashboard design?",
+    a: "A tooltip is a pop-up box that appears when hovering over a mark. It holds secondary details, definitions, and supporting figures so the main canvas remains uncluttered."
+  },
+
+  // Section 3: Calculations (Q31 - Q45)
+  {
+    id: "Q31",
+    cat: "Calculations",
+    q: "What is a Calculated Field in Tableau?",
+    a: "A calculated field is a custom column you create using formulas, arithmetic operators, or logical statements applied to existing fields in your dataset."
+  },
+  {
+    id: "Q32",
+    cat: "Calculations",
+    q: "What is the formula for Profit if your dataset contains Sales and Cost?",
+    a: "Profit = [Sales] - [Cost]"
+  },
+  {
+    id: "Q33",
+    cat: "Calculations",
+    q: "What is the formula for Profit Margin Percentage?",
+    a: "Profit Margin % = (SUM([Profit]) / SUM([Sales])) * 100"
+  },
+  {
+    id: "Q34",
+    cat: "Calculations",
+    q: "Why is SUM([Profit]) / SUM([Sales]) correct, while [Profit] / [Sales] is often wrong in Tableau?",
+    a: "[Profit] / [Sales] calculates the ratio row-by-row and then sums those percentages together, producing inflated, incorrect totals. SUM([Profit]) / SUM([Sales]) sums all profits and all revenues first before dividing, giving the true aggregate margin."
+  },
+  {
+    id: "Q35",
+    cat: "Calculations",
+    q: "How do you write a simple IF-THEN-ELSE conditional calculation in Tableau?",
+    a: "IF [Sales] >= 100000 THEN 'High' ELSE 'Low' END"
+  },
+  {
+    id: "Q36",
+    cat: "Calculations",
+    q: "What does the ZN() function do in Tableau?",
+    a: "ZN() stands for 'Zero if Null.' It evaluates a numerical expression and converts null/blank values into zeros so calculations do not fail or drop rows."
+  },
+  {
+    id: "Q37",
+    cat: "Calculations",
+    q: "What is the difference between IFNULL() and ISNULL()?",
+    a: "ISNULL([Field]) returns a boolean (True/False) checking whether a cell is null. IFNULL([Field], ReplacementValue) replaces the null value with a specified backup value."
+  },
+  {
+    id: "Q38",
+    cat: "Calculations",
+    q: "How does the DATEDIFF() function work?",
+    a: "DATEDIFF('unit', [Start Date], [End Date]). It calculates the integer difference between two dates based on the specified unit, such as 'day', 'month', or 'year'."
+  },
+  {
+    id: "Q39",
+    cat: "Calculations",
+    q: "What does the DATEPART() function do?",
+    a: "It extracts a specific integer portion of a date, such as DATEPART('month', [Order Date]), which returns the number 5 for any date in May."
+  },
+  {
+    id: "Q40",
+    cat: "Calculations",
+    q: "How do you combine two text fields in a calculated field?",
+    a: "Use the plus operator: [First Name] + ' ' + [Last Name]. Both fields must have a string data type."
+  },
+  {
+    id: "Q41",
+    cat: "Calculations",
+    q: "What is the purpose of the CASE statement in Tableau calculations?",
+    a: "A CASE statement simplifies conditional logic when testing a single field against exact values (e.g., CASE [Region] WHEN 'North' THEN 0.10 WHEN 'South' THEN 0.15 ELSE 0.05 END)."
+  },
+  {
+    id: "Q42",
+    cat: "Calculations",
+    q: "What is the formula for Year-over-Year (YoY) Sales Growth?",
+    a: "YoY Growth % = ((Sales This Year - Sales Last Year) / Sales Last Year) * 100"
+  },
+  {
+    id: "Q43",
+    cat: "Calculations",
+    q: "What happens if a calculated field shows a red exclamation mark?",
+    a: "It indicates a syntax error, such as a misspelled field name, mismatched data types (adding text to a number), or a missing END statement."
+  },
+  {
+    id: "Q44",
+    cat: "Calculations",
+    q: "What does the error 'Cannot mix aggregate and non-aggregate arguments' mean?",
+    a: "It occurs when an aggregated field is combined with an unaggregated row-level field in the same calculation (e.g., SUM([Sales]) - [Cost]). To fix it, aggregate both fields: SUM([Sales]) - SUM([Cost])."
+  },
+  {
+    id: "Q45",
+    cat: "Calculations",
+    q: "Can a calculated field be used as a filter or dimension?",
+    a: "Yes. If the calculated field produces discrete text or categories (like 'High' vs. 'Low'), it acts as a dimension and can be placed on the Filters shelf or used to segment visuals."
+  },
+
+  // Section 4: Visualizations (Q46 - Q60)
+  {
+    id: "Q46",
+    cat: "Visualizations",
+    q: "What is a Dual-Axis chart in Tableau?",
+    a: "A dual-axis chart combines two independent measures on opposite vertical (or horizontal) axes within the same worksheet, sharing a common dimension like time."
+  },
+  {
+    id: "Q47",
+    cat: "Visualizations",
+    q: "When is a Dual-Axis chart required instead of a standard chart?",
+    a: "When you need to compare two metrics that have different numeric scales or units—such as Sales in millions and Profit Margin as a percentage—against the same timeline."
+  },
+  {
+    id: "Q48",
+    cat: "Visualizations",
+    q: "What is the critical step when building a dual-axis chart comparing identical units?",
+    a: "Right-click the secondary axis and select 'Synchronize Axis'. This aligns both measures to the same baseline scale, preventing misleading visual comparisons."
+  },
+  {
+    id: "Q49",
+    cat: "Visualizations",
+    q: "How do you create a Combination Chart (e.g., Bars for Sales, Line for Profit)?",
+    a: "Drag both measures to Rows to create a dual axis, then open their separate cards on the Marks shelf to set Sales to 'Bar' and Profit to 'Line'."
+  },
+  {
+    id: "Q50",
+    cat: "Visualizations",
+    q: "What is a Shared Axis (Blended Axis) chart, and how does it differ from a Dual-Axis chart?",
+    a: "A shared axis combines multiple measures onto a single shared axis line using the generated Measure Values and Measure Names fields. It works best when both measures share the exact same scale and mark type."
+  },
+  {
+    id: "Q51",
+    cat: "Visualizations",
+    q: "What is a Scatter Plot, and what does it reveal?",
+    a: "A scatter plot places one continuous measure on Columns and another on Rows, plotting marks at their intersection to reveal relationships, trends, or clusters between two numerical variables."
+  },
+  {
+    id: "Q52",
+    cat: "Visualizations",
+    q: "What is a Trend Line in Tableau, and how do you add one?",
+    a: "A trend line is a statistical best-fit line added from the Analytics Pane that shows the general direction and correlation between data points over time or across measures."
+  },
+  {
+    id: "Q53",
+    cat: "Visualizations",
+    q: "What is a Reference Line, and how is it used in business?",
+    a: "A reference line marks a constant or calculated threshold on an axis (such as an Average line or a sales target) to give immediate context on whether performance is above or below expectations."
+  },
+  {
+    id: "Q54",
+    cat: "Visualizations",
+    q: "What is a Bullet Graph, and why is it preferred over a Gauge chart?",
+    a: "A bullet graph displays a bar showing actual progress alongside a reference mark for a target and shaded bands for qualitative performance tiers. It uses space far more efficiently than radial gauges."
+  },
+  {
+    id: "Q55",
+    cat: "Visualizations",
+    q: "What is a Heat Map (Highlight Table) in Tableau?",
+    a: "A highlight table places categorical dimensions on rows and columns and applies color saturation to the intersecting cells based on a measure, highlighting high and low performance areas."
+  },
+  {
+    id: "Q56",
+    cat: "Visualizations",
+    q: "What is a Treemap, and when should you use it?",
+    a: "A treemap uses nested rectangles sized and colored by measures to display hierarchical part-to-whole relationships across categories with many items."
+  },
+  {
+    id: "Q57",
+    cat: "Visualizations",
+    q: "What is a Histogram, and what does it measure?",
+    a: "A histogram divides continuous numerical data into discrete value ranges called Bins to display the frequency distribution of the data."
+  },
+  {
+    id: "Q58",
+    cat: "Visualizations",
+    q: "How do you create Bins in Tableau?",
+    a: "Right-click a continuous measure in the Data pane, choose Create -> Bins, and specify the bin size."
+  },
+  {
+    id: "Q59",
+    cat: "Visualizations",
+    q: "What is a Box Plot (Box-and-Whisker Plot) used for?",
+    a: "A box plot visualizes data distribution by displaying the median, quartiles, and outliers across categories, helping analysts assess data spread and skewness."
+  },
+  {
+    id: "Q60",
+    cat: "Visualizations",
+    q: "Why must analysts be cautious when using dual-axis charts with unsynchronized axes?",
+    a: "Unsynchronized axes can distort reality. For example, a minor fluctuation in profit might visually appear larger than a massive swing in revenue if their scales do not match."
+  },
+
+  // Section 5: Calculations & Params (Q61 - Q75)
+  {
+    id: "Q61",
+    cat: "Calculations & Params",
+    q: "What is a Table Calculation in Tableau?",
+    a: "A table calculation is a secondary calculation computed locally on the aggregated numbers already displayed in your worksheet's visual summary, rather than on the underlying database rows."
+  },
+  {
+    id: "Q62",
+    cat: "Calculations & Params",
+    q: "Name three common built-in Quick Table Calculations.",
+    a: "1. Percent of Total\n2. Running Total\n3. Percent Difference / Difference from Previous"
+  },
+  {
+    id: "Q63",
+    cat: "Calculations & Params",
+    q: "What is the difference between 'Table (across)' and 'Table (down)'?",
+    a: "They define the direction of calculation: Table (across) computes calculations horizontally across columns, while Table (down) computes calculations vertically down the rows of the table."
+  },
+  {
+    id: "Q64",
+    cat: "Calculations & Params",
+    q: "What is a Running Total calculation?",
+    a: "A running total continuously accumulates values across sequential marks (e.g., adding each month's sales to all preceding months to show cumulative year-to-date performance)."
+  },
+  {
+    id: "Q65",
+    cat: "Calculations & Params",
+    q: "What is a Parameter in Tableau?",
+    a: "A parameter is a user-controlled input variable (such as a number, date, or text string) that replaces a fixed value in calculations, filters, or reference lines to make reports dynamic."
+  },
+  {
+    id: "Q66",
+    cat: "Calculations & Params",
+    q: "What are the three steps required to make a Parameter work?",
+    a: "1. Create the parameter (define data type and allowed values).\n2. Show the parameter control on the canvas for user interaction.\n3. Link the parameter to a calculated field, reference line, or filter so user inputs trigger changes."
+  },
+  {
+    id: "Q67",
+    cat: "Calculations & Params",
+    q: "How can a parameter allow a user to switch metrics on a chart (e.g., toggle between Sales and Profit)?",
+    a: "Create a string parameter listing 'Sales' and 'Profit'. Then write a calculated field: CASE [Metric Parameter] WHEN 'Sales' THEN [Sales] WHEN 'Profit' THEN [Profit] END, and place that calculated field on Rows."
+  },
+  {
+    id: "Q68",
+    cat: "Calculations & Params",
+    q: "How do you create a dynamic Top N parameter filter?",
+    a: "Create an integer parameter for N. On the dimension's filter card, go to the Top tab, choose By Field, and select the parameter instead of typing a static number."
+  },
+  {
+    id: "Q69",
+    cat: "Calculations & Params",
+    q: "What is the difference between a Filter and a Parameter?",
+    a: "A filter directly includes or excludes rows based on field values. A parameter is an independent input control that does nothing on its own until tied to a calculation, reference line, or filter condition."
+  },
+  {
+    id: "Q70",
+    cat: "Calculations & Params",
+    q: "What is an Level of Detail (LOD) Expression in simple terms?",
+    a: "An LOD expression allows you to compute values at a specific level of detail (such as customer-level or country-level) independent of the dimensions displayed on the visual canvas."
+  },
+  {
+    id: "Q71",
+    cat: "Calculations & Params",
+    q: "What is the difference between FIXED, INCLUDE, and EXCLUDE LODs?",
+    a: "FIXED computes values using only specified dimensions, ignoring view dimensions. INCLUDE adds specified dimensions to the view detail. EXCLUDE omits specified dimensions present in the view."
+  },
+  {
+    id: "Q72",
+    cat: "Calculations & Params",
+    q: "Give a simple business use case for a FIXED LOD expression.",
+    a: "Calculating each customer's first purchase date across their lifetime: { FIXED [Customer ID] : MIN([Order Date]) }"
+  },
+  {
+    id: "Q73",
+    cat: "Calculations & Params",
+    q: "What is the RANK() table calculation function?",
+    a: "It assigns an integer rank to each mark in the current partition based on a measure value (e.g., ranking products from 1 to 10 by sales)."
+  },
+  {
+    id: "Q74",
+    cat: "Calculations & Params",
+    q: "Can a table calculation be saved as a permanent field?",
+    a: "Yes. Drag the table calculation pill from the Rows or Columns shelf into the Data pane, give it a name, and it becomes a reusable calculated field."
+  },
+  {
+    id: "Q75",
+    cat: "Calculations & Params",
+    q: "Why do Table Calculations break or show empty cells when visual layouts change?",
+    a: "Because table calculations depend on the visual structure of the table. If you remove or rearrange dimensions from Rows or Columns, the calculation's addressing and partitioning change."
+  },
+
+  // Section 6: Dashboards & Actions (Q76 - Q90)
+  {
+    id: "Q76",
+    cat: "Dashboards & Actions",
+    q: "What is a Dynamic Dashboard in Tableau?",
+    a: "A dashboard that updates its views and calculations in real time when a user interacts with filters, parameters, or visual marks."
+  },
+  {
+    id: "Q77",
+    cat: "Dashboards & Actions",
+    q: "What is a Dashboard Action?",
+    a: "An action is an interactive behavior configured on a dashboard that triggers a change (such as filtering or highlighting) when a user hovers over, clicks, or selects a mark."
+  },
+  {
+    id: "Q78",
+    cat: "Dashboards & Actions",
+    q: "What are the main types of Dashboard Actions?",
+    a: "1. Filter Action\n2. Highlight Action\n3. Go to URL Action\n4. Go to Sheet Action\n5. Change Parameter Action"
+  },
+  {
+    id: "Q79",
+    cat: "Dashboards & Actions",
+    q: "How do you configure a chart to 'Use as Filter'?",
+    a: "Click the chart's container border on the dashboard and select the funnel icon ('Use as Filter'). Clicking any mark on that chart will now filter all other charts on the dashboard."
+  },
+  {
+    id: "Q80",
+    cat: "Dashboards & Actions",
+    q: "What are the three run triggers for Dashboard Actions?",
+    a: "1. Hover (mouse rests over a mark)\n2. Select (user clicks a mark)\n3. Menu (clickable text link inside the tooltip)"
+  },
+  {
+    id: "Q81",
+    cat: "Dashboards & Actions",
+    q: "What is the purpose of 'Clearing the Selection' settings in Filter Actions?",
+    a: "It dictates what happens when a user unclicks a mark: you can choose to 'Show all values', 'Leave the filter', or 'Exclude all values' (which hides the detail sheet until a mark is clicked)."
+  },
+  {
+    id: "Q82",
+    cat: "Dashboards & Actions",
+    q: "What is the difference between Tiled and Floating dashboard objects?",
+    a: "Tiled objects snap into an organized, non-overlapping grid layout. Floating objects can be layered and positioned anywhere on the canvas with exact pixel coordinates."
+  },
+  {
+    id: "Q83",
+    cat: "Dashboards & Actions",
+    q: "What are Tableau Story Points?",
+    a: "Story Points are a series of narrative navigation slides containing worksheets, dashboards, and annotations arranged to guide users through an analysis step-by-step."
+  },
+  {
+    id: "Q84",
+    cat: "Dashboards & Actions",
+    q: "When should an analyst use a Story instead of a Dashboard?",
+    a: "Use a Story when presenting a guided walk-through to executives—such as proving why a trend occurred and proposing an action. Use a Dashboard when users need a standalone monitoring tool to explore data on their own."
+  },
+  {
+    id: "Q85",
+    cat: "Dashboards & Actions",
+    q: "What is a Story Navigator?",
+    a: "The navigation bar along the top of a Story (displayed as captions, numbers, or dots) that allows presenters or viewers to step through each story point in order."
+  },
+  {
+    id: "Q86",
+    cat: "Dashboards & Actions",
+    q: "Can Story Points retain independent filter states across points?",
+    a: "Yes. Each individual story point can capture a different filter or parameter selection on the same underlying dashboard, preserving different stages of your narrative."
+  },
+  {
+    id: "Q87",
+    cat: "Dashboards & Actions",
+    q: "What is Tableau's Order of Operations in simple terms?",
+    a: "It is the fixed sequence in which Tableau executes filters and calculations: Extract Filters -> Data Source Filters -> Context Filters -> Dimension Filters -> Measure Filters -> Table Calculation Filters."
+  },
+  {
+    id: "Q88",
+    cat: "Dashboards & Actions",
+    q: "What is a Context Filter, and why would you use one?",
+    a: "A Context Filter elevates an ordinary dimension filter into an independent filter applied before other dimension filters or FIXED LOD calculations, ensuring sub-filters and Top N calculations operate on the reduced data pool."
+  },
+  {
+    id: "Q89",
+    cat: "Dashboards & Actions",
+    q: "How do you make a filter apply across all worksheets on a dashboard?",
+    a: "Right-click the filter control, select 'Apply to Worksheets', and choose 'Selected Worksheets' or 'All Using This Data Source'."
+  },
+  {
+    id: "Q90",
+    cat: "Dashboards & Actions",
+    q: "What is Device Designer in Tableau?",
+    a: "It is a dashboard authoring layout tool that allows you to create custom-arranged views tailored specifically for Desktop, Tablet, and Mobile Phone screens from a single dashboard."
+  },
+
+  // Section 7: Case Studies (Q91 - Q100)
+  {
+    id: "Q91",
+    cat: "Case Studies",
+    q: "Scenario: A stakeholder asks to track monthly revenue across 20 store locations over 3 years. Which visualization should you choose and why?",
+    a: "A Line Chart with Date on Columns and Revenue on Rows, using Store Location as a filter or slicer. It highlights trends and seasonal shifts across the timeline without visual clutter."
+  },
+  {
+    id: "Q92",
+    cat: "Case Studies",
+    q: "Scenario: An analyst creates a regional profit map, but every state is shaded dark red or dark green except for California, which is pure dark green. What is the issue?",
+    a: "An extreme outlier in California compresses the color scale. You should either adjust the color palette center, use a stepped color distribution, or evaluate profit ratio instead of absolute profit."
+  },
+  {
+    id: "Q93",
+    cat: "Case Studies",
+    q: "Scenario: You apply a 'Top 10 Customers by Sales' filter and a 'Region = South' filter, but Tableau displays only 3 customers. Why did this happen?",
+    a: "Standard dimension filters run simultaneously. Tableau evaluated the overall Top 10 across the entire company first, and only 3 of those 10 lived in the South. To fix this, right-click Region and select 'Add to Context', forcing Tableau to filter the South region first."
+  },
+  {
+    id: "Q94",
+    cat: "Case Studies",
+    q: "Scenario: A manager says, 'I want to see our sales pipeline drop-off from Leads down to Closed Deals.' Which chart type fits best?",
+    a: "A Funnel Chart (or sized horizontal bar chart sorted in pipeline sequence), which clearly communicates volume drop-off across sequential operational stages."
+  },
+  {
+    id: "Q95",
+    cat: "Case Studies",
+    q: "Scenario: Consider the regional sales numbers: North: 20, South: 30, East: 50. What percentage of total sales does the East region represent, and how is it calculated in Tableau?",
+    a: "Total Sales = 20 + 30 + 50 = 100. East % of Total = (50 / 100) * 100 = 50%. In Tableau, apply Quick Table Calculation -> Percent of Total to the SUM(Sales) field."
+  },
+  {
+    id: "Q96",
+    cat: "Case Studies",
+    q: "Scenario: Monthly sales are Jan: 100, Feb: 120, Mar: 150. Which table calculation shows how sales change from one month to the next, and what is the difference for March?",
+    a: "Use the 'Difference from Previous' table calculation. For March, the calculation compares March (150) to February (120), showing an increase of +30."
+  },
+  {
+    id: "Q97",
+    cat: "Case Studies",
+    q: "Scenario: Product A: 100, Product B: 250, Product C: 180, Product D: 90. If a dashboard filter is set to Sales >= 150, which products remain visible?",
+    a: "Product B (250) and Product C (180) remain visible. Products A and D are excluded because their sales are below 150."
+  },
+  {
+    id: "Q98",
+    cat: "Case Studies",
+    q: "Scenario: In a table with North/A (100), North/B (150), South/A (200), South/B (250), if a user selects Region = North and Product = B, what value appears?",
+    a: "The visualization isolates the single matching record and displays Sales of 150."
+  },
+  {
+    id: "Q99",
+    cat: "Case Studies",
+    q: "Scenario: A dashboard uses: Overview KPI -> Select Region -> View Product Details -> Review Recommendations. Which Tableau features combine to build this?",
+    a: "This workflow uses Dynamic Dashboards, Filter Actions, Story Points, and Context/Dimension Filters together to guide users from high-level summaries down to granular actions."
+  },
+  {
+    id: "Q100",
+    cat: "Case Studies",
+    q: "Scenario: An executive notices an unexpected 50% drop in revenue for the last month. Before concluding sales plummeted, what technical steps should the analyst check?",
+    a: "1. Verify whether the underlying data extract refreshed completely or failed.\n2. Confirm whether the source database has closed and posted all recent monthly invoices.\n3. Check whether an active dashboard filter or date filter accidentally excluded recent records."
+  }
+];
+
+let currentCategory = "All";
+let studyMode = false;
+
+// Render Cards
+function renderList() {
+  const container = document.getElementById("qaList");
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  container.innerHTML = "";
+
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.a.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  document.getElementById("resultCount").innerText = `Showing ${filtered.length} of ${qaData.length} questions`;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted); background: white; border-radius: var(--radius); border: 1px solid var(--border);">No questions match your search or filter.</div>`;
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = `qa-card ${studyMode ? "" : "open"}`;
+    card.id = `card-${item.id}`;
+
+    // Format line breaks in answers
+    const formattedAnswer = item.a.split('\n').map(p => `<p>${escapeHTML(p)}</p>`).join('');
+
+    card.innerHTML = `
+      <div class="qa-header" onclick="toggleCard('${item.id}')">
+        <div class="qa-title-wrapper">
+          <span class="q-id">${item.id}</span>
+          <div>
+            <div class="q-text">${escapeHTML(item.q)}</div>
+            <div class="qa-meta">
+              <span class="cat-tag">${item.cat}</span>
+            </div>
+          </div>
+        </div>
+        <div class="q-toggle-icon">▼</div>
+      </div>
+      <div class="qa-content">
+        <div class="answer-box">
+          ${formattedAnswer}
+        </div>
+        <div class="qa-card-actions">
+          <button class="btn-copy-card" onclick="copySingleCard('${item.id}', event)">
+            📋 Copy for Docs / Word
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  card.classList.toggle("open");
+}
+
+function toggleAll() {
+  const btn = document.getElementById("toggleAllBtn");
+  const cards = document.querySelectorAll(".qa-card");
+  const shouldOpen = btn.innerText === "Expand All";
+
+  cards.forEach(card => {
+    if (shouldOpen) card.classList.add("open");
+    else card.classList.remove("open");
+  });
+
+  btn.innerText = shouldOpen ? "Collapse All" : "Expand All";
+}
+
+function toggleStudyMode() {
+  studyMode = !studyMode;
+  const btn = document.getElementById("studyModeBtn");
+  btn.innerText = `Study Mode: ${studyMode ? "ON" : "OFF"}`;
+  btn.classList.toggle("btn-primary", studyMode);
+  btn.classList.toggle("btn-secondary", !studyMode);
+
+  const cards = document.querySelectorAll(".qa-card");
+  cards.forEach(c => {
+    if (studyMode) c.classList.remove("open");
+    else c.classList.add("open");
+  });
+
+  document.getElementById("toggleAllBtn").innerText = studyMode ? "Expand All" : "Collapse All";
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  const chips = document.querySelectorAll(".chip");
+  chips.forEach(chip => {
+    if (chip.innerText.startsWith(cat) || (cat === "All" && chip.innerText.startsWith("All"))) {
+      chip.classList.add("active");
+    } else {
+      chip.classList.remove("active");
+    }
+  });
+  renderList();
+}
+
+document.getElementById("searchInput").addEventListener("input", renderList);
+
+// Clipboard Helpers
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 2500);
+}
+
+function copySingleCard(id, event) {
+  event.stopPropagation();
+  const item = qaData.find(d => d.id === id);
+  if (!item) return;
+
+  const textToCopy = `${item.id}. ${item.q}\nAnswer:\n${item.a}\n`;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast(`Copied ${item.id} for Docs / Word!`);
+  });
+}
+
+function copyAllFiltered() {
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.a.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    showToast("No questions to copy!");
+    return;
+  }
+
+  const bulkText = filtered.map(item => `${item.id}. ${item.q}\nAnswer:\n${item.a}\n\n`).join("---\n\n");
+  navigator.clipboard.writeText(bulkText).then(() => {
+    showToast(`Copied all ${filtered.length} questions to clipboard!`);
+  });
+}
+
+// Initial render
+renderList();
+</script>
+
+</body>
+</html>

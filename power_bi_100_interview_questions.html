@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power BI 100 Interview Questions & Answers | Aspiring Data Analysts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Smooth transitions */
+    .answer-content {
+      transition: max-height 0.3s ease-out, opacity 0.25s ease-in-out;
+    }
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    /* Clean Print & Save as PDF styling */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .answer-wrapper {
+        display: block !important;
+        max-height: none !important;
+        opacity: 1 !important;
+      }
+      .question-card {
+        page-break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 1.5rem !important;
+      }
+      .print-show-header {
+        display: block !important;
+      }
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              900: '#78350f',
+            },
+            pbi: {
+              yellow: '#F2C811',
+              dark: '#111827',
+              accent: '#0284C7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-amber-200 selection:text-amber-900">
+
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 pointer-events-none">
+    <svg id="toastIcon" class="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastMsg" class="text-sm font-medium">Text copied to clipboard!</span>
+  </div>
+
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0 font-black text-slate-950 text-lg">
+            BI
+          </div>
+          <div class="truncate">
+            <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+              Power BI Interview Playbook
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">100 Q&A</span>
+            </h1>
+            <p class="text-xs text-slate-500 hidden sm:block truncate">Tailored for Aspiring Data Analysts &amp; Fresh Career Switchers</p>
+          </div>
+        </div>
+
+        <!-- Global Action Buttons -->
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          <button id="studyModeBtn" onclick="toggleStudyMode()" class="px-3.5 py-2 text-xs sm:text-sm font-medium rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 flex items-center gap-2 shadow-xs transition-colors">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            <span id="studyModeText">Study Mode: Off</span>
+          </button>
+          
+          <button onclick="copyAllCurrentQuestions()" class="hidden md:flex px-3.5 py-2 text-xs sm:text-sm font-medium rounded-lg bg-slate-900 hover:bg-slate-800 text-white items-center gap-2 shadow-xs transition-all">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+            <span>Copy All Filtered (For Docs)</span>
+          </button>
+
+          <button onclick="window.print()" title="Print or Save as Clean PDF" class="p-2 sm:px-3 sm:py-2 text-xs sm:text-sm font-medium rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 shadow-xs transition-colors">
+            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            <span class="hidden sm:inline">Print / PDF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Print Only Header -->
+  <div class="hidden print-show-header p-6 border-b border-slate-300 mb-6">
+    <h1 class="text-2xl font-bold text-slate-900">Power BI 100 Interview Questions & Answers</h1>
+    <p class="text-sm text-slate-600 mt-1">Structured Study Guide &amp; Interview Cheatsheet for Aspiring Data Analysts</p>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 w-full">
+    
+    <!-- Controls Container -->
+    <div class="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-6 shadow-sm mb-6 space-y-4 no-print">
+      <!-- Search row -->
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <input 
+          type="text" 
+          id="searchInput" 
+          oninput="handleSearch(this.value)"
+          placeholder="Search by keywords (e.g. 'Power Query', 'DAX', 'refresh', 'cardinality', 'scenario', 'Q45')..." 
+          class="block w-full pl-11 pr-24 py-3 border border-slate-200 rounded-xl leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm transition-all"
+        >
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+          <span id="matchCounter" class="text-xs font-semibold text-slate-400 bg-slate-200/70 px-2.5 py-1 rounded-md">100 / 100</span>
+        </div>
+      </div>
+
+      <!-- Categories Pills -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-400 tracking-wider uppercase">Filter by Topic</span>
+          <div class="flex items-center gap-2">
+            <button onclick="expandAll(true)" class="text-xs font-medium text-amber-600 hover:text-amber-700 hover:underline">Expand All</button>
+            <span class="text-slate-300">•</span>
+            <button onclick="expandAll(false)" class="text-xs font-medium text-slate-500 hover:text-slate-700 hover:underline">Collapse All</button>
+          </div>
+        </div>
+        <div id="categoryTabs" class="flex flex-wrap gap-2 text-xs sm:text-sm">
+          <!-- Injected dynamically via JS for live counts -->
+        </div>
+      </div>
+    </div>
+
+    <div id="questionsContainer" class="space-y-4">
+      <!-- Question cards will be rendered dynamically -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="noResults" class="hidden py-16 text-center">
+      <div class="w-16 h-16 mx-auto mb-4 bg-slate-100 rounded-full flex items-center justify-center text-slate-400">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3 class="text-base font-semibold text-slate-800">No questions found</h3>
+      <p class="text-sm text-slate-500 mt-1 max-w-sm mx-auto">Try searching for broader terms like "data", "visual", "table", or clear your category filter.</p>
+      <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-amber-500 text-slate-950 font-medium text-xs rounded-lg hover:bg-amber-400 transition-colors">Reset All Filters</button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-8 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-2">
+      <p class="font-medium text-slate-700">Power BI 100 Question Master Toolkit for Aspiring Data Analysts</p>
+      <p>Clean, non-technical explanations grounded in Microsoft Power BI core competencies: ETL, Modeling, DAX, Visuals &amp; Service.</p>
+    </div>
+  </footer>
+
+  <script>
+    const questionsData = [
+      // Part 1
+      {
+        id: 1,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Concept",
+        q: "What is Power BI in simple words?",
+        a: "Power BI is a business intelligence tool created by Microsoft that takes raw business data from various sources, cleans and reshapes it, turns it into interactive charts and reports, and allows teams to share insights to make better business decisions.",
+        keyTip: "Emphasize that it bridges messy raw numbers to visual business clarity."
+      },
+      {
+        id: 2,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Process",
+        q: "What is the standard end-to-end workflow in Power BI?",
+        a: "The standard workflow consists of 5 clear stages:\n1. Acquire Data: Connect to sources like Excel, CSV, or SQL.\n2. Transform Data (ETL): Clean and reshape using Power Query.\n3. Visualize & Analyze: Build interactive charts and reports.\n4. Publish: Upload the report to Power BI Service (Cloud).\n5. Scheduled Refresh: Keep the cloud report updated automatically as source data updates.",
+        keyTip: "Never say 'visualize first'—always Acquire -> Transform -> Visualize -> Publish -> Refresh."
+      },
+      {
+        id: 3,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What is Data Acquisition in Power BI?",
+        a: "Data acquisition is the initial step of connecting Power BI to an external storage location (like an Excel file, database, or cloud folder) and pulling that data into the reporting environment for processing.",
+        keyTip: "Acquisition brings the data in; transformation prepares it."
+      },
+      {
+        id: 4,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What does ETL stand for, and why is it important?",
+        a: "ETL stands for Extract, Transform, and Load.\n• Extract: Ingesting raw data from its source.\n• Transform: Cleaning, standardizing, and reshaping data.\n• Load: Bringing the cleaned data into the analytical model.\nIt is critical because charts built on messy, uncleaned data provide incorrect figures.",
+        keyTip: "Remember: 'Garbage in, garbage out'."
+      },
+      {
+        id: 5,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What is Power Query, and what role does it play?",
+        a: "Power Query is the dedicated data transformation and ETL engine inside Power BI. It lets you clean headers, remove blank or duplicate rows, split columns, and fix data types without writing complex programming scripts.",
+        keyTip: "Think of Power Query as the kitchen where raw ingredients are cleaned before cooking the meal."
+      },
+      {
+        id: 6,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Concept",
+        q: "Why shouldn't we create visualizations directly from raw, uncleaned data?",
+        a: "Raw data frequently contains duplicate records, inconsistent spellings, missing values, or wrong formatting. Building visuals without cleaning results in misleading totals, skewed averages, and incorrect business decisions.",
+        keyTip: "Transformation is the safety check for accurate analytics."
+      },
+      {
+        id: 7,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Comparison",
+        q: "What is the difference between Data Transformation and Data Visualization?",
+        a: "• Data Transformation prepares and structures the data behind the scenes (fixing errors, removing columns, converting types).\n• Data Visualization presents the prepared data using charts, graphs, and KPIs so people can easily understand insights.",
+        keyTip: "Transformation works with table structures; visualization communicates insights to humans."
+      },
+      {
+        id: 8,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Comparison",
+        q: "What is the difference between Data Visualization and Data Analysis?",
+        a: "• Visualization is the visual medium (how data is displayed via bar charts, lines, or cards).\n• Analysis is the thinking and reasoning process of interpreting those visuals to diagnose why numbers changed and what actions should follow.",
+        keyTip: "Visuals present the facts; analysis discovers the story."
+      },
+      {
+        id: 9,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What makes a Power BI report 'interactive'?",
+        a: "Interactivity means that when a user clicks on an element in one chart (e.g., clicking on the 'West' region bar), all other visuals, cards, and tables on the page instantly filter or cross-highlight to reflect data for just that selection.",
+        keyTip: "It allows self-service discovery without needing 50 separate static charts."
+      },
+      {
+        id: 10,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What does 'Publishing' a report mean?",
+        a: "Publishing is the process of uploading your finished report and dataset from Power BI Desktop on your computer to the cloud-based Power BI Service, making it accessible to stakeholders via web browser or mobile app.",
+        keyTip: "Desktop is for authoring; Service is for sharing."
+      },
+      {
+        id: 11,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What is Scheduled Refresh?",
+        a: "Scheduled refresh is an automated cloud feature that updates the report data on a defined schedule (e.g., every morning at 8 AM) by re-running the Power Query steps against the original source data without any manual intervention.",
+        keyTip: "It ensures decision-makers always look at up-to-date data."
+      },
+      {
+        id: 12,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Scenario",
+        q: "What happens if a data source updates daily but Scheduled Refresh is never configured?",
+        a: "The published report will remain frozen with the data that existed when it was published. Users will be looking at stale, outdated metrics even though the source database has new records.",
+        keyTip: "A published report needs an active refresh schedule to stay alive."
+      },
+      {
+        id: 13,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Comparison",
+        q: "What is the difference between a Dimension and a Measure?",
+        a: "• Dimension: A qualitative, categorical field used to slice, group, or filter data (e.g., Customer Name, City, Product Category, Date).\n• Measure: A quantitative numerical formula or aggregation evaluated in context (e.g., Total Revenue, Average Order Value, Profit Margin %).",
+        keyTip: "Dimensions are what you group by; Measures are what you calculate."
+      },
+      {
+        id: 14,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Comparison",
+        q: "What is the difference between an Implicit Measure and an Explicit Measure?",
+        a: "• Implicit Measure: Created automatically when you drag a raw numeric column onto a visual and Power BI sums it for you.\n• Explicit Measure: A reusable DAX calculation written by the analyst (e.g., Total Sales = SUM(Sales[Amount])). Explicit measures are best practice because they can be referenced in other formulas.",
+        keyTip: "Always write explicit measures for consistency and scalability."
+      },
+      {
+        id: 15,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Comparison",
+        q: "What is the difference between Power BI Desktop and Power BI Service?",
+        a: "• Power BI Desktop: A free Windows application used by developers to connect to data, transform it in Power Query, build data models, and design visual reports.\n• Power BI Service: A cloud SaaS platform used to publish, distribute reports, create executive dashboards, configure refreshes, and set security permissions.",
+        keyTip: "Desktop = Build; Service = Share & Manage."
+      },
+      {
+        id: 16,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What is the role of the 'Applied Steps' pane in Power Query?",
+        a: "The 'Applied Steps' pane acts like a step-by-step recipe. It logs every transformation you make (such as renaming columns, removing nulls, or changing data types). Whenever data refreshes, Power BI executes this exact sequence from top to bottom.",
+        keyTip: "You can delete, reorder, or edit individual steps without starting over."
+      },
+      {
+        id: 17,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Formula",
+        q: "What is the formula for Year-over-Year (YoY) Growth Percentage?",
+        a: "The standard formula is:\nYoY Growth % = ((Sales in Current Period - Sales in Prior Period) / Sales in Prior Period) * 100\nIn Power BI, you implement this using measures that compare the current period against a DATEADD or SAMEPERIODLASTYEAR measure.",
+        keyTip: "Always check for zero in the denominator to avoid division errors."
+      },
+      {
+        id: 18,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Formula",
+        q: "What is the formula for Profit Margin Percentage?",
+        a: "Profit Margin % = (Total Profit / Total Revenue) * 100\nWhere Total Profit = Total Revenue - Total Cost.\nIn DAX, it is best written as: DIVIDE([Total Profit], [Total Revenue], 0).",
+        keyTip: "Using DIVIDE() safely handles cases where Total Revenue is 0."
+      },
+      {
+        id: 19,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What is a Slicer in Power BI?",
+        a: "A Slicer is an interactive visual filter on the canvas (such as a dropdown list, date slider, or button bar) that allows business users to quickly filter all visuals on the page by choosing specific dates, categories, or regions.",
+        keyTip: "Slicers put interactive filtering directly in the hands of the report reader."
+      },
+      {
+        id: 20,
+        part: "Part 1: Concepts & Definitions",
+        cat: "concepts",
+        type: "Definition",
+        q: "What is a Card Visual used for?",
+        a: "A Card visual displays a single important high-level KPI or summary figure (such as Total Sales, Total Profit, or Active Customers) prominently in large text so managers can see top-line metrics immediately.",
+        keyTip: "Great for placing across the top of an executive summary dashboard."
+      },
+
+      // Part 2
+      {
+        id: 21,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Action",
+        q: "How do you remove duplicate records in Power Query, and why is this critical?",
+        a: "Select the identifying column (like Order ID or Customer ID), right-click the header, and select 'Remove Duplicates'. It is critical because duplicate rows falsely inflate metrics like sales revenue and customer counts.",
+        keyTip: "Always ensure you are removing duplicates on the true primary key."
+      },
+      {
+        id: 22,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Action",
+        q: "What does 'Promote Headers' mean in Power Query?",
+        a: "'Use First Row as Headers' takes the very first row of data and converts it into the column titles. This fixes raw files where headers load as generic names like 'Column1', 'Column2', and 'Column3'.",
+        keyTip: "Power Query often suggests this step automatically upon loading CSV files."
+      },
+      {
+        id: 23,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Best Practice",
+        q: "What is the difference between 'Remove Column' and 'Remove Other Columns'?",
+        a: "• Remove Column: Drops only the currently selected columns.\n• Remove Other Columns: Keeps only your selected columns and deletes everything else.\n'Remove Other Columns' is preferred because if the source file adds unexpected new columns in the future, they won't accidentally enter your model and slow it down.",
+        keyTip: "Use 'Remove Other Columns' for robust, future-proof ETL queries."
+      },
+      {
+        id: 24,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Concept",
+        q: "Why is setting the correct Data Type important in Power Query?",
+        a: "If a numerical column like Sales is set to Text, Power BI cannot sum it, calculate averages, or show it on continuous chart axes. Setting proper data types (Whole Number, Decimal, Date, Text) guarantees proper math, sorting, and storage optimization.",
+        keyTip: "Fix data types as early in the Applied Steps as possible."
+      },
+      {
+        id: 25,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Comparison",
+        q: "What is the difference between 'Merge Queries' and 'Append Queries'?",
+        a: "• Merge Queries joins two tables horizontally (side-by-side) using a common matching key column (like an Excel VLOOKUP or SQL JOIN).\n• Append Queries stacks two or more tables with identical column layouts vertically on top of each other (like SQL UNION ALL).",
+        keyTip: "Merge adds columns; Append adds rows."
+      },
+      {
+        id: 26,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Concept",
+        q: "What does 'Unpivot Columns' do, and when should you use it?",
+        a: "Unpivot converts wide spreadsheet data (e.g., separate columns for Jan, Feb, Mar, Apr) into tall, normalized data with two columns: an Attribute column ('Month') and a Value column ('Sales'). Power BI requires tall tabular data to compute time-based aggregations.",
+        keyTip: "If you see months spread out horizontally across columns, Unpivot is the solution."
+      },
+      {
+        id: 27,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Comparison",
+        q: "What is the difference between 'Replace Values' and 'Fill Down'?",
+        a: "• Replace Values: Finds specific text or numbers (like changing 'N/A' to '0') and replaces them.\n• Fill Down: Copies the last valid value down into subsequent empty/null cells until a new value is met. This is common when importing formatted Excel files with merged category cells.",
+        keyTip: "'Fill Down' resolves messy merged header blocks from Excel sheets."
+      },
+      {
+        id: 28,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Best Practice",
+        q: "Why should you filter out null or blank rows during ETL rather than on visuals?",
+        a: "Filtering in Power Query prevents bad records from ever loading into memory. This reduces file size, speeds up visual rendering, and prevents having to re-filter nulls manually on every chart.",
+        keyTip: "Clean data upstream so downstream reporting is simple and fast."
+      },
+      {
+        id: 29,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Action",
+        q: "What is the difference between 'Split Column by Delimiter' and 'Extract'?",
+        a: "• Split Column: Breaks one column into multiple new columns using a separator character like a comma, space, or hyphen (e.g., splitting 'City, State' into two columns).\n• Extract: Isolates a specific text segment (e.g., first 5 characters or text before a symbol) into a single column.",
+        keyTip: "Split creates multiple columns; Extract pulls out a piece into one column."
+      },
+      {
+        id: 30,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Troubleshooting",
+        q: "What happens if a column name in your source Excel sheet changes next week?",
+        a: "Power Query will fail with an error like 'The column [OldName] of the table was not found'. To resolve this, open the Advanced Editor or Applied Steps, find where the old name was referenced, and update it to the new name.",
+        keyTip: "Power Query steps are strictly bound to exact column name strings."
+      },
+      {
+        id: 31,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Action",
+        q: "How do you trim leading and trailing spaces from text columns in Power Query?",
+        a: "Select the text column, go to the Transform tab, click 'Format', and choose 'Trim'. This eliminates hidden spaces that cause Power BI to treat 'Apple ' and 'Apple' as two different categories.",
+        keyTip: "Always Trim text columns to prevent duplicate-looking categories in charts."
+      },
+      {
+        id: 32,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Comparison",
+        q: "What is the difference between transforming in the 'Transform' tab vs. 'Add Column' tab?",
+        a: "• Transform Tab: Modifies the selected column in place, overwriting the original values.\n• Add Column Tab: Keeps the original column untouched and outputs the result into a brand new column.",
+        keyTip: "Use Transform if you don't need the old values; Add Column if you must retain both."
+      },
+      {
+        id: 33,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Definition",
+        q: "What is a 'Conditional Column' in Power Query?",
+        a: "A Conditional Column is a point-and-click tool that creates a new column based on IF-THEN-ELSE logic without writing code (e.g., IF Sales > 10,000 THEN 'High', ELSE 'Standard').",
+        keyTip: "Great for non-technical users to bucket numbers without writing M formulas."
+      },
+      {
+        id: 34,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Definition",
+        q: "What language is used behind the scenes in Power Query?",
+        a: "Power Query uses the M Language (Power Query Formula Language). It is a functional, case-sensitive language designed for data extraction and transformation.",
+        keyTip: "You don't need to master M to start, but knowing it is case-sensitive is key."
+      },
+      {
+        id: 35,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Concept",
+        q: "What is 'Query Folding' in simple terms?",
+        a: "Query Folding occurs when Power Query converts your transformation steps into a single SQL query and pushes the heavy processing back to the source database server. This makes data loading much faster.",
+        keyTip: "It lets the database server do the heavy lifting before data reaches your PC."
+      },
+      {
+        id: 36,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Best Practice",
+        q: "How do you prevent an intermediate staging table from loading into report memory?",
+        a: "Right-click the query in the left navigation pane and uncheck 'Enable Load'. The query remains active inside Power Query for merging or appending, but will not consume model memory in the visual layer.",
+        keyTip: "Always disable load on staging and bridge tables that users don't need to see."
+      },
+      {
+        id: 37,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Troubleshooting",
+        q: "What should you do if an imported date is formatted as DD/MM/YYYY but your computer expects MM/DD/YYYY?",
+        a: "Right-click the column, choose 'Change Type' -> 'Using Locale...', select the 'Date' data type, and specify the originating country/region (e.g., English - United Kingdom).",
+        keyTip: "Never manually split date strings if Using Locale can parse it automatically."
+      },
+      {
+        id: 38,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Performance",
+        q: "Why should unused columns always be deleted during ETL?",
+        a: "Power BI uses an in-memory columnar database engine (VertiPaq). Every extra column increases file size, consumes RAM, and degrades report performance. Removing unnecessary columns keeps reports fast and responsive.",
+        keyTip: "A 5-column model runs significantly faster than a 50-column model."
+      },
+      {
+        id: 39,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Action",
+        q: "What is the difference between 'Close & Apply' and 'Apply' in Power Query?",
+        a: "• Close & Apply: Saves all transformation steps, closes the Power Query window, and loads data into Power BI Desktop.\n• Apply: Loads the changes into the data model while keeping the Power Query editor open for further transformations.",
+        keyTip: "Use Apply when you want to verify data in the background while continuing to clean."
+      },
+      {
+        id: 40,
+        part: "Part 2: Power Query & ETL Mechanics",
+        cat: "powerquery",
+        type: "Action",
+        q: "How do you combine multiple CSV files from a single folder automatically?",
+        a: "Use 'Get Data' -> 'Folder', browse to the target folder, and click 'Combine & Transform Data'. Power Query will use the first file as a sample and automatically append all matching files in that folder into a single unified table.",
+        keyTip: "Any new file dropped into that folder in the future gets included on refresh."
+      },
+
+      // Part 3
+      {
+        id: 41,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Visual Selection",
+        q: "When should you use a Bar/Column Chart instead of a Line Chart?",
+        a: "• Bar/Column Chart: Ideal for comparing discrete categories at a single point in time (e.g., Sales by Product Category or Sales by Region).\n• Line Chart: Ideal for showing continuous trends over time (e.g., Monthly Sales Trend over the last 2 years).",
+        keyTip: "Categories = Bars; Time Trends = Lines."
+      },
+      {
+        id: 42,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Best Practice",
+        q: "Why are Pie Charts generally discouraged when comparing more than 3-4 categories?",
+        a: "The human brain struggles to compare relative slice angles and surface areas accurately. When there are many categories or values are close in size, pie charts become cluttered and unreadable. A horizontal bar chart makes direct comparisons much easier.",
+        keyTip: "Limit pie charts to 2-3 starkly contrasting categories, or use bar charts instead."
+      },
+      {
+        id: 43,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Visual Selection",
+        q: "When should an analyst use a Scatter Plot?",
+        a: "A Scatter Plot is used to explore relationships or correlations between two continuous numerical variables (e.g., Marketing Spend on the X-axis vs. Revenue on the Y-axis) across data points.",
+        keyTip: "It answers: 'Does an increase in X correspond to an increase in Y?'"
+      },
+      {
+        id: 44,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Comparison",
+        q: "What is the difference between a Clustered Column Chart and a 100% Stacked Column Chart?",
+        a: "• Clustered Column Chart: Places bars side by side to show absolute values for each group.\n• 100% Stacked Column Chart: Stretches all columns to 100% height to show the percentage contribution of each sub-group relative to the whole.",
+        keyTip: "Clustered shows raw quantities; 100% Stacked shows relative proportions."
+      },
+      {
+        id: 45,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Comparison",
+        q: "When is a Matrix visual preferred over a standard Table visual?",
+        a: "A standard Table is flat (columns and rows only). A Matrix visual supports two-dimensional grouping (both rows and columns, similar to an Excel Pivot Table) and provides expandable hierarchies (+/- drill-down buttons).",
+        keyTip: "Use Matrix whenever you need row groupings with column headers like Months."
+      },
+      {
+        id: 46,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Visual Selection",
+        q: "What is a Waterfall Chart, and when is it best used?",
+        a: "A Waterfall Chart illustrates how an initial starting value increases or decreases through positive and negative increments to arrive at a final ending value (e.g., Gross Revenue minus discounts, returns, taxes, and costs arriving at Net Profit).",
+        keyTip: "Commonly used in financial reporting for variance walk-throughs."
+      },
+      {
+        id: 47,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Definition",
+        q: "What does 'Drill-Down' mean in a visual?",
+        a: "Drill-down allows users to move down through a hierarchy within the same chart. For example, clicking on 'Year 2026' drills down into its Quarters, and clicking a Quarter drills down into Months.",
+        keyTip: "Add multiple fields into the Axis field well to enable the drill-down icon."
+      },
+      {
+        id: 48,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Comparison",
+        q: "What is the difference between 'Cross-Filtering' and 'Cross-Highlighting'?",
+        a: "• Cross-Filtering: Removes non-matching records so other visuals show only data for the selected segment.\n• Cross-Highlighting: Keeps the overall totals visible in faded color while highlighting the selected portion in full color.",
+        keyTip: "Cross-highlighting shows proportion against the grand total."
+      },
+      {
+        id: 49,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Action",
+        q: "How can you customize or turn off interactions between visuals on a page?",
+        a: "Select the source visual, go to the 'Format' tab on the top ribbon, click 'Edit Interactions', and click the 'None' icon on any visual you want to remain unaffected by that selection.",
+        keyTip: "Essential when you want a KPI card to display total sales regardless of slicers."
+      },
+      {
+        id: 50,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Definition",
+        q: "What is a Tooltip in Power BI, and how can it be enhanced?",
+        a: "A tooltip is a small info popup that appears when hovering over a data point. It can be enhanced by creating a 'Report Page Tooltip'—designing a separate mini-page with charts that pops up dynamically on hover.",
+        keyTip: "Report page tooltips provide deeper drill-in context without crowding the main page."
+      },
+      {
+        id: 51,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Concept",
+        q: "What is the purpose of Conditional Formatting in tables and matrixes?",
+        a: "It applies color scales, background alerts, data bars, or icons based on numerical values (e.g., highlighting negative profits in soft red and top margins in green) to help users spot critical trends instantly.",
+        keyTip: "Always use muted tones rather than neon colors to maintain readability."
+      },
+      {
+        id: 52,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Best Practice",
+        q: "Why is having too many visuals on a single page considered poor design?",
+        a: "It overwhelms business users with cognitive overload and slows down report rendering performance because each visual sends independent queries to the internal data engine.",
+        keyTip: "Aim for 4 to 6 focused visuals per page with clear visual hierarchy."
+      },
+      {
+        id: 53,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Visual Selection",
+        q: "When should an analyst use a Gauge visual?",
+        a: "A Gauge visual is used to track progress toward a specific target or quota (e.g., current revenue of $85,000 toward a monthly goal of $100,000), resembling a speedometer.",
+        keyTip: "Only use Gauges when a clear minimum, target, and maximum exist."
+      },
+      {
+        id: 54,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Visual Selection",
+        q: "What is a Funnel Chart, and where is it commonly applied?",
+        a: "A Funnel Chart displays stages in a process where items gradually drop off from stage to stage. It is common in sales pipelines (Prospects -> Qualified -> Demo -> Proposal -> Closed Won) and recruitment stages.",
+        keyTip: "Identifies bottlenecks where the highest percentage of drop-off occurs."
+      },
+      {
+        id: 55,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Comparison",
+        q: "What is the difference between Visual-Level, Page-Level, and Report-Level Filters?",
+        a: "• Visual-Level: Restricts data for that specific individual visual only.\n• Page-Level: Applies to all visuals on that specific report page.\n• Report-Level: Applies across every page throughout the entire report file.",
+        keyTip: "Use Report-Level filters for company-wide constants like active status."
+      },
+      {
+        id: 56,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Definition",
+        q: "What is the purpose of Bookmarks in Power BI?",
+        a: "Bookmarks capture the exact current state of a report page (including active filters, slicers, and visual visibility). They can be linked to buttons to create custom navigation menus, pop-up filter panels, or reset buttons.",
+        keyTip: "Bookmarks turn static report pages into interactive, app-like experiences."
+      },
+      {
+        id: 57,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Visual Selection",
+        q: "When would you use a Treemap visual?",
+        a: "A Treemap displays hierarchical data as nested colored rectangles sized by a measure. It is useful for displaying large volumes of categories when space is constrained (e.g., market share across 40 product categories).",
+        keyTip: "A solid alternative to pie charts when handling numerous categories."
+      },
+      {
+        id: 58,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Definition",
+        q: "What is the function of the 'Selection Pane'?",
+        a: "The Selection Pane displays every visual, shape, and text box on the canvas in order of their layering. It lets you rename items, toggle visibility on/off, and manage layered visuals when configuring bookmarks.",
+        keyTip: "Essential for hiding and showing items when building pop-up menus."
+      },
+      {
+        id: 59,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Accessibility",
+        q: "What visual design practice ensures reports are accessible to color-blind users?",
+        a: "Avoid relying exclusively on red-green color contrasts without supporting labels, icons, or text indicators. Choose accessible color palettes (like blue/orange) with strong contrast ratios.",
+        keyTip: "Never communicate meaning through color alone."
+      },
+      {
+        id: 60,
+        part: "Part 3: Visual Selection, Formatting & Interaction",
+        cat: "visuals",
+        type: "Best Practice",
+        q: "Why should analysts avoid 3D charts?",
+        a: "3D charts distort visual proportions, obscure angles, and make it difficult for readers to determine true bar heights or slice sizes. Standard 2D charts are clearer and more professional.",
+        keyTip: "Clarity always trumps visual novelty."
+      },
+
+      // Part 4
+      {
+        id: 61,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Modeling",
+        q: "What is a Star Schema, and why is it recommended in Power BI?",
+        a: "A Star Schema organizes data into a central Fact table (holding transactional numbers) surrounded by independent Dimension tables (holding descriptive lookup attributes). It is the recommended model because it simplifies DAX, improves refresh speed, and makes filter paths clear.",
+        keyTip: "The VertiPaq engine is explicitly optimized for star schemas."
+      },
+      {
+        id: 62,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Comparison",
+        q: "What is the difference between a Fact Table and a Dimension Table?",
+        a: "• Fact Table: Contains numerical metrics and foreign keys recording business events (e.g., Sales Amount, Quantity, Order Date, Customer ID).\n• Dimension Table: Contains unique descriptive attributes used to slice and filter data (e.g., Customer Name, City, Product Name, Category).",
+        keyTip: "Facts are verbs/events; Dimensions are nouns/context."
+      },
+      {
+        id: 63,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Modeling",
+        q: "What is Relationship Cardinality, and what is the most common type?",
+        a: "Cardinality describes how rows in one table relate to rows in another. The most common and reliable type is One-to-Many (1:*), where a primary key appears once in a Dimension table and connects to multiple transactions in a Fact table.",
+        keyTip: "Strive for 1:* relationships for predictable filtering."
+      },
+      {
+        id: 64,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Modeling",
+        q: "Why are Many-to-Many (*:*) relationships risky?",
+        a: "Many-to-Many relationships can cause ambiguous filter paths, unintentional double-counting, and performance slowdowns. When needed, they should be handled using bridge tables with distinct keys.",
+        keyTip: "Avoid raw Many-to-Many relationships whenever possible."
+      },
+      {
+        id: 65,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Modeling",
+        q: "What does Filter Cross-Direction (Single vs. Both) mean?",
+        a: "• Single Direction: Filters flow only from the Dimension table to the Fact table (standard practice).\n• Both Direction: Filters flow in both directions between tables, which can introduce performance overhead and circular relationship loops.",
+        keyTip: "Keep filter directions set to Single unless bidirectional filtering is specifically required."
+      },
+      {
+        id: 66,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Definition",
+        q: "What is DAX?",
+        a: "DAX stands for Data Analysis Expressions. It is the formula language used in Power BI, Power Pivot, and SSAS to create custom calculations, aggregations, and business metrics over relational tables.",
+        keyTip: "DAX looks similar to Excel formulas, but operates over tables and filter contexts."
+      },
+      {
+        id: 67,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Comparison",
+        q: "What is the fundamental difference between a Calculated Column and a Measure?",
+        a: "• Calculated Column: Evaluated row-by-row during data refresh and stored permanently in RAM, increasing model size.\n• Measure: Evaluated on the fly only when queried by a visual, consuming no disk space and dynamically responding to user slicers.",
+        keyTip: "Rule of thumb: use Measures for aggregations; use Calculated Columns only for slicers/groupings."
+      },
+      {
+        id: 68,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "DAX Core",
+        q: "What is the CALCULATE function in DAX, and why is it so important?",
+        a: "CALCULATE evaluates a mathematical expression while modifying, overriding, or adding to the current filter context.\nExample: CALCULATE(SUM(Sales[Amount]), Sales[Region] = \"West\")\nIt is the most powerful and widely used function in DAX.",
+        keyTip: "CALCULATE is the only function that transforms row context into filter context."
+      },
+      {
+        id: 69,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "DAX Core",
+        q: "What is the difference between Row Context and Filter Context?",
+        a: "• Row Context: Knows about the current row (exists automatically during calculated columns or row iterators).\n• Filter Context: The active set of filters applied by report slicers, rows, columns, and visual selections.",
+        keyTip: "Understanding Filter Context is the key to mastering DAX."
+      },
+      {
+        id: 70,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Comparison",
+        q: "What is the difference between SUM and SUMX?",
+        a: "• SUM: A standard aggregation function that sums a single numeric column.\n• SUMX: An iterator function that evaluates an expression row-by-row across a table (e.g., [Quantity] * [UnitPrice]) and then sums those row results.",
+        keyTip: "The 'X' at the end stands for iterator."
+      },
+      {
+        id: 71,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Comparison",
+        q: "What is the difference between COUNT and DISTINCTCOUNT?",
+        a: "• COUNT: Counts every row that has a non-blank value (including repeat purchases).\n• DISTINCTCOUNT: Counts only unique, distinct values (e.g., counting unique customers regardless of how many times they purchased).",
+        keyTip: "Use DISTINCTCOUNT when counting unique entities like customers or active accounts."
+      },
+      {
+        id: 72,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Best Practice",
+        q: "Why is having a dedicated Calendar/Date Table necessary in Power BI?",
+        a: "A dedicated Date table contains continuous, unbroken dates covering your entire data range. It is required for Time Intelligence functions (like TOTALYTD, SAMEPERIODLASTYEAR) to work correctly.",
+        keyTip: "Mark your date table as an official 'Date Table' in the Model ribbon."
+      },
+      {
+        id: 73,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "DAX Core",
+        q: "What does the DAX function DIVIDE(Numerator, Denominator, [AlternateResult]) do?",
+        a: "DIVIDE safely performs mathematical division while automatically handling division-by-zero errors. If the denominator is zero, it returns BLANK (or a specified alternative like 0) instead of throwing an error.",
+        keyTip: "Always use DIVIDE() instead of the '/' operator."
+      },
+      {
+        id: 74,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "DAX Core",
+        q: "How does the ALL function work in DAX?",
+        a: "The ALL function removes all filters from a specified table or column. It is commonly used to calculate grand totals or percentage-of-total metrics (e.g., dividing current category sales by ALL sales).",
+        keyTip: "Example: % Share = DIVIDE([Total Sales], CALCULATE([Total Sales], ALL(Product[Category])))."
+      },
+      {
+        id: 75,
+        part: "Part 4: Data Modeling & Analytical DAX",
+        cat: "modeling",
+        type: "Modeling",
+        q: "What is the difference between Active and Inactive relationships?",
+        a: "Only one relationship between two tables can be Active at a time (solid line) to guide default filter flow. Any secondary relationships remain Inactive (dashed line) and must be explicitly activated in measures using USERELATIONSHIP().",
+        keyTip: "Common when a sales table has both OrderDate and ShipDate connecting to the Date table."
+      },
+
+      // Part 5
+      {
+        id: 76,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Action",
+        q: "Where does an analyst publish a report once it is finalized in Desktop?",
+        a: "Click the 'Publish' button on the Home ribbon in Power BI Desktop, sign in with your organizational account, and select the appropriate target Workspace in Power BI Service.",
+        keyTip: "Publishing uploads both the visual report and the semantic data model."
+      },
+      {
+        id: 77,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Definition",
+        q: "What is a Power BI Workspace?",
+        a: "A Workspace is a collaborative cloud folder in Power BI Service where teams publish, manage, and share collections of reports, datasets, and dashboards.",
+        keyTip: "Think of Workspaces as team project directories."
+      },
+      {
+        id: 78,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Comparison",
+        q: "What is the difference between a Power BI Report and a Power BI Dashboard?",
+        a: "• Report: Can have multiple pages, full interactivity, and is built on a single dataset.\n• Dashboard: A single-page executive overview in Power BI Service composed of pinned visual tiles from one or more reports.",
+        keyTip: "Dashboards exist only in Power BI Service; reports can be built in Desktop."
+      },
+      {
+        id: 79,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Architecture",
+        q: "What is an On-Premises Data Gateway?",
+        a: "An On-Premises Data Gateway is software installed on a local server or computer that acts as a secure bridge, allowing Power BI Service in the cloud to connect to and refresh data stored behind an internal firewall.",
+        keyTip: "Required when refreshing local SQL databases or internal network folders."
+      },
+      {
+        id: 80,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Security",
+        q: "What is Row-Level Security (RLS)?",
+        a: "RLS restricts data access for specific users based on their user roles. For example, a single report can ensure the West manager only sees West sales, while the East manager only sees East sales.",
+        keyTip: "One report file serves all users with personalized data visibility."
+      },
+      {
+        id: 81,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Action",
+        q: "How do you test Row-Level Security (RLS) in Power BI Desktop?",
+        a: "Go to the 'Modeling' tab, click 'Manage Roles' to define the DAX filter rule (e.g., [Region] = \"East\"), then click 'View as' to preview the report as that role.",
+        keyTip: "Always test using 'View as' before publishing to cloud users."
+      },
+      {
+        id: 82,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Governance",
+        q: "How many times per day can a dataset be refreshed in Power BI Pro vs. Premium?",
+        a: "• Power BI Pro: Up to 8 scheduled refreshes per day.\n• Power BI Premium (or Fabric Capacity): Up to 48 scheduled refreshes per day.",
+        keyTip: "Both support on-demand manual refreshes in addition to scheduled runs."
+      },
+      {
+        id: 83,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Troubleshooting",
+        q: "What should you check first if a scheduled refresh fails?",
+        a: "Check the 'Refresh History' in the dataset settings in Power BI Service. The error message will pinpoint whether credentials expired, the gateway was offline, a source file was moved, or a column name changed.",
+        keyTip: "The error log gives you the exact failing table and step name."
+      },
+      {
+        id: 84,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Governance",
+        q: "What is a Power BI App, and why distribute reports through an App?",
+        a: "A Power BI App is a packaged, read-only collection of reports and dashboards designed for business end users. Distributing via an App prevents accidental edits or deletions in the development workspace.",
+        keyTip: "Developers work in the Workspace; business consumers view the App."
+      },
+      {
+        id: 85,
+        part: "Part 5: Publishing, Security & Refresh",
+        cat: "service",
+        type: "Action",
+        q: "Can end users export visual data from a published report into Excel?",
+        a: "Yes. Users can hover over any visual, click the three dots (...), and choose 'Export data' to download either summarized or underlying records into an Excel or CSV file.",
+        keyTip: "Administrators can restrict this setting for sensitive data governance."
+      },
+
+      // Part 6
+      {
+        id: 86,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A manager notices that Total Sales in a card visual is double the actual revenue. You discover order records are duplicated. Where should you fix this?",
+        a: "This must be resolved in Power Query (the data transformation stage). Select the table, identify the unique order key (e.g., OrderID), and use 'Remove Duplicates'. Fixing it in ETL ensures all downstream visuals and measures calculate correctly.",
+        keyTip: "Fix data problems at the source or transformation layer, not with chart hacks."
+      },
+      {
+        id: 87,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: Monthly sales bars are sorting alphabetically (April, August, December) instead of chronologically. How do you fix this?",
+        a: "Go to Data View, select the 'Month Name' column, go to the 'Column Tools' tab, click 'Sort by Column', and select the numeric month column ('Month Number', 1-12).",
+        keyTip: "Text columns always sort alphabetically by default until assigned a numeric sort column."
+      },
+      {
+        id: 88,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A published report ran smoothly for months, but today users complain data is 3 days old. The source database is current. What is the root cause?",
+        a: "The Scheduled Refresh has stopped running or failed. Check the dataset settings in Power BI Service, verify that the data gateway is online, update expired data source credentials, and review the refresh error log.",
+        keyTip: "Focus on gateway connectivity and credential expiration."
+      },
+      {
+        id: 89,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A stakeholder asks for an interactive report, but an analyst emails them a static PDF screenshot. Why does this fall short?",
+        a: "A static PDF eliminates interactivity: users cannot filter by region, drill down into monthly details, hover for tooltips, or explore scenarios on their own. Stakeholders need access to an interactive published report in Power BI Service.",
+        keyTip: "Power BI's core value lies in interactive exploration over static snapshots."
+      },
+      {
+        id: 90,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A visual shows a sudden 40% drop in revenue for the current month. Before concluding that business collapsed, what technical checks should you perform?",
+        a: "1. Confirm the scheduled refresh ran successfully today.\n2. Verify that source transactions have fully posted and are not still processing.\n3. Check Power Query to ensure no filter step accidentally excluded recent records.",
+        keyTip: "Always verify data pipeline health before sounding business alarms."
+      },
+      {
+        id: 91,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: Your TOTALYTD DAX formula returns blank or incorrect numbers. What is the most likely cause?",
+        a: "The model is likely missing a continuous Date Table, or the date field used inside TOTALYTD has missing dates. Time Intelligence functions require a contiguous Date table without missing calendar days.",
+        keyTip: "Always pair Time Intelligence functions with a dedicated, unbroken Date table."
+      },
+      {
+        id: 92,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A stakeholder wants to track monthly revenue across 20 store locations over 3 years. Which visual should you choose?",
+        a: "Use a Line Chart with Date on the X-axis and Total Revenue on the Y-axis. Pair it with a Store Location Slicer (or small multiples) to prevent 20 overlapping lines from creating a cluttered chart.",
+        keyTip: "20 lines at once create visual noise; use slicers or small multiples for clarity."
+      },
+      {
+        id: 93,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A client wants to see total sales, but also wants to filter by Year, Region, and Product using buttons. How do you design this?",
+        a: "Place a KPI Card visual at the top for Total Sales. Add three Slicer visuals formatted as horizontal tile buttons for Year, Region, and Product Category. When the user clicks any button, the card updates dynamically.",
+        keyTip: "Tile slicers offer an intuitive, button-like interface for executive users."
+      },
+      {
+        id: 94,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: A developer finishes a report, saves the .pbix file on their hard drive, and emails it to 50 executives. Why is this bad practice?",
+        a: "Emailing files leads to version confusion (multiple conflicting copies), large email attachments, no scheduled data refreshes, and security risks. Best practice is to publish to Power BI Service and share a single cloud link.",
+        keyTip: "Maintain a single source of truth in Power BI Service."
+      },
+      {
+        id: 95,
+        part: "Part 6: Scenario & Case-Study Questions",
+        cat: "scenarios",
+        type: "Scenario",
+        q: "Scenario: Your report takes 15 seconds to render a table with millions of rows. What are two quick optimizations?",
+        a: "1. Remove all unnecessary columns in Power Query to reduce model size.\n2. Replace row-by-row calculated columns with dynamic measures so calculations occur on demand.",
+        keyTip: "Reducing table width (columns) is the fastest way to speed up VertiPaq."
+      },
+
+      // Part 7: Table-based questions
+      {
+        id: 96,
+        part: "Part 7: Table-Based Evaluation Questions",
+        cat: "tables",
+        type: "Table Evaluation",
+        q: "Table Question: Calculate Total Revenue across transactions.",
+        tableData: {
+          headers: ["TransactionID", "Product", "UnitsSold", "UnitPrice"],
+          rows: [
+            ["101", "Laptop", "2", "$800"],
+            ["102", "Mouse", "5", "$20"],
+            ["103", "Keyboard", "3", "$50"]
+          ]
+        },
+        a: "Write a DAX measure using the iterator function SUMX:\nTotal Revenue = SUMX(SalesTable, SalesTable[UnitsSold] * SalesTable[UnitPrice])\n\nCalculation breakdown:\n• Laptop: 2 * 800 = 1,600\n• Mouse: 5 * 20 = 100\n• Keyboard: 3 * 50 = 150\nTotal Revenue = $1,850.",
+        keyTip: "SUMX evaluates each row's multiplication first, then sums the total."
+      },
+      {
+        id: 97,
+        part: "Part 7: Table-Based Evaluation Questions",
+        cat: "tables",
+        type: "Table Evaluation",
+        q: "Table Question: Identify the data quality issue in this customer table.",
+        tableData: {
+          headers: ["CustomerID", "CustName", "City"],
+          rows: [
+            ["C01", "John Doe", "Mumbai"],
+            ["C02", "Priya Sharma", "Delhi"],
+            ["C01", "John Doe", "Mumbai"],
+            ["C03", "Alex Ray", "Bangalore"]
+          ]
+        },
+        a: "Data Quality Issue: There is an exact duplicate record for CustomerID C01 (John Doe).\nRequired Action: In Power Query, select the table and click 'Remove Duplicates' on CustomerID. If left uncleaned, this inflates customer counts and distorts reporting.",
+        keyTip: "Always enforce distinct keys on dimension tables."
+      },
+      {
+        id: 98,
+        part: "Part 7: Table-Based Evaluation Questions",
+        cat: "tables",
+        type: "Table Evaluation",
+        q: "Table Question: Choose the best visual and summarize the trend.",
+        tableData: {
+          headers: ["Month", "Sales ($)"],
+          rows: [
+            ["Jan", "50,000"],
+            ["Feb", "55,000"],
+            ["Mar", "53,000"],
+            ["Apr", "65,000"]
+          ]
+        },
+        a: "Best Visual: A Line Chart (or Column Chart) with Month on the X-axis and Sales on the Y-axis.\nTrend Insight: Sales demonstrate an overall upward trend from January through April, with a minor dip in March before accelerating strongly in April.",
+        keyTip: "Line charts make direction and rate of change immediately apparent."
+      },
+      {
+        id: 99,
+        part: "Part 7: Table-Based Evaluation Questions",
+        cat: "tables",
+        type: "Table Evaluation",
+        q: "Table Question: Fix the data type issue in this ERP export.",
+        tableData: {
+          headers: ["Date", "Region", "Sales"],
+          rows: [
+            ["01-Jan-2026", "North", "$1,200"],
+            ["02-Jan-2026", "South", "$3,400"],
+            ["03-Jan-2026", "East", "$2,100"]
+          ]
+        },
+        a: "Issue: The Sales column contains currency symbols ('$'), which causes Power BI to detect it as Text (ABC). Text columns cannot be summed or plotted on continuous axes.\nResolution: In Power Query, use 'Replace Values' to remove '$', then set the column type to 'Fixed Decimal Number' (Currency).",
+        keyTip: "Never leave currency as text—clean the symbol and set as a decimal number."
+      },
+      {
+        id: 100,
+        part: "Part 7: Table-Based Evaluation Questions",
+        cat: "tables",
+        type: "Table Evaluation",
+        q: "Table Question: Define the relationship and filter outcome.",
+        customHtml: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mb-3">
+            <div class="border border-slate-200 rounded-lg p-2.5 bg-slate-50">
+              <span class="font-bold text-slate-700 block mb-1">Dim_Product</span>
+              <table class="w-full text-left border-collapse">
+                <tr class="border-b border-slate-200 text-slate-500 font-semibold"><th>ProductID</th><th>Category</th></tr>
+                <tr><td>P1</td><td>Electronics</td></tr>
+                <tr><td>P2</td><td>Furniture</td></tr>
+              </table>
+            </div>
+            <div class="border border-slate-200 rounded-lg p-2.5 bg-slate-50">
+              <span class="font-bold text-slate-700 block mb-1">Fact_Sales</span>
+              <table class="w-full text-left border-collapse">
+                <tr class="border-b border-slate-200 text-slate-500 font-semibold"><th>SaleID</th><th>ProductID</th><th>Amount</th></tr>
+                <tr><td>1</td><td>P1</td><td>$100</td></tr>
+                <tr><td>2</td><td>P1</td><td>$150</td></tr>
+                <tr><td>3</td><td>P2</td><td>$300</td></tr>
+              </table>
+            </div>
+          </div>
+        `,
+        a: "Relationship: Create a One-to-Many (1:*) relationship from Dim_Product[ProductID] to Fact_Sales[ProductID] with Single filter direction.\nFilter Outcome: When a user selects Category = 'Electronics', the filter flows from Dim_Product into Fact_Sales, isolating Sale 1 ($100) and Sale 2 ($150) for a filtered total of $250.",
+        keyTip: "Filters propagate from the 1-side (Dimension) to the *-side (Fact)."
+      }
+    ];
+
+    // State Variables
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let isStudyMode = false;
+    let expandedMap = {}; // Tracks expanded state for each Q
+
+    const categories = [
+      { id: 'all', name: 'All 100 Questions' },
+      { id: 'concepts', name: '1. Concepts & Definitions (Q1-Q20)' },
+      { id: 'powerquery', name: '2. Power Query & ETL (Q21-Q40)' },
+      { id: 'visuals', name: '3. Visuals & Formatting (Q41-Q60)' },
+      { id: 'modeling', name: '4. Modeling & DAX (Q61-Q75)' },
+      { id: 'service', name: '5. Publishing & Refresh (Q76-Q85)' },
+      { id: 'scenarios', name: '6. Scenarios & Cases (Q86-Q95)' },
+      { id: 'tables', name: '7. Table Evaluations (Q96-Q100)' }
+    ];
+
+    // Initialize expand state (default all expanded in standard view)
+    questionsData.forEach(item => {
+      expandedMap[item.id] = true;
+    });
+
+    function initApp() {
+      renderCategoryTabs();
+      renderQuestions();
+    }
+
+    function renderCategoryTabs() {
+      const container = document.getElementById('categoryTabs');
+      container.innerHTML = categories.map(cat => {
+        const count = cat.id === 'all' 
+          ? questionsData.length 
+          : questionsData.filter(q => q.cat === cat.id).length;
+        
+        const isActive = currentCategory === cat.id;
+        const activeClass = isActive 
+          ? 'bg-amber-500 text-slate-950 font-bold shadow-xs' 
+          : 'bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium';
+
+        return `
+          <button 
+            onclick="setCategory('${cat.id}')"
+            class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${activeClass}">
+            <span>${cat.name}</span>
+            <span class="text-[11px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-700'}">${count}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setCategory(catId) {
+      currentCategory = catId;
+      renderCategoryTabs();
+      renderQuestions();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      renderQuestions();
+    }
+
+    function resetFilters() {
+      currentCategory = 'all';
+      searchQuery = '';
+      document.getElementById('searchInput').value = '';
+      renderCategoryTabs();
+      renderQuestions();
+    }
+
+    function toggleStudyMode() {
+      isStudyMode = !isStudyMode;
+      const btn = document.getElementById('studyModeBtn');
+      const text = document.getElementById('studyModeText');
+      
+      if (isStudyMode) {
+        btn.classList.add('bg-amber-500', 'text-slate-950', 'border-amber-500');
+        btn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+        text.innerText = "Study Mode: ON (Answers Hidden)";
+        // Collapse all answers for active flashcard practice
+        questionsData.forEach(q => expandedMap[q.id] = false);
+        showToast("Study Mode Activated! Click 'Reveal Answer' on each card to test yourself.");
+      } else {
+        btn.classList.remove('bg-amber-500', 'text-slate-950', 'border-amber-500');
+        btn.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+        text.innerText = "Study Mode: Off";
+        // Expand all answers back
+        questionsData.forEach(q => expandedMap[q.id] = true);
+        showToast("Study mode turned off. All answers visible.");
+      }
+      renderQuestions();
+    }
+
+    function toggleQuestion(id) {
+      expandedMap[id] = !expandedMap[id];
+      renderQuestions();
+    }
+
+    function expandAll(expand) {
+      const filtered = getFilteredQuestions();
+      filtered.forEach(q => expandedMap[q.id] = expand);
+      renderQuestions();
+      showToast(expand ? "Expanded all visible cards" : "Collapsed all visible cards");
+    }
+
+    function getFilteredQuestions() {
+      return questionsData.filter(item => {
+        // Category check
+        const matchCat = currentCategory === 'all' || item.cat === currentCategory;
+        if (!matchCat) return false;
+
+        // Search check
+        if (!searchQuery) return true;
+        const qNumberStr = `q${item.id}`;
+        const searchPool = `${item.q} ${item.a} ${item.part} ${item.type} ${item.keyTip || ''} ${qNumberStr}`.toLowerCase();
+        return searchPool.includes(searchQuery);
+      });
+    }
+
+    function renderQuestions() {
+      const filtered = getFilteredQuestions();
+      const container = document.getElementById('questionsContainer');
+      const counter = document.getElementById('matchCounter');
+      const emptyState = document.getElementById('noResults');
+
+      counter.innerText = `${filtered.length} / 100`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      } else {
+        emptyState.classList.add('hidden');
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const isExpanded = expandedMap[item.id];
+        
+        // Render optional table if question contains structured table
+        let tableHtml = '';
+        if (item.tableData) {
+          tableHtml = `
+            <div class="overflow-x-auto my-3 border border-slate-200 rounded-lg">
+              <table class="min-w-full divide-y divide-slate-200 text-xs">
+                <thead class="bg-slate-100">
+                  <tr>
+                    ${item.tableData.headers.map(h => `<th class="px-3 py-2 text-left font-semibold text-slate-700 tracking-wider">${h}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 bg-white">
+                  ${item.tableData.rows.map(row => `
+                    <tr class="hover:bg-slate-50">
+                      ${row.map(cell => `<td class="px-3 py-2 text-slate-700 whitespace-nowrap">${cell}</td>`).join('')}
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+        } else if (item.customHtml) {
+          tableHtml = item.customHtml;
+        }
+
+        return `
+          <div class="question-card bg-white rounded-xl border border-slate-200/90 shadow-xs hover:shadow-sm transition-all overflow-hidden" id="card-${item.id}">
+            <!-- Header Clickable Bar -->
+            <div 
+              onclick="toggleQuestion(${item.id})"
+              class="p-4 sm:p-5 flex items-start justify-between gap-4 cursor-pointer select-none bg-white hover:bg-slate-50/70 transition-colors">
+              <div class="space-y-1.5 flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="inline-flex items-center justify-center font-bold text-xs bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-md border border-amber-300">
+                    Q${item.id}
+                  </span>
+                  <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                    ${item.type}
+                  </span>
+                  <span class="text-xs text-slate-400 hidden sm:inline">
+                    ${item.part.split(':')[1] || item.part}
+                  </span>
+                </div>
+                <h3 class="text-sm sm:text-base font-semibold text-slate-900 leading-snug">
+                  ${item.q}
+                </h3>
+              </div>
+
+              <div class="flex items-center gap-2 shrink-0 pt-1">
+                <!-- Copy Single Question Button -->
+                <button 
+                  onclick="event.stopPropagation(); copySingleQuestion(${item.id})" 
+                  title="Copy question & answer cleanly for Word / Docs"
+                  class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors no-print">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+                </button>
+
+                <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 no-print">
+                  <svg class="w-3.5 h-3.5 transform transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Answer Block -->
+            <div class="answer-wrapper ${isExpanded ? 'block' : 'hidden'} border-t border-slate-100 bg-gradient-to-b from-slate-50/50 to-white">
+              <div class="p-4 sm:p-5 text-sm space-y-3">
+                ${tableHtml}
+                <div class="space-y-1">
+                  <span class="text-xs font-bold uppercase tracking-wider text-amber-700 block">Recommended Interview Answer:</span>
+                  <div class="text-slate-800 leading-relaxed whitespace-pre-line text-sm sm:text-base font-normal">
+                    ${item.a}
+                  </div>
+                </div>
+
+                ${item.keyTip ? `
+                  <div class="pt-2 flex items-start gap-2 text-xs text-amber-900 bg-amber-50/80 p-2.5 rounded-lg border border-amber-200/70">
+                    <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span><strong>Interviewer Tip:</strong> ${item.keyTip}</span>
+                  </div>
+                ` : ''}
+
+                <div class="pt-2 flex justify-end no-print">
+                  <button 
+                    onclick="copySingleQuestion(${item.id})"
+                    class="text-xs font-medium text-slate-500 hover:text-slate-900 flex items-center gap-1.5 py-1 px-2 hover:bg-slate-100 rounded transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    Copy for Google Docs / Word
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function formatQuestionForDocs(item) {
+      let text = `Q${item.id}. ${item.q}\nCategory: ${item.part}\n\n`;
+      
+      if (item.tableData) {
+        text += `[Data Table]\n`;
+        text += item.tableData.headers.join(" | ") + "\n";
+        item.tableData.rows.forEach(r => {
+          text += r.join(" | ") + "\n";
+        });
+        text += "\n";
+      }
+
+      text += `Answer:\n${item.a}\n`;
+      if (item.keyTip) {
+        text += `\nInterviewer Insight: ${item.keyTip}\n`;
+      }
+      text += `\n--------------------------------------------------\n\n`;
+      return text;
+    }
+
+    function copySingleQuestion(id) {
+      const item = questionsData.find(q => q.id === id);
+      if (!item) return;
+
+      const formattedText = formatQuestionForDocs(item);
+      copyTextToClipboard(formattedText);
+      showToast(`Q${item.id} copied in clean Docs format!`);
+    }
+
+    function copyAllCurrentQuestions() {
+      const filtered = getFilteredQuestions();
+      if (filtered.length === 0) {
+        showToast("No questions available to copy.");
+        return;
+      }
+
+      let bulkText = `==================================================\n`;
+      bulkText += `POWER BI 100 INTERVIEW QUESTIONS & ANSWERS\n`;
+      bulkText += `Prepared for Aspiring Data Analysts\n`;
+      bulkText += `Exported: ${filtered.length} Questions\n`;
+      bulkText += `==================================================\n\n`;
+
+      filtered.forEach(item => {
+        bulkText += formatQuestionForDocs(item);
+      });
+
+      copyTextToClipboard(bulkText);
+      showToast(`Copied all ${filtered.length} questions to clipboard!`);
+    }
+
+    // Safe clipboard copy handling iframe sandbox restrictions
+    function copyTextToClipboard(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-999999px';
+      textarea.style.top = '-999999px';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error('Copy execution failed', err);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // Initialize application on load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
