@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python for Data Analytics — 150 Interview Questions & Answers</title>
+  <style>
+    :root {
+      --primary: #306998; /* Python Blue */
+      --primary-dark: #1e415f;
+      --accent: #ffd43b; /* Python Yellow */
+      --secondary: #0f172a;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --badge-bg: #e0f2fe;
+      --badge-text: #0369a1;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), #111827);
+      color: white;
+      padding: 36px 30px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header p {
+      color: #cbd5e1;
+      font-size: 1.05rem;
+      max-width: 850px;
+    }
+
+    .header-badge {
+      background: rgba(255, 212, 59, 0.2);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    .controls-panel {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 15px;
+      z-index: 100;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(48, 105, 152, 0.2);
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .chip:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .status-bar {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qa-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .qa-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .qa-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .qa-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      user-select: none;
+      background: #ffffff;
+    }
+
+    .qa-title-wrapper {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .q-id {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 0.95rem;
+      min-width: 48px;
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .q-toggle-icon {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      transition: transform 0.25s ease;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .qa-card.open .q-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .qa-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .cat-tag {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-weight: 600;
+    }
+
+    .qa-content {
+      display: none;
+      padding: 0 20px 20px 20px;
+      background: #fdfefe;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .qa-card.open .qa-content {
+      display: block;
+    }
+
+    .answer-box {
+      margin-top: 16px;
+      background: white;
+      padding: 18px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .answer-section {
+      margin-bottom: 12px;
+    }
+
+    .answer-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-label {
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .code-box {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .qa-card-actions {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-copy-card {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-copy-card:hover {
+      background: var(--badge-bg);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+        padding: 0;
+      }
+      .controls-panel, .qa-card-actions, header p, .header-badge {
+        display: none !important;
+      }
+      header {
+        background: none;
+        color: black;
+        box-shadow: none;
+        padding: 10px 0;
+        border-bottom: 2px solid #000;
+      }
+      header h1 {
+        color: black;
+        font-size: 1.6rem;
+      }
+      .qa-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+        margin-bottom: 12px;
+      }
+      .qa-content {
+        display: block !important;
+        background: white;
+      }
+      .q-toggle-icon {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+      <h1>Python for Data Analytics Master Guide</h1>
+      <span class="header-badge">150 Questions & Explanations</span>
+    </div>
+    <p>A grounded, concept-first interview repository covering Data Types, Structures, Functions, OOP, File I/O, DSA Basics, NumPy, Pandas, Matplotlib, Seaborn, and Exploratory Data Analysis (EDA).</p>
+  </header>
+
+  <section class="controls-panel">
+    <div class="search-row">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search keywords (e.g., groupby, broadcasting, LEGB, lambda, OOP, EDA)..." />
+      </div>
+      <button class="btn btn-secondary" id="toggleAllBtn" onclick="toggleAll()">Expand All</button>
+      <button class="btn btn-secondary" id="studyModeBtn" onclick="toggleStudyMode()">Study Mode: OFF</button>
+      <button class="btn btn-primary" onclick="copyAllFiltered()">Copy Filtered for Docs</button>
+      <button class="btn btn-secondary" onclick="window.print()">Print / PDF</button>
+    </div>
+
+    <div class="category-chips" id="categoryChips">
+      <button class="chip active" onclick="filterCategory('All')">All (150)</button>
+      <button class="chip" onclick="filterCategory('Data Types & Strings')">Data Types & Strings (20)</button>
+      <button class="chip" onclick="filterCategory('Data Structures')">Lists, Tuples & Dicts (20)</button>
+      <button class="chip" onclick="filterCategory('Control Flow & Loops')">Control Flow & Comprehensions (20)</button>
+      <button class="chip" onclick="filterCategory('Functions & Scope')">Functions & LEGB Scope (20)</button>
+      <button class="chip" onclick="filterCategory('Functional & Files')">Functional, Files & Exceptions (15)</button>
+      <button class="chip" onclick="filterCategory('OOP & DSA')">OOP Principles & DSA (15)</button>
+      <button class="chip" onclick="filterCategory('NumPy')">NumPy Arrays & Math (15)</button>
+      <button class="chip" onclick="filterCategory('Pandas')">Pandas DataFrames & ETL (15)</button>
+      <button class="chip" onclick="filterCategory('Visualization & EDA')">Charts, Seaborn & EDA (10)</button>
+    </div>
+
+    <div class="status-bar">
+      <span id="resultCount">Showing 150 of 150 questions</span>
+      <span>Click any card to reveal explanations and code</span>
+    </div>
+  </section>
+
+  <main class="qa-container" id="qaList"></main>
+</div>
+
+<div id="toast">Copied to clipboard!</div>
+
+<script>
+// Complete dataset of 150 grounded Python & Data Analytics interview questions
+const qaData = [
+  // SECTION 1: Data Types & Strings (Q1 - Q20)
+  {
+    id: "Q1",
+    cat: "Data Types & Strings",
+    q: "What is the difference between regular division (/) and floor division (//) in Python?",
+    exp: "Regular division (/) always calculates the exact decimal answer as a float. Floor division (//) divides and rounds down to the nearest whole number (integer).",
+    use: "Real-world analogy: If 7 slices of pizza are shared between 2 people, 7/2 gives 3.5 slices each. But if you can only give full slices, 7//2 gives 3 slices each, leaving 1 leftover.",
+    code: "x = 7\ny = 2\nprint(x / y)   # Output: 3.5\nprint(x // y)  # Output: 3"
+  },
+  {
+    id: "Q2",
+    cat: "Data Types & Strings",
+    q: "What is Type Casting, and why does int('12') + 3 produce 15 instead of '123'?",
+    exp: "Type casting is explicitly converting a value from one data type to another. Wrapping '12' in int() converts the text into a real mathematical number before addition.",
+    use: "Use case: In web scraping or CSV loading, numbers often import as text. If you add '100' + 50 without type casting, Python either crashes or produces unexpected text concatenation.",
+    code: "raw_input = '12'\nclean_number = int(raw_input)\nprint(clean_number + 3)  # Output: 15"
+  },
+  {
+    id: "Q3",
+    cat: "Data Types & Strings",
+    q: "Why does bool('False') evaluate to True in Python?",
+    exp: "In Python, any non-empty string is considered 'truthy' regardless of the actual text inside it. Only a completely empty string '' evaluates to False.",
+    use: "Use case: When reading boolean flags from messy Excel sheets, the word 'False' is still text. An analyst must explicitly check string equality (val == 'True') rather than just bool(val).",
+    code: "print(bool('False'))  # Output: True (string has characters)\nprint(bool(''))       # Output: False (empty string)"
+  },
+  {
+    id: "Q4",
+    cat: "Data Types & Strings",
+    q: "What is a float in Python, and where is it essential in business analytics?",
+    exp: "A float is a numeric data type used to represent real numbers containing fractional decimal points.",
+    use: "Business use case: Financial transactions, percentage calculations, profit margins, and GST rates (like 18.5% or 499.75) require floats to avoid losing currency fractions.",
+    code: "unit_price = 499.50\ntax_rate = 0.18\ntotal = unit_price * (1 + tax_rate)\nprint(type(total), total)  # <class 'float'> 589.41"
+  },
+  {
+    id: "Q5",
+    cat: "Data Types & Strings",
+    q: "How does Python evaluate 2 ** 3 ** 2, and what does right-associativity mean?",
+    exp: "Exponentiation (**) works from right to left (right-associative). Python first computes 3 ** 2 = 9, and then evaluates 2 ** 9 = 512.",
+    use: "Programming use case: Understanding operator precedence prevents subtle calculation bugs in financial compounding or statistical variance formulas.",
+    code: "# Evaluated as 2 ** (3 ** 2) -> 2 ** 9\nprint(2 ** 3 ** 2)  # Output: 512"
+  },
+  {
+    id: "Q6",
+    cat: "Data Types & Strings",
+    q: "Why does int('12.5') raise a ValueError, and how do you safely convert it?",
+    exp: "Python's int() function can only parse whole-number characters directly from strings. If a decimal point exists, you must convert it to a float first.",
+    use: "Data cleaning use case: Converting scraped price strings like '12.50' into whole rupees requires int(float('12.50')).",
+    code: "text_num = '12.5'\n# print(int(text_num)) -> Raises ValueError\nclean_int = int(float(text_num))\nprint(clean_int)  # Output: 12"
+  },
+  {
+    id: "Q7",
+    cat: "Data Types & Strings",
+    q: "In x = 10; x += 3 * 2, why does x become 16 and not 26?",
+    exp: "Multiplication has higher operator precedence than addition assignment. Python evaluates 3 * 2 = 6 first, then adds 6 to 10.",
+    use: "Use case: Tracking sales commission: Base salary plus (units * rate) evaluates reliably without unexpected order-of-operation errors.",
+    code: "x = 10\nx += 3 * 2  # x = 10 + 6\nprint(x)    # Output: 16"
+  },
+  {
+    id: "Q8",
+    cat: "Data Types & Strings",
+    q: "What is Negative Indexing in Python strings and lists?",
+    exp: "Negative indexing allows you to count elements backward starting from the end of a sequence, where -1 is the last item and -2 is the second to last.",
+    use: "Real-world analogy: Like reading a line from the back. It is useful for pulling file extensions from names like 'sales_report.csv' without knowing the total string length.",
+    code: "word = 'PYTHON'\nprint(word[-1])  # Output: N\nprint(word[-2])  # Output: O"
+  },
+  {
+    id: "Q9",
+    cat: "Data Types & Strings",
+    q: "How does string slicing work with [start:stop:step]?",
+    exp: "Slicing extracts a substring starting at the 'start' index and stops just before the 'stop' index (start is inclusive, stop is exclusive).",
+    use: "Business use case: Extracting date codes from transaction IDs like 'TXN20261025' by slicing the year, month, and day.",
+    code: "text = 'DATA SCIENCE'\nprint(text[0:4])  # Output: DATA"
+  },
+  {
+    id: "Q10",
+    cat: "Data Types & Strings",
+    q: "What does the slice text[::-1] do, and how is it used in interviews?",
+    exp: "A step of -1 tells Python to step backward through the string one character at a time, reversing it completely.",
+    use: "Interview use case: Standard one-line check to test whether an order ID or word is a palindrome (reads identically backward and forward).",
+    code: "word = 'RADAR'\nis_palindrome = word == word[::-1]\nprint(is_palindrome)  # Output: True"
+  },
+  {
+    id: "Q11",
+    cat: "Data Types & Strings",
+    q: "What does method chaining mean in Python strings?",
+    exp: "Method chaining means calling multiple methods in sequence from left to right, where each method operates on the result of the previous one.",
+    use: "Data cleaning use case: Standardizing raw city columns by converting to uppercase and replacing abbreviations in one readable line.",
+    code: "clean_city = '  new delhi  '.strip().upper().replace('DELHI', 'NCR')\nprint(clean_city)  # Output: NEW NCR"
+  },
+  {
+    id: "Q12",
+    cat: "Data Types & Strings",
+    q: "What is the strip() method, and why is it crucial in ETL pipelines?",
+    exp: "The strip() method removes unwanted leading and trailing whitespace, tabs, or newlines from a string.",
+    use: "Data quality use case: User entries like ' Mumbai ' and 'Mumbai' are treated as two different cities unless strip() is applied first.",
+    code: "raw_name = '   Asha Sharma \\n'\nprint(repr(raw_name.strip()))  # Output: 'Asha Sharma'"
+  },
+  {
+    id: "Q13",
+    cat: "Data Types & Strings",
+    q: "How does the split() method convert raw text into structured lists?",
+    exp: "The split(delimiter) method cuts a string into pieces wherever the delimiter appears, returning those pieces as a Python list.",
+    use: "Use case: Parsing comma-separated files or extracting domain names from email addresses ('user@company.com'.split('@')[1]).",
+    code: "text = 'apple,banana,mango'\nfruits = text.split(',')\nprint(fruits[1])  # Output: banana"
+  },
+  {
+    id: "Q14",
+    cat: "Data Types & Strings",
+    q: "What does it mean that Python strings are 'Immutable'?",
+    exp: "Immutability means once a string object is created in memory, its individual characters cannot be changed, overwritten, or reassigned.",
+    use: "Programming concept: Doing text[0] = 'H' throws a TypeError. To update a string, you must create a new string using concatenation or replace().",
+    code: "text = 'hello'\n# text[0] = 'H' -> Raises TypeError\ntext = 'H' + text[1:]\nprint(text)  # Output: Hello"
+  },
+  {
+    id: "Q15",
+    cat: "Data Types & Strings",
+    q: "How do you clean a messy user input like ' romit bhalla ' into 'Romit Bhalla'?",
+    exp: "You combine strip() to remove the edge spaces and title() to capitalize the first letter of every word.",
+    use: "Business use case: Cleaning customer names entered through website registration forms before saving them to a CRM database.",
+    code: "raw_customer = '   romit bhalla  '\nclean_customer = raw_customer.strip().title()\nprint(clean_customer)  # Output: Romit Bhalla"
+  },
+  {
+    id: "Q16",
+    cat: "Data Types & Strings",
+    q: "What is the difference between string concatenation and arithmetic addition?",
+    exp: "The plus sign (+) performs arithmetic addition when used on numbers, but concatenates (glues together) when used on strings.",
+    use: "Common bug: Adding str(25) + str(5) gives '255', whereas int(25) + int(5) gives 30.",
+    code: "print('Data' + 'Science')  # Output: DataScience\nprint(str(25) + str(5))    # Output: 255"
+  },
+  {
+    id: "Q17",
+    cat: "Data Types & Strings",
+    q: "What does the modulo operator (%) do, and how is it used in analytics?",
+    exp: "The modulo operator (%) divides one number by another and returns only the remainder.",
+    use: "Analytics use case: Checking if a number is even (n % 2 == 0), batching data into batches of 100, or rotating schedule shifts.",
+    code: "print(17 % 5)   # Output: 2 (17 divided by 5 leaves remainder 2)\nprint(10 % 2)   # Output: 0 (Even number)"
+  },
+  {
+    id: "Q18",
+    cat: "Data Types & Strings",
+    q: "How do logical operators 'and', 'or', and 'not' evaluate expressions?",
+    exp: "'and' requires both conditions to be True; 'or' requires at least one condition to be True; 'not' flips True to False and vice versa.",
+    use: "Business rule use case: Granting a loan: applicant qualifies if (CreditScore > 750 and Income > 50000) or HasCollateral.",
+    code: "print(5 > 3 and 2 > 4 or True)  # Output: True (True and False is False; False or True is True)"
+  },
+  {
+    id: "Q19",
+    cat: "Data Types & Strings",
+    q: "What is an f-string in Python, and why is it preferred over older formatting?",
+    exp: "An f-string (formatted string literal) allows you to embed expressions directly inside string text using curly brackets {}.",
+    use: "Reporting use case: Building clean dynamic summaries: f'Customer {name} spent ₹{amount:,.2f}' without messy string concatenations.",
+    code: "name = 'Asha'\nsales = 125000\nprint(f'Sales for {name} were ₹{sales:,}')  # Sales for Asha were ₹125,000"
+  },
+  {
+    id: "Q20",
+    cat: "Data Types & Strings",
+    q: "What happens when you multiply a string by an integer (e.g., '-' * 20)?",
+    exp: "In Python, multiplying a string repeats that string the specified number of times.",
+    use: "Visual use case: Printing clean divider lines in command-line reports or terminal dashboards.",
+    code: "print('=' * 25)\nprint('MONTHLY REPORT')\nprint('=' * 25)"
+  },
+
+  // SECTION 2: Data Structures (Q21 - Q40)
+  {
+    id: "Q21",
+    cat: "Data Structures",
+    q: "What is a Python List, and what is the difference between append() and extend()?",
+    exp: "A list is an ordered, mutable collection. append() adds its argument as a single element at the end; extend() unpacks an iterable and adds each item individually.",
+    use: "Analogy: append([4, 5]) puts the entire box inside the cart. extend([4, 5]) takes the items out of the box and puts each item in the cart.",
+    code: "nums = [1, 2, 3]\nnums.append([4, 5])  # [1, 2, 3, [4, 5]]\n\nnums2 = [1, 2, 3]\nnums2.extend([4, 5]) # [1, 2, 3, 4, 5]"
+  },
+  {
+    id: "Q22",
+    cat: "Data Structures",
+    q: "How do index() and remove() work on lists with duplicate values?",
+    exp: "Both methods operate only on the first matching occurrence of the value from the left. index() returns the first position; remove() deletes the first matching item.",
+    use: "Data management use case: Removing a duplicate entry or finding where an item first appeared in an activity log.",
+    code: "items = [10, 20, 30, 20]\nprint(items.index(20)) # Output: 1\nitems.remove(20)\nprint(items)           # Output: [10, 30, 20]"
+  },
+  {
+    id: "Q23",
+    cat: "Data Structures",
+    q: "What does pop() do, and what does it return?",
+    exp: "pop() removes and returns an item from the list. By default, it removes the very last item, but you can pass an index like pop(0).",
+    use: "Workflow analogy: Like taking the top plate off a stack of dishes. Ideal for queue and stack implementations.",
+    code: "cart = ['Laptop', 'Mouse', 'Bag']\nlast_item = cart.pop()\nprint(last_item) # Output: Bag\nprint(cart)      # Output: ['Laptop', 'Mouse']"
+  },
+  {
+    id: "Q24",
+    cat: "Data Structures",
+    q: "Why does numbers.sort() return None instead of the sorted list?",
+    exp: "The sort() method sorts the list in place (modifying the existing memory object directly) and deliberately returns None to remind you that the original object was mutated.",
+    use: "Interview trap: If you write sorted_list = my_list.sort(), sorted_list is None. To get a new sorted copy, use sorted(my_list).",
+    code: "numbers = [3, 1, 2]\nres = numbers.sort()\nprint(res)      # Output: None\nprint(numbers)  # Output: [1, 2, 3]"
+  },
+  {
+    id: "Q25",
+    cat: "Data Structures",
+    q: "What is a Tuple, and how does it differ from a List?",
+    exp: "A Tuple is an ordered sequence that is immutable (cannot be altered after creation), defined with parentheses (). Lists use square brackets [] and are mutable.",
+    use: "Business analogy: A list is like a shopping cart where items are added or removed. A tuple is like an Aadhaar ID or GPS coordinate (latitude, longitude) that must never be altered.",
+    code: "coordinates = (23.18, 79.98)\n# coordinates[0] = 25.0 -> Raises TypeError"
+  },
+  {
+    id: "Q26",
+    cat: "Data Structures",
+    q: "What does the count() method do on tuples and lists?",
+    exp: "count(value) scans the collection and returns the total number of times that specific value appears.",
+    use: "Analytics use case: Counting how many times a customer visited a store or how many transactions had a 'Pending' status.",
+    code: "ratings = (5, 4, 5, 3, 5, 2)\nprint(ratings.count(5)) # Output: 3"
+  },
+  {
+    id: "Q27",
+    cat: "Data Structures",
+    q: "What is a Dictionary in Python, and why is the get() method safer than bracket notation?",
+    exp: "A dictionary stores key-value pairs. Using dict[key] crashes with a KeyError if the key is missing; dict.get(key, default) safely returns a fallback default value.",
+    use: "Production use case: Pulling optional customer fields like phone numbers. If missing, get('phone', 'N/A') returns 'N/A' without crashing the script.",
+    code: "student = {'name': 'Asha', 'score': 85}\nprint(student.get('age', 18))  # Output: 18\n# print(student['age']) -> Raises KeyError"
+  },
+  {
+    id: "Q28",
+    cat: "Data Structures",
+    q: "What do the keys(), values(), and items() methods return in a dictionary?",
+    exp: "keys() returns all dictionary keys; values() returns all stored values; items() returns key-value pairs as a view of (key, value) tuples.",
+    use: "Looping use case: Iterating through an inventory dictionary to print product names alongside their stock levels.",
+    code: "stock = {'Apples': 50, 'Bananas': 30}\nfor item, qty in stock.items():\n    print(f'{item}: {qty} units')"
+  },
+  {
+    id: "Q29",
+    cat: "Data Structures",
+    q: "What is a Set in Python, and what is its defining characteristic?",
+    exp: "A set is an unordered collection of unique, hashable elements. It automatically discards any duplicate items.",
+    use: "Real-world use case: De-duplicating customer emails: Passing a list of 10,000 email sign-ups into set() instantly removes duplicate entries.",
+    code: "emails = ['a@x.com', 'b@x.com', 'a@x.com']\nunique_emails = set(emails)\nprint(len(unique_emails)) # Output: 2"
+  },
+  {
+    id: "Q30",
+    cat: "Data Structures",
+    q: "What do Set Intersection (&) and Union (|) operations do?",
+    exp: "Union (|) combines all unique items from both sets. Intersection (&) keeps only the common items that appear in both sets.",
+    use: "Marketing use case: Finding loyal customers who purchased in both January AND February (Jan_customers & Feb_customers).",
+    code: "jan = {'CustA', 'CustB', 'CustC'}\nfeb = {'CustB', 'CustC', 'CustD'}\nprint(jan & feb) # Output: {'CustB', 'CustC'} (Both months)\nprint(jan | feb) # Output: {'CustA', 'CustB', 'CustC', 'CustD'}"
+  },
+  {
+    id: "Q31",
+    cat: "Data Structures",
+    q: "What happens when you assign a list to a new variable using copy_data = data?",
+    exp: "In Python, assignment (=) does not create a new object; it creates a new reference (alias) pointing to the exact same list in memory.",
+    use: "Common bug: Modifying copy_data also modifies data. To create a true independent copy, use data.copy() or data[:].",
+    code: "data = [1, 2, 3]\ncopy_data = data\ncopy_data.append(4)\nprint(data) # Output: [1, 2, 3, 4] (Both changed!)"
+  },
+  {
+    id: "Q32",
+    cat: "Data Structures",
+    q: "What is the difference between a shallow copy and a deep copy?",
+    exp: "A shallow copy duplicates the outer container but keeps references to nested objects. A deep copy (via copy.deepcopy) duplicates the container and all nested objects recursively.",
+    use: "Use case: If you have a list of dictionaries, a shallow copy still shares the internal dictionaries. Modifying an inner dictionary alters both lists.",
+    code: "import copy\noriginal = [[1, 2], [3, 4]]\nshallow = original.copy()\ndeep = copy.deepcopy(original)"
+  },
+  {
+    id: "Q33",
+    cat: "Data Structures",
+    q: "Which data structure is best suited for storing Employee IDs mapped to Employee records?",
+    exp: "A Dictionary. It provides average O(1) constant-time key lookup, making it fast to retrieve employee data using their ID.",
+    use: "Analogy: A phone contact list where typing someone's name instantly reveals their phone number.",
+    code: "employees = {101: {'name': 'Ravi', 'dept': 'IT'},\n             102: {'name': 'Neha', 'dept': 'HR'}}\nprint(employees[101]['dept']) # Output: IT"
+  },
+  {
+    id: "Q34",
+    cat: "Data Structures",
+    q: "Can a List be used as a dictionary key or set element? Why or why not?",
+    exp: "No. Dictionary keys and set elements must be hashable and immutable. Because lists are mutable, Python raises an unhashable type: 'list' error.",
+    use: "Solution: Use a Tuple instead of a list if you need multi-value coordinates or keys.",
+    code: "# d = {[1, 2]: 'val'} -> Raises TypeError\nd = {(1, 2): 'val'}   # Works perfectly!"
+  },
+  {
+    id: "Q35",
+    cat: "Data Structures",
+    q: "What does the in operator do when checking membership in a List vs. a Set?",
+    exp: "In a list, in performs a linear search (O(n)), checking items one-by-one. In a set, in uses a hash table (O(1)), checking membership almost instantaneously.",
+    use: "Performance use case: Checking if an IP address is blacklisted among 1 million IPs takes milliseconds with a set, but seconds with a list.",
+    code: "blacklist = {'192.168.1.1', '10.0.0.1'}\nif '10.0.0.1' in blacklist:\n    print('Access Denied')"
+  },
+  {
+    id: "Q36",
+    cat: "Data Structures",
+    q: "How do you unpack elements from a tuple or list into separate variables?",
+    exp: "Tuple/list unpacking assigns items from an iterable into multiple individual variables in a single line.",
+    use: "Clean code use case: Reading database rows or coordinates: lat, lon = (23.18, 79.98).",
+    code: "record = ('Priya', 'Mumbai', 95000)\nname, city, salary = record\nprint(name, salary) # Output: Priya 95000"
+  },
+  {
+    id: "Q37",
+    cat: "Data Structures",
+    q: "What does the zip() function do when combining two lists?",
+    exp: "zip() takes multiple iterables and pairs their corresponding elements together into an iterator of tuples.",
+    use: "Business use case: Combining a list of product names with a list of sales prices into a clean dictionary.",
+    code: "products = ['Laptop', 'Mouse', 'Keyboard']\nprices = [50000, 500, 1500]\ncatalog = dict(zip(products, prices))\nprint(catalog) # Output: {'Laptop': 50000, ...}"
+  },
+  {
+    id: "Q38",
+    cat: "Data Structures",
+    q: "What is enumerate() in Python, and why is it preferred over range(len(list))?",
+    exp: "enumerate() returns both the current index and the item simultaneously as you loop through an iterable, eliminating the need for manual counter variables.",
+    use: "Reporting use case: Numbering printed results cleanly: 1. First Item, 2. Second Item.",
+    code: "ranks = ['Gold', 'Silver', 'Bronze']\nfor idx, medal in enumerate(ranks, start=1):\n    print(f'Rank {idx}: {medal}')"
+  },
+  {
+    id: "Q39",
+    cat: "Data Structures",
+    q: "How do you reverse a list in place vs. getting a reversed iterator?",
+    exp: "list.reverse() modifies the existing list in place. reversed(list) returns an iterator that traverses the list backward without copying memory.",
+    use: "Memory efficiency: reversed() is faster when looping through large arrays without modifying the underlying records.",
+    code: "nums = [1, 2, 3]\nfor x in reversed(nums):\n    print(x, end=' ') # Output: 3 2 1"
+  },
+  {
+    id: "Q40",
+    cat: "Data Structures",
+    q: "Summarize the core properties of List, Tuple, Set, and Dictionary in one sentence.",
+    exp: "Lists are mutable ordered sequences; Tuples are immutable ordered sequences; Sets are unordered collections of unique elements; Dictionaries are key-value mappings.",
+    use: "Interview answer: Highlight mutability (List/Dict vs Tuple), ordering (List/Tuple vs Set), and uniqueness (Set/Dict keys).",
+    code: "# List: [1, 2]; Tuple: (1, 2); Set: {1, 2}; Dict: {'a': 1}"
+  },
+
+  // SECTION 3: Control Flow & Comprehensions (Q41 - Q60)
+  {
+    id: "Q41",
+    cat: "Control Flow & Loops",
+    q: "What is the purpose of the elif keyword in Python conditional statements?",
+    exp: "elif (short for 'else if') lets you evaluate multiple mutually exclusive conditions in order. Once a condition evaluates to True, Python skips the rest of the chain.",
+    use: "Business logic: Assigning customer discount tiers based on transaction size.",
+    code: "score = 75\nif score >= 90:   print('A')\nelif score >= 70: print('B')  # Executes this!\nelse:             print('C')"
+  },
+  {
+    id: "Q42",
+    cat: "Control Flow & Loops",
+    q: "How does the range(start, stop, step) function work in loops?",
+    exp: "It produces a sequence of numbers starting at 'start', increments by 'step', and stops right before reaching 'stop' (stop is excluded).",
+    use: "Use case: Skipping every other row, processing data in batches of 10, or counting backward.",
+    code: "for i in range(2, 7, 2):\n    print(i, end=' ') # Output: 2 4 6"
+  },
+  {
+    id: "Q43",
+    cat: "Control Flow & Loops",
+    q: "What is a while loop, and what is the risk of an incorrect exit condition?",
+    exp: "A while loop runs as long as its condition remains True. If the condition never turns False, it creates an infinite loop that freezes the program.",
+    use: "Real-world analogy: An ATM prompting for your PIN until the correct one is entered or maximum attempts are reached.",
+    code: "i = 1\nwhile i < 10:\n    i *= 2\nprint(i) # Output: 16 (ran 4 times: 1, 2, 4, 8)"
+  },
+  {
+    id: "Q44",
+    cat: "Control Flow & Loops",
+    q: "What is the difference between break and continue in Python loops?",
+    exp: "break terminates and exits the entire loop immediately. continue skips only the remainder of the current iteration and jumps straight to the next cycle.",
+    use: "ETL use case: continue skips corrupted data rows; break aborts processing if a critical database disconnect occurs.",
+    code: "for i in range(5):\n    if i == 3: break     # stops loop\n    print(i, end=' ')    # Output: 0 1 2\n\nfor i in range(5):\n    if i == 2: continue # skips 2\n    print(i, end=' ')    # Output: 0 1 3 4"
+  },
+  {
+    id: "Q45",
+    cat: "Control Flow & Loops",
+    q: "What is a List Comprehension, and why is it preferred in data analysis?",
+    exp: "A list comprehension is a concise, expressive syntax for creating a new list by transforming or filtering elements from an iterable in a single line.",
+    use: "Readability & performance: It is often faster than a standard for-loop with append() because it is optimized in C.",
+    code: "# Extract even squares\nsquares = [x**2 for x in range(1, 6) if x % 2 == 0]\nprint(squares) # Output: [4, 16]"
+  },
+  {
+    id: "Q46",
+    cat: "Control Flow & Loops",
+    q: "How do you filter positive numbers from a financial transaction list using a comprehension?",
+    exp: "Include an if condition at the end of the comprehension: [x for x in data if condition].",
+    use: "Financial analytics: Separating revenues from expenses in raw bank statement logs.",
+    code: "txns = [1200, -450, 3000, -150, 800]\nrevenues = [t for t in txns if t > 0]\nprint(revenues) # Output: [1200, 3000, 800]"
+  },
+  {
+    id: "Q47",
+    cat: "Control Flow & Loops",
+    q: "What does list(range(5, 0, -2)) return, and why?",
+    exp: "It returns [5, 3, 1]. It starts at 5, decrements by 2 each step, and stops before reaching 0.",
+    use: "Countdown logic: Processing historical months in reverse order.",
+    code: "print(list(range(5, 0, -2))) # Output: [5, 3, 1]"
+  },
+  {
+    id: "Q48",
+    cat: "Control Flow & Loops",
+    q: "How do you check if a number n is divisible by both 3 and 5?",
+    exp: "Use the and operator to check if both modulo operations return 0: (n % 3 == 0) and (n % 5 == 0).",
+    use: "Classic interview problem: The basis of the popular 'FizzBuzz' coding question.",
+    code: "n = 15\nif n % 3 == 0 and n % 5 == 0:\n    print('FizzBuzz!')"
+  },
+  {
+    id: "Q49",
+    cat: "Control Flow & Loops",
+    q: "Can a for loop iterate directly over string characters? Give an example.",
+    exp: "Yes, strings are iterables in Python. A for loop visits each character one-by-one from left to right.",
+    use: "Text analysis: Parsing tokens, validating password complexity, or stripping special characters.",
+    code: "for char in 'DATA':\n    print(char, end='-') # Output: D-A-T-A-"
+  },
+  {
+    id: "Q50",
+    cat: "Control Flow & Loops",
+    q: "How do you count the number of even integers in a list in a single clean expression?",
+    exp: "Combine the sum() function with a generator expression that yields 1 for every even item.",
+    use: "Data metrics: Fast counter without writing an entire multi-line loop.",
+    code: "numbers = [1, 2, 4, 7, 8, 10]\neven_count = sum(1 for x in numbers if x % 2 == 0)\nprint(even_count) # Output: 4"
+  },
+  {
+    id: "Q51",
+    cat: "Control Flow & Loops",
+    q: "What is Dictionary Comprehension? Give an example.",
+    exp: "Similar to list comprehension, but constructs a dictionary using {key: value for item in iterable}.",
+    use: "Analytics use case: Building a lookup of item squared or flipping a key-value dictionary.",
+    code: "names = ['Delhi', 'Mumbai', 'Pune']\ncity_len = {city: len(city) for city in names}\nprint(city_len) # Output: {'Delhi': 5, 'Mumbai': 6, 'Pune': 4}"
+  },
+  {
+    id: "Q52",
+    cat: "Control Flow & Loops",
+    q: "What is Set Comprehension? When would you use it?",
+    exp: "Constructs a set in one line: {expr for item in iterable if condition}, automatically removing duplicates.",
+    use: "ETL use case: Extracting unique domains from email logs: {email.split('@')[1] for email in email_list}.",
+    code: "words = ['apple', 'banana', 'apple']\nunique_lengths = {len(w) for w in words}\nprint(unique_lengths) # Output: {5, 6}"
+  },
+  {
+    id: "Q53",
+    cat: "Control Flow & Loops",
+    q: "What is the purpose of the else clause in a Python for or while loop?",
+    exp: "The else block of a loop executes ONLY if the loop completed normally without encountering a break statement.",
+    use: "Search use case: Searching for a target ID. If break is never triggered, the else block reports 'Item not found'.",
+    code: "for n in [2, 4, 6]:\n    if n % 2 != 0: break\nelse:\n    print('All numbers were even!')"
+  },
+  {
+    id: "Q54",
+    cat: "Control Flow & Loops",
+    q: "What is the pass statement in Python, and where is it used?",
+    exp: "pass is a null placeholder statement. It does nothing at runtime, but prevents syntax errors where code blocks are required.",
+    use: "Scaffolding code: Creating stub functions or empty exception blocks during early development.",
+    code: "def calculate_taxes():\n    pass  # Will implement tomorrow"
+  },
+  {
+    id: "Q55",
+    cat: "Control Flow & Loops",
+    q: "What is nested loop time complexity, and why should analysts avoid deep nesting?",
+    exp: "A loop running n times inside another loop running n times produces O(n^2) quadratic time complexity.",
+    use: "Performance risk: On a 100,000-row dataset, an O(n^2) loop performs 10 billion operations, freezing your machine.",
+    code: "# Avoid nested searches; use dictionaries or hash sets instead!"
+  },
+  {
+    id: "Q56",
+    cat: "Control Flow & Loops",
+    q: "How do you flatten a 2D matrix into a 1D list using a list comprehension?",
+    exp: "By writing two for clauses inside the comprehension: [item for row in matrix for item in row].",
+    use: "Data cleaning: Unpacking grouped survey answers or batch image coordinates.",
+    code: "matrix = [[1, 2], [3, 4]]\nflat = [val for row in matrix for val in row]\nprint(flat) # Output: [1, 2, 3, 4]"
+  },
+  {
+    id: "Q57",
+    cat: "Control Flow & Loops",
+    q: "What does the any() and all() functions do with iterables?",
+    exp: "any() returns True if at least one item is truthy; all() returns True only if every item is truthy.",
+    use: "Data validation: all(sales > 0 for sales in daily_sales) checks if all sales were strictly positive.",
+    code: "scores = [85, 90, 78, 92]\nprint(all(s >= 75 for s in scores)) # Output: True"
+  },
+  {
+    id: "Q58",
+    cat: "Control Flow & Loops",
+    q: "How do you implement an if-else condition inside a list comprehension output?",
+    exp: "Place the ternary if-else before the for keyword: [val if condition else fallback for item in iterable].",
+    use: "Categorization: Tagging transactions: ['High' if amt > 1000 else 'Low' for amt in amounts].",
+    code: "grades = [85, 45, 90]\nstatus = ['Pass' if g >= 50 else 'Fail' for g in grades]\nprint(status) # Output: ['Pass', 'Fail', 'Pass']"
+  },
+  {
+    id: "Q59",
+    cat: "Control Flow & Loops",
+    q: "What is an iterator vs. an iterable in Python?",
+    exp: "An iterable is any object you can loop over (like a list or string). An iterator is the object with a __next__() method that keeps state and yields items one by one.",
+    use: "Memory mechanics: Iterators produce items on demand, saving memory.",
+    code: "my_list = [10, 20]\nit = iter(my_list)\nprint(next(it)) # Output: 10\nprint(next(it)) # Output: 20"
+  },
+  {
+    id: "Q60",
+    cat: "Control Flow & Loops",
+    q: "How does Python's walrus operator (:=) work in control flow?",
+    exp: "The walrus operator (:=) assigns values to variables as part of an expression (assignment expression).",
+    use: "Clean code: Reading chunks from a file while checking if the chunk is non-empty in a single while line.",
+    code: "text = 'Analytics'\nif (n := len(text)) > 5:\n    print(f'Length is {n}') # Length is 9"
+  },
+
+  // SECTION 4: Functions & Scope (Q61 - Q80)
+  {
+    id: "Q61",
+    cat: "Functions & Scope",
+    q: "What is the def keyword, and how do functions promote modular code?",
+    exp: "def defines a reusable block of code that takes inputs (arguments), executes a set of instructions, and returns an output.",
+    use: "Clean code principle: DRY (Don't Repeat Yourself). Write your data cleaning logic once in a function and reuse it across multiple columns.",
+    code: "def clean_currency(val):\n    return float(val.replace('₹', '').replace(',', ''))"
+  },
+  {
+    id: "Q62",
+    cat: "Functions & Scope",
+    q: "What happens if a Python function does not have an explicit return statement?",
+    exp: "It returns None by default upon finishing.",
+    use: "Common bug: Forgetting the return keyword causes dependent calculations to receive None and fail with a TypeError.",
+    code: "def add(a, b):\n    total = a + b # Missing return!\nres = add(5, 5)\nprint(res)        # Output: None"
+  },
+  {
+    id: "Q63",
+    cat: "Functions & Scope",
+    q: "What is the difference between Positional and Keyword Arguments?",
+    exp: "Positional arguments are mapped to parameters based on their order in the function call. Keyword arguments are passed with explicit parameter names (name=val), allowing any order.",
+    use: "Best practice: Use keyword arguments for configuration flags like ascending=False to make code self-documenting.",
+    code: "def intro(name, city):\n    return f'{name} from {city}'\nprint(intro(city='Bhopal', name='Asha')) # Asha from Bhopal"
+  },
+  {
+    id: "Q64",
+    cat: "Functions & Scope",
+    q: "How do Default Parameter Values work in functions?",
+    exp: "They assign fallback values to parameters if the caller omits those arguments during the call.",
+    use: "Standard configuration: Specifying default thresholds like discount_rate=0.05.",
+    code: "def bill(amount, tax=0.18):\n    return amount * (1 + tax)\nprint(bill(1000)) # Output: 1180.0 (tax defaulted to 18%)"
+  },
+  {
+    id: "Q65",
+    cat: "Functions & Scope",
+    q: "Why is using a mutable object (like a list []) as a default argument dangerous?",
+    exp: "Default arguments are evaluated once when the function is defined, NOT each time the function is called. All calls share the exact same list instance in memory.",
+    use: "Best practice: Always use items=None as the default argument, and initialize items = [] inside the function.",
+    code: "# BAD: def add(item, items=[]):\n# GOOD:\ndef add(item, items=None):\n    if items is None: items = []\n    items.append(item)\n    return items"
+  },
+  {
+    id: "Q66",
+    cat: "Functions & Scope",
+    q: "What does *args allow a function to accept?",
+    exp: "*args collects an arbitrary number of extra positional arguments into a single tuple.",
+    use: "Use case: Writing an aggregator function that calculates the average of any number of inputs passed to it.",
+    code: "def average(*scores):\n    return sum(scores) / len(scores)\nprint(average(80, 90, 85, 95)) # Output: 87.5"
+  },
+  {
+    id: "Q67",
+    cat: "Functions & Scope",
+    q: "What does **kwargs collect in a function definition?",
+    exp: "**kwargs collects extra named keyword arguments into a standard Python dictionary.",
+    use: "Flexible APIs: Passing optional styling arguments (like color='red', width=2) down into visualization or database connectors.",
+    code: "def build_profile(user_id, **details):\n    print(user_id, details)\nbuild_profile(101, name='Ravi', city='Delhi')\n# Output: 101 {'name': 'Ravi', 'city': 'Delhi'}"
+  },
+  {
+    id: "Q68",
+    cat: "Functions & Scope",
+    q: "What does LEGB stand for in Python name resolution?",
+    exp: "It is the hierarchical search order Python uses to locate variable names: Local -> Enclosing -> Global -> Built-in.",
+    use: "Scope rules: Python looks inside the current function first (Local), then outer functions (Enclosing), then module-level code (Global), and finally built-ins.",
+    code: "# L: Inside current def\n# E: In enclosing def (nested functions)\n# G: In module .py file\n# B: Built-in (len, sum, range)"
+  },
+  {
+    id: "Q69",
+    cat: "Functions & Scope",
+    q: "What is the difference between Local and Global variables?",
+    exp: "A local variable is created inside a function and disappears when the function ends. A global variable is defined at the module level and is accessible throughout the script.",
+    use: "Best practice: Minimize global variables to avoid unexpected bugs across different parts of your program.",
+    code: "x = 10 # Global\ndef test():\n    x = 5 # Local to test()\n    print('Local:', x)\ntest()       # Output: 5\nprint('Global:', x) # Output: 10"
+  },
+  {
+    id: "Q70",
+    cat: "Functions & Scope",
+    q: "What does the global keyword do inside a function?",
+    exp: "It tells Python that assignments to a specific variable name should modify the module-level global variable instead of creating a local one.",
+    use: "Caution: Using global makes code harder to debug and test; returning modified values is preferred.",
+    code: "count = 0\ndef increment():\n    global count\n    count += 1\nincrement()\nprint(count) # Output: 1"
+  },
+  {
+    id: "Q71",
+    cat: "Functions & Scope",
+    q: "What does the nonlocal keyword do in nested functions?",
+    exp: "It allows an inner nested function to rebind a variable that belongs to its immediate outer (enclosing) function scope.",
+    use: "Closure state: Tracking counter state in closures without using global variables.",
+    code: "def counter():\n    c = 0\n    def step():\n        nonlocal c\n        c += 1\n        return c\n    return step"
+  },
+  {
+    id: "Q72",
+    cat: "Functions & Scope",
+    q: "Can a Python function return multiple values? How does it work under the hood?",
+    exp: "Yes. When you separate multiple return items with commas, Python automatically packages them into a single Tuple.",
+    use: "Analytics use case: A summary function returning (min_val, max_val, avg_val) in a single call.",
+    code: "def stats(data):\n    return min(data), max(data)\nlow, high = stats([10, 50, 90])\nprint(low, high) # Output: 10 90"
+  },
+  {
+    id: "Q73",
+    cat: "Functions & Scope",
+    q: "What is a First-Class Function in Python?",
+    exp: "In Python, functions are first-class citizens, meaning they can be passed as arguments, assigned to variables, and returned from other functions.",
+    use: "Functional pipelines: Passing a cleaning function directly into map() or df.apply().",
+    code: "def square(x): return x * x\nf = square\nprint(f(5)) # Output: 25"
+  },
+  {
+    id: "Q74",
+    cat: "Functions & Scope",
+    q: "What is a Closure in Python?",
+    exp: "A closure is an inner function that remembers and retains access to variables from its enclosing scope even after the outer function has finished executing.",
+    use: "Custom functions: Building customized multiplier functions: double = make_multiplier(2).",
+    code: "def make_multiplier(n):\n    return lambda x: x * n\ndouble = make_multiplier(2)\nprint(double(10)) # Output: 20"
+  },
+  {
+    id: "Q75",
+    cat: "Functions & Scope",
+    q: "What is a Python Decorator?",
+    exp: "A decorator is a function that takes another function as input, extends or modifies its behavior, and returns the modified function without changing the original source code.",
+    use: "Production use case: Logging function execution time, measuring latency, or verifying user authentication.",
+    code: "# Indicated by the @decorator syntax\n# @timer\n# def train_model(): ..."
+  },
+  {
+    id: "Q76",
+    cat: "Functions & Scope",
+    q: "What is Recursion, and what must every recursive function have?",
+    exp: "Recursion is when a function calls itself to solve a smaller sub-problem. It MUST have a base case to stop execution, otherwise it hits a RecursionError.",
+    use: "Use case: Traversing hierarchical file directory folders or nested organizational trees.",
+    code: "def factorial(n):\n    if n <= 1: return 1 # Base case\n    return n * factorial(n - 1)"
+  },
+  {
+    id: "Q77",
+    cat: "Functions & Scope",
+    q: "What is a Docstring, and how do you view it for a function?",
+    exp: "A docstring is a string literal placed as the first statement in a function or module to document its purpose. You view it via help(func) or func.__doc__.",
+    use: "Team collaboration: Documenting parameter types, business logic, and return structures.",
+    code: "def calc_vat(amount):\n    '''Calculates 18% standard VAT on an amount.'''\n    return amount * 0.18"
+  },
+  {
+    id: "Q78",
+    cat: "Functions & Scope",
+    q: "What are Type Hints in modern Python (Python 3.5+)?",
+    exp: "Type hints indicate expected parameter types and return types using colons and arrows (e.g., def add(a: int) -> int:).",
+    use: "Industry standard: Improves code readability and allows static analyzers like mypy to catch data type bugs before execution.",
+    code: "def greet(name: str, score: float) -> str:\n    return f'Student {name}: {score}'"
+  },
+  {
+    id: "Q79",
+    cat: "Functions & Scope",
+    q: "How does pass-by-object-reference work when passing lists to functions?",
+    exp: "Python passes object references. If you pass a mutable object like a list and mutate it inside the function, the change reflects in the original object outside.",
+    use: "Important behavior: Reassigning the variable name inside does not affect the outside, but modifying it (.append, .pop) does.",
+    code: "def add_tax(lst):\n    lst.append('Tax Added')\nvals = [100, 200]\nadd_tax(vals)\nprint(vals) # Output: [100, 200, 'Tax Added']"
+  },
+  {
+    id: "Q80",
+    cat: "Functions & Scope",
+    q: "Why should you avoid using built-in names (like list, dict, id, sum) as variable names?",
+    exp: "Assigning to list = [1, 2] shadows the built-in function in the Global scope, making list() unavailable later and causing 'TypeError: list object is not callable'.",
+    use: "Debugging: Use descriptive names like student_list or total_sum instead of shadowing built-ins.",
+    code: "# BAD: sum = 50\n# GOOD: total_sum = 50"
+  },
+
+  // SECTION 5: Functional, Files & Exceptions (Q81 - Q95)
+  {
+    id: "Q81",
+    cat: "Functional & Files",
+    q: "What is a Lambda function in Python?",
+    exp: "A lambda is a small, anonymous function defined without a name using the syntax: lambda arguments: expression.",
+    use: "Short transformations: Used inside sorting keys, Pandas apply(), or map/filter calls without creating a full def block.",
+    code: "square = lambda x: x * x\nprint(square(5)) # Output: 25"
+  },
+  {
+    id: "Q82",
+    cat: "Functional & Files",
+    q: "What is the difference between map() and filter()?",
+    exp: "map() applies a transformation function to EVERY element in an iterable. filter() evaluates elements with a condition and keeps ONLY those that return True.",
+    use: "Analytics distinction: map() doubles all prices; filter() retains only prices greater than ₹500.",
+    code: "nums = [1, 2, 3, 4]\ndoubled = list(map(lambda x: x * 2, nums)) # [2, 4, 6, 8]\nevens = list(filter(lambda x: x % 2 == 0, nums)) # [2, 4]"
+  },
+  {
+    id: "Q83",
+    cat: "Functional & Files",
+    q: "What does reduce() do, and which module provides it?",
+    exp: "reduce() (from the functools module) applies a rolling two-argument function cumulatively to items in a sequence until a single aggregated value remains.",
+    use: "Calculation: Cumulative multiplications (factorials) or computing compound interest.",
+    code: "from functools import reduce\nnums = [1, 2, 3, 4]\nprod = reduce(lambda a, b: a * b, nums)\nprint(prod) # Output: 24 (1*2*3*4)"
+  },
+  {
+    id: "Q84",
+    cat: "Functional & Files",
+    q: "What is a Generator Expression, and how does it save memory?",
+    exp: "A generator expression uses parentheses (x for x in data) instead of square brackets. It yields items lazily one-by-one on demand instead of storing the whole list in memory.",
+    use: "Big Data processing: Reading or streaming 10 million transaction records without crashing computer RAM.",
+    code: "gen = (x * x for x in range(1000000))\nprint(next(gen)) # Output: 0\nprint(next(gen)) # Output: 1"
+  },
+  {
+    id: "Q85",
+    cat: "Functional & Files",
+    q: "What is a Context Manager (with open(...) as f:), and why is it preferred for file I/O?",
+    exp: "The with statement automatically handles resource cleanup. It guarantees that the file is safely closed immediately after exiting the block, even if an unhandled error crashes the script.",
+    use: "Production safety: Prevents memory leaks, file locking, and corrupted logs.",
+    code: "with open('sales.txt', 'w') as f:\n    f.write('Revenue: 50000')\n# File is automatically closed here!"
+  },
+  {
+    id: "Q86",
+    cat: "Functional & Files",
+    q: "What is the difference between file modes 'r', 'w', 'a', and 'x'?",
+    exp: "'r' opens for reading (file must exist); 'w' opens for writing (truncates existing file to 0 bytes); 'a' appends new text at the end; 'x' creates a new file and fails if it already exists.",
+    use: "Logging: Use 'a' to add new operational log lines without wiping previous records.",
+    code: "with open('audit.log', 'a') as log:\n    log.write('User logged in\\n')"
+  },
+  {
+    id: "Q87",
+    cat: "Functional & Files",
+    q: "What is the difference between read(), readline(), and readlines()?",
+    exp: "read() reads the entire file as a single string; readline() reads one single line at a time; readlines() reads the entire file into a list of line strings.",
+    use: "Memory efficiency: For huge files, loop directly over the file object: for line in file:, which reads line-by-line efficiently.",
+    code: "with open('data.txt', 'r') as f:\n    first_line = f.readline()"
+  },
+  {
+    id: "Q88",
+    cat: "Functional & Files",
+    q: "How does the csv.DictReader class help in processing CSV files?",
+    exp: "csv.DictReader reads CSV lines directly into Python dictionaries, mapping each cell value to its column header name.",
+    use: "Clarity: Access values using row['CustomerName'] rather than remembering index positions like row[3].",
+    code: "import csv\nwith open('sales.csv', 'r') as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(row['Product'], row['Amount'])"
+  },
+  {
+    id: "Q89",
+    cat: "Functional & Files",
+    q: "What is the purpose of try, except, else, and finally in Python Exception Handling?",
+    exp: "try wraps risky code; except catches and handles specific errors; else runs ONLY if no error occurred; finally ALWAYS runs for mandatory cleanup.",
+    use: "Database use case: try: execute query -> except: rollback transaction -> else: commit transaction -> finally: close database connection.",
+    code: "try:\n    res = 10 / 2\nexcept ZeroDivisionError:\n    print('Divided by zero')\nelse:\n    print('Success:', res)\nfinally:\n    print('Operation Finished')"
+  },
+  {
+    id: "Q90",
+    cat: "Functional & Files",
+    q: "Why is catching specific exceptions (like ValueError) better than a bare except:?",
+    exp: "A bare except catches EVERYTHING, including KeyboardInterrupt (Ctrl+C) and system exit calls. Specific handlers prevent masking unexpected syntax or logic errors.",
+    use: "Debugging: Catching ValueError allows unexpected FileNotFoundError or KeyErrors to surface cleanly.",
+    code: "try:\n    val = int(input_str)\nexcept ValueError:\n    val = 0"
+  },
+  {
+    id: "Q91",
+    cat: "Functional & Files",
+    q: "How do you define and raise a Custom Exception in Python?",
+    exp: "By creating a class that inherits from Python's built-in Exception class, and triggering it with the raise keyword.",
+    use: "Business rule enforcement: Raising an InvalidAgeError or InsufficientBalanceError if an account withdrawal exceeds current balance.",
+    code: "class InsufficientBalanceError(Exception):\n    pass\n\nbalance = 500\nif balance < 1000:\n    raise InsufficientBalanceError('Balance below threshold!')"
+  },
+  {
+    id: "Q92",
+    cat: "Functional & Files",
+    q: "What does the raise keyword do on its own inside an except block?",
+    exp: "A bare raise re-raises the current active exception up the call stack after you have logged or inspected it.",
+    use: "Logging: Capturing an error in an audit log while still letting the parent application know the operation failed.",
+    code: "try:\n    calc()\nexcept Exception as e:\n    print('Logged error:', e)\n    raise  # Passes error upward"
+  },
+  {
+    id: "Q93",
+    cat: "Functional & Files",
+    q: "How do you combine filter(), map(), and sum() in a single pipeline?",
+    exp: "Pass the output of filter() into map(), and pass the result of map() into sum().",
+    use: "Pipeline: Filter transactions > 1000, apply 5% tax, and calculate total sum in one readable pipeline.",
+    code: "txns = [500, 1500, 2000]\ntotal = sum(map(lambda x: x * 1.05, filter(lambda x: x > 1000, txns)))\nprint(total) # Output: 3675.0"
+  },
+  {
+    id: "Q94",
+    cat: "Functional & Files",
+    q: "What is the difference between an Exception and a SyntaxError?",
+    exp: "A SyntaxError is caught by Python's parser before the code runs due to invalid grammar (like missing colons). An Exception occurs during runtime while executing valid syntax (like ZeroDivisionError).",
+    use: "Execution lifecycle: Exceptions can be handled with try-except; SyntaxErrors prevent code from starting at all.",
+    code: "# SyntaxError: if x == 5 (missing colon)\n# Exception: 10 / 0 (syntax is fine, math fails at runtime)"
+  },
+  {
+    id: "Q95",
+    cat: "Functional & Files",
+    q: "What is the yield keyword, and how does it differ from return?",
+    exp: "return sends a value back and terminates the function completely. yield produces a value and pauses the function, freezing its execution state to resume on the next call.",
+    use: "Generator streaming: Reading massive datasets line by line without holding all records in memory.",
+    code: "def get_nums():\n    yield 1\n    yield 2\ng = get_nums()\nprint(next(g)) # 1\nprint(next(g)) # 2"
+  },
+
+  // SECTION 6: OOP & DSA (Q96 - Q110)
+  {
+    id: "Q96",
+    cat: "OOP & DSA",
+    q: "What is an Object-Oriented Programming (OOP) Class and Object?",
+    exp: "A Class is a blueprint defining attributes and methods. An Object is an actual concrete instance built from that blueprint.",
+    use: "Real-world analogy: A blueprint for a house is the Class; the physical house built on a specific plot is the Object.",
+    code: "class Customer:\n    pass\nc1 = Customer() # c1 is an Object"
+  },
+  {
+    id: "Q97",
+    cat: "OOP & DSA",
+    q: "What is the role of the __init__() constructor method and the self parameter?",
+    exp: "__init__() initializes an instance's attributes when the object is instantiated. self represents the specific instance being created or operated on.",
+    use: "State initialization: Assigning unique account IDs and initial balances to bank accounts.",
+    code: "class BankAccount:\n    def __init__(self, acc_id, balance):\n        self.acc_id = acc_id\n        self.balance = balance\n\nacc1 = BankAccount(101, 5000)"
+  },
+  {
+    id: "Q98",
+    cat: "OOP & DSA",
+    q: "What is the difference between an Instance Attribute and a Class Attribute?",
+    exp: "An instance attribute belongs to a specific object (defined via self.attr). A class attribute is defined at the class level and shared across all instances of that class.",
+    use: "Business modeling: bank_name = 'HDFC' is a class attribute shared by all accounts; balance is an instance attribute unique to each user.",
+    code: "class Employee:\n    company = 'TechCorp' # Class attribute\n    def __init__(self, name):\n        self.name = name  # Instance attribute"
+  },
+  {
+    id: "Q99",
+    cat: "OOP & DSA",
+    q: "What are Dunder (Magic) methods like __str__() and __repr__()?",
+    exp: "Dunder (double-underscore) methods define how objects behave with built-in operations. __str__() defines human-readable text for print(); __repr__() defines unambiguous developer representations.",
+    use: "Reporting: Printing an object print(order) outputs 'Order #101: ₹5,000' instead of '<Order object at 0x7f8...'.",
+    code: "class Book:\n    def __init__(self, title): self.title = title\n    def __str__(self): return f'Book: {self.title}'\nprint(Book('Python 101')) # Output: Book: Python 101"
+  },
+  {
+    id: "Q100",
+    cat: "OOP & DSA",
+    q: "What is Inheritance, and how does the super() function work?",
+    exp: "Inheritance allows a child class to inherit attributes and methods from a parent class for code reuse. super() calls the parent class's constructor or methods.",
+    use: "Hierarchies: Manager inherits from Employee, reusing salary logic while adding department leadership methods.",
+    code: "class Animal:\n    def speak(self): return 'Sound'\nclass Dog(Animal):\n    def speak(self): return 'Woof' # Method Overriding"
+  },
+  {
+    id: "Q101",
+    cat: "OOP & DSA",
+    q: "What is Polymorphism in Python?",
+    exp: "Polymorphism means 'many forms'—different classes can implement methods with the same name, allowing them to be called uniformly through a shared interface.",
+    use: "Payment gateway: Both UpiPayment and CardPayment implement a pay(amount) method. The checkout system calls payment.pay() regardless of method type.",
+    code: "class UPI:  def pay(self): return 'Paid via UPI'\nclass Card: def pay(self): return 'Paid via Card'\nfor p in [UPI(), Card()]:\n    print(p.pay())"
+  },
+  {
+    id: "Q102",
+    cat: "OOP & DSA",
+    q: "What is Encapsulation, and how are private attributes denoted in Python?",
+    exp: "Encapsulation bundles data and behavior together while restricting direct external modification. A single underscore (_attr) denotes internal use; double underscore (__attr) invokes name mangling.",
+    use: "Security: Preventing external scripts from directly overwriting bank_balance without going through deposit() or withdraw() checks.",
+    code: "class Account:\n    def __init__(self):\n        self._balance = 1000 # Protected convention"
+  },
+  {
+    id: "Q103",
+    cat: "OOP & DSA",
+    q: "What is Abstraction in OOP?",
+    exp: "Abstraction exposes essential operational interfaces to the user while hiding underlying technical complexity.",
+    use: "Analogy: When you press the accelerator in a car, you don't need to know fuel injection mechanics—you just know the car moves forward.",
+    code: "# Using abstract base classes (from abc import ABC, abstractmethod)"
+  },
+  {
+    id: "Q104",
+    cat: "OOP & DSA",
+    q: "What is a Stack, and what principle does it follow?",
+    exp: "A Stack is a linear data structure following the LIFO (Last In, First Out) principle. The last item added is the first one removed.",
+    use: "Real-world analogy: A stack of dinner plates, browser back-button history, or Undo (Ctrl+Z) functionality.",
+    code: "stack = []\nstack.append('Page1')\nstack.append('Page2')\nprint(stack.pop()) # Output: Page2 (LIFO)"
+  },
+  {
+    id: "Q105",
+    cat: "OOP & DSA",
+    q: "What is a Queue, and what principle does it follow?",
+    exp: "A Queue follows the FIFO (First In, First Out) principle. The earliest item added is the first one processed.",
+    use: "Real-world analogy: A queue of customers at a cinema ticket counter, or print jobs queued in a printer.",
+    code: "from collections import deque\nq = deque()\nq.append('Job1')\nq.append('Job2')\nprint(q.popleft()) # Output: Job1 (FIFO)"
+  },
+  {
+    id: "Q106",
+    cat: "OOP & DSA",
+    q: "Why is collections.deque preferred over a Python list for implementing queues?",
+    exp: "Removing from the front of a list (list.pop(0)) requires shifting all remaining elements, taking O(n) linear time. deque.popleft() takes O(1) constant time.",
+    use: "Performance engineering: Essential when managing real-time data queues or streaming event brokers.",
+    code: "from collections import deque\nfast_queue = deque([1, 2, 3])"
+  },
+  {
+    id: "Q107",
+    cat: "OOP & DSA",
+    q: "What is a Linked List, and how does it store data?",
+    exp: "A linked list is a linear data structure where elements (Nodes) are not stored in contiguous memory. Each node stores a data value and a reference (pointer) to the next node.",
+    use: "Memory mechanics: Allows fast O(1) insertions and deletions at known positions without reallocating an entire continuous memory array.",
+    code: "class Node:\n    def __init__(self, data):\n        self.data = data\n        self.next = None"
+  },
+  {
+    id: "Q108",
+    cat: "OOP & DSA",
+    q: "What is Big-O Notation, and what is the difference between O(1) and O(n)?",
+    exp: "Big-O measures how an algorithm's execution time or memory usage scales as input size (n) grows. O(1) means constant time (instant); O(n) means execution time grows linearly with input size.",
+    use: "System scale: Accessing a dictionary key takes O(1) whether it has 10 items or 10 million items.",
+    code: "# O(1): dict_lookup = d['key']\n# O(n): for item in my_list: check(item)"
+  },
+  {
+    id: "Q109",
+    cat: "OOP & DSA",
+    q: "How does the Two-Pointer technique work in algorithmic problem-solving?",
+    exp: "It uses two integer variables pointing to different indices (typically start and end of a sorted array) that move toward each other based on comparison conditions.",
+    use: "LeetCode classic: Solving the Two-Sum problem on a sorted list in O(n) time without nested O(n^2) loops.",
+    code: "nums = [2, 7, 11, 15]; target = 9\n# Pointers left=0, right=3 -> 2 + 15 > 9 (move right leftward)"
+  },
+  {
+    id: "Q110",
+    cat: "OOP & DSA",
+    q: "How does a Hash Table (Dictionary/Set) optimize lookup operations?",
+    exp: "It computes an integer hash value from the key to locate the memory address directly, providing average O(1) constant-time search.",
+    use: "Interview check: Finding duplicate values in a list: Checking seen_set gives instant O(1) lookup rather than re-scanning the list.",
+    code: "seen = set()\nfor n in [1, 2, 3, 2]:\n    if n in seen: print('Duplicate:', n)\n    seen.add(n)"
+  },
+
+  // SECTION 7: NumPy Arrays & Math (Q111 - Q125)
+  {
+    id: "Q111",
+    cat: "NumPy",
+    q: "What is a NumPy ndarray, and why is it preferred over Python lists for numerical data?",
+    exp: "A NumPy array is a contiguous, homogeneous memory block storing elements of the same data type. It supports vectorization and runs compiled C code without Python loop overhead.",
+    use: "Performance: Mathematical computations on 10 million numbers run up to 50x faster in NumPy than with Python lists.",
+    code: "import numpy as np\narr = np.array([10, 20, 30])\nprint(type(arr), arr * 2) # Output: [20 40 60]"
+  },
+  {
+    id: "Q112",
+    cat: "NumPy",
+    q: "What do ndim, shape, and size represent in a NumPy array?",
+    exp: "ndim is the number of dimensions (axes); shape is a tuple showing the size along each dimension; size is the total count of all elements.",
+    use: "Tensor inspection: Checking image array inputs: (batch_size, height, width, channels).",
+    code: "arr = np.array([[10, 20, 30], [40, 50, 60]])\nprint(arr.ndim)  # Output: 2\nprint(arr.shape) # Output: (2, 3)\nprint(arr.size)  # Output: 6"
+  },
+  {
+    id: "Q113",
+    cat: "NumPy",
+    q: "What is Vectorization in NumPy?",
+    exp: "Vectorization is performing mathematical operations across entire arrays at once without writing explicit Python for-loops.",
+    use: "Clean code: Multiplying prices * tax calculates taxes for all 1 million rows in one compiled vectorized statement.",
+    code: "prices = np.array([100, 200, 300])\ntaxes = prices * 0.18 # Vectorized multiplication\nprint(taxes)          # Output: [18. 36. 54.]"
+  },
+  {
+    id: "Q114",
+    cat: "NumPy",
+    q: "How does 2D array indexing work in arr[row, col]?",
+    exp: "You pass row and column coordinates separated by a comma inside a single pair of brackets [row, col], using zero-based indexing.",
+    use: "Matrix access: Extracting specific cells or grid values.",
+    code: "arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\nprint(arr[2, 1]) # Row index 2, Col index 1 -> Output: 8"
+  },
+  {
+    id: "Q115",
+    cat: "NumPy",
+    q: "What is the difference between a View and a Copy in NumPy slicing?",
+    exp: "Basic array slicing creates a View (a window sharing the same underlying data). Modifying a sliced view alters the original array. To prevent this, use arr.copy().",
+    use: "Memory efficiency: Slicing massive arrays consumes no extra memory, but can introduce unintended side-effects if mutated.",
+    code: "orig = np.array([1, 2, 3])\nview = orig[0:2]\nview[0] = 99\nprint(orig) # Output: [99, 2, 3] (Original modified!)"
+  },
+  {
+    id: "Q116",
+    cat: "NumPy",
+    q: "What is Boolean Masking (Indexing) in NumPy?",
+    exp: "Filtering array values by applying a boolean condition that returns a True/False mask, selecting only the True elements.",
+    use: "Filtering outlier metrics or selecting values above a threshold.",
+    code: "arr = np.array([3, 6, 9, 12, 15])\nfiltered = arr[arr > 8]\nprint(filtered) # Output: [ 9 12 15]"
+  },
+  {
+    id: "Q117",
+    cat: "NumPy",
+    q: "What is NumPy Broadcasting?",
+    exp: "Broadcasting is NumPy's ability to perform arithmetic operations between arrays of different, but compatible, shapes by conceptually stretching the smaller array.",
+    use: "Data normalization: Subtracting column means from a data matrix without manually duplicating rows.",
+    code: "matrix = np.array([[1, 2], [3, 4]]) # Shape (2, 2)\nrow = np.array([10, 20])              # Shape (2,)\nprint(matrix + row) # [[11 22], [13 24]]"
+  },
+  {
+    id: "Q118",
+    cat: "NumPy",
+    q: "What are the compatibility rules for NumPy broadcasting?",
+    exp: "Dimensions are compared from right to left. Two dimensions are compatible if they are equal, or if one of them is 1.",
+    use: "Array mechanics: A (3, 1) array combined with a (1, 2) array broadcasts into a (3, 2) result array.",
+    code: "a = np.array([[1], [2], [3]]) # (3, 1)\nb = np.array([10, 20])        # (2,)\nprint((a + b).shape)          # (3, 2)"
+  },
+  {
+    id: "Q119",
+    cat: "NumPy",
+    q: "What does the axis parameter mean in functions like sum() or mean()?",
+    exp: "axis=0 collapses rows (computes down columns); axis=1 collapses columns (computes horizontally across rows).",
+    use: "Reporting: axis=0 gives average score per subject; axis=1 gives total score per student.",
+    code: "arr = np.array([[1, 2], [3, 4]])\nprint(arr.sum(axis=0)) # Output: [4, 6] (Column totals)\nprint(arr.sum(axis=1)) # Output: [3, 7] (Row totals)"
+  },
+  {
+    id: "Q120",
+    cat: "NumPy",
+    q: "How does reshape() work, and what rule must be satisfied?",
+    exp: "reshape() rearranges array dimensions without altering underlying data. The product of the new dimensions MUST equal the total number of elements in the original array.",
+    use: "Model inputs: Reshaping a flat 784-pixel vector into a 28x28 image grid.",
+    code: "arr = np.arange(12) # 12 elements\nmatrix = arr.reshape(3, 4) # 3 * 4 = 12"
+  },
+  {
+    id: "Q121",
+    cat: "NumPy",
+    q: "What does np.where(condition, x, y) do?",
+    exp: "It is a vectorized ternary operator: for each element, it selects 'x' if the condition is True, and 'y' if False.",
+    use: "Feature engineering: Tagging values: np.where(df['sales'] > 1000, 'Bonus', 'Normal').",
+    code: "arr = np.array([1, 2, 3, 4])\nres = np.where(arr % 2 == 0, arr * 10, arr)\nprint(res) # Output: [ 1 20  3 40]"
+  },
+  {
+    id: "Q122",
+    cat: "NumPy",
+    q: "How do you generate an array of zeros, ones, or evenly spaced values in NumPy?",
+    exp: "np.zeros(shape) creates zero arrays; np.ones(shape) creates one arrays; np.arange(start, stop, step) creates numerical intervals.",
+    use: "Algorithm initialization: Initializing weight matrices to zeros before training.",
+    code: "zeros = np.zeros((3, 2))\nsteps = np.arange(0, 10, 2) # [0, 2, 4, 6, 8]"
+  },
+  {
+    id: "Q123",
+    cat: "NumPy",
+    q: "What does np.linspace(start, stop, num) do?",
+    exp: "It returns 'num' evenly spaced numbers calculated over a specified closed interval [start, stop].",
+    use: "Plotting: Generating smooth continuous X-axis values for math function graphs.",
+    code: "x = np.linspace(0, 1, 5)\nprint(x) # Output: [0.   0.25 0.5  0.75 1.  ]"
+  },
+  {
+    id: "Q124",
+    cat: "NumPy",
+    q: "What is the difference between np.mean() and np.median() when outliers exist?",
+    exp: "np.mean() computes the arithmetic average and is sensitive to extreme values. np.median() finds the middle value and is resistant to outliers.",
+    use: "Analytics sanity check: If average salary is ₹15 LPA due to CEO compensation, median salary (₹4 LPA) better represents typical staff.",
+    code: "salaries = np.array([3, 4, 4, 5, 100])\nprint(np.mean(salaries))   # 23.2 (distorted)\nprint(np.median(salaries)) # 4.0  (realistic)"
+  },
+  {
+    id: "Q125",
+    cat: "NumPy",
+    q: "How does Universal Function (ufunc) support element-wise math in NumPy?",
+    exp: "A ufunc (like np.sqrt, np.exp, np.log) operates element-by-element on an array in compiled C, avoiding explicit Python loops.",
+    use: "Data transformations: Applying log transforms to right-skewed sales data.",
+    code: "arr = np.array([4, 9, 16])\nprint(np.sqrt(arr)) # Output: [2. 3. 4.]"
+  },
+
+  // SECTION 8: Pandas DataFrames & ETL (Q126 - Q140)
+  {
+    id: "Q126",
+    cat: "Pandas",
+    q: "What is the difference between a Pandas Series and a Pandas DataFrame?",
+    exp: "A Series is a one-dimensional labeled array (like a single column). A DataFrame is a two-dimensional labeled table made up of multiple Series sharing an index.",
+    use: "Structure: df['Revenue'] is a Series; df[['Revenue', 'Profit']] is a DataFrame.",
+    code: "import pandas as pd\ns = pd.Series([10, 20], name='Sales')\ndf = pd.DataFrame({'Sales': [10, 20], 'Cost': [8, 15]})"
+  },
+  {
+    id: "Q127",
+    cat: "Pandas",
+    q: "How do you load CSV and Excel files into Pandas DataFrames?",
+    exp: "Use pd.read_csv('filename.csv') for CSV files and pd.read_excel('filename.xlsx') for Excel spreadsheets.",
+    use: "Data ingestion: First step in every analytical notebook.",
+    code: "df = pd.read_csv('sales.csv')\nprint(df.head()) # Preview first 5 rows"
+  },
+  {
+    id: "Q128",
+    cat: "Pandas",
+    q: "What is the critical difference between df.loc[] and df.iloc[]?",
+    exp: "df.loc[] selects rows and columns by their LABELS. df.iloc[] selects rows and columns by their integer POSITIONS (0-based indexing).",
+    use: "Interview essential: If an index has labels ['A', 'B'], df.loc['A'] retrieves row 'A', while df.iloc[0] retrieves the first row regardless of label.",
+    code: "df = pd.DataFrame({'Marks': [80, 90]}, index=['A', 'B'])\nprint(df.loc['A', 'Marks'])  # Label selection: 80\nprint(df.iloc[0, 0])         # Position selection: 80"
+  },
+  {
+    id: "Q129",
+    cat: "Pandas",
+    q: "What do df.head(), df.info(), and df.describe() accomplish during initial inspection?",
+    exp: "head() displays the first 5 rows; info() displays column names, data types, and non-null counts; describe() computes summary statistics (mean, min, max, quartiles) for numeric columns.",
+    use: "EDA hygiene: Running these three commands immediately spots missing values, bad types, and skewed distributions.",
+    code: "df.info()\nprint(df.describe())"
+  },
+  {
+    id: "Q130",
+    cat: "Pandas",
+    q: "How do you filter a DataFrame using multiple Boolean conditions (AND / OR)?",
+    exp: "Wrap each individual condition in parentheses and use the bitwise operators & for AND, and | for OR.",
+    use: "Filtering: df[(df['City'] == 'Delhi') & (df['Sales'] > 10000)].",
+    code: "df = pd.DataFrame({'Amount': [400, 600, 800], 'Status': ['Done', 'Done', 'Pending']})\nvalid = df[(df['Amount'] > 500) & (df['Status'] == 'Done')]\nprint(valid)"
+  },
+  {
+    id: "Q131",
+    cat: "Pandas",
+    q: "How do you sort a DataFrame by a column in descending order?",
+    exp: "Use df.sort_values(by='ColumnName', ascending=False).",
+    use: "Rankings: Finding top 10 best-selling products across an e-commerce platform.",
+    code: "df.sort_values(by='Revenue', ascending=False, inplace=True)"
+  },
+  {
+    id: "Q132",
+    cat: "Pandas",
+    q: "How does the groupby() method implement the Split-Apply-Combine pattern?",
+    exp: "It splits data into groups based on key columns, applies a calculation (like sum, mean, count) to each group, and combines results back into a summary table.",
+    use: "Business aggregation: Calculating total revenue by region: df.groupby('Region')['Revenue'].sum().",
+    code: "df = pd.DataFrame({'Dept': ['IT', 'HR', 'IT'], 'Sal': [60, 40, 70]})\nprint(df.groupby('Dept')['Sal'].mean()) # HR: 40, IT: 65"
+  },
+  {
+    id: "Q133",
+    cat: "Pandas",
+    q: "What is the difference between isna(), dropna(), and fillna() when handling missing data?",
+    exp: "isna() detects missing null values; dropna() removes rows or columns containing missing values; fillna(val) replaces missing values with a designated number or text.",
+    use: "Data cleaning: df['Age'].fillna(df['Age'].median(), inplace=True) imputes missing ages with the median.",
+    code: "df['Score'] = df['Score'].fillna(0) # Replaces NaN with 0"
+  },
+  {
+    id: "Q134",
+    cat: "Pandas",
+    q: "What does df.drop_duplicates(subset=['ID']) do?",
+    exp: "It scans the specified subset column and removes duplicate records, keeping the first occurrence by default.",
+    use: "Data hygiene: Ensuring each customer ID appears only once in a customer profile master dataset.",
+    code: "df.drop_duplicates(subset=['CustomerID'], keep='first', inplace=True)"
+  },
+  {
+    id: "Q135",
+    cat: "Pandas",
+    q: "How does pd.merge() combine DataFrames, and what is a Left Join?",
+    exp: "pd.merge() combines two DataFrames horizontally on a common key column (like a SQL JOIN). A Left Join keeps all records from the left DataFrame and attaches matching right-side attributes.",
+    use: "Data integration: Merging customer master profiles with order transactions.",
+    code: "merged = pd.merge(customers, orders, on='CustomerID', how='left')"
+  },
+  {
+    id: "Q136",
+    cat: "Pandas",
+    q: "Why can a merge unexpectedly multiply rows in the output?",
+    exp: "If the join key appears multiple times in BOTH DataFrames (a Many-to-Many relationship), Pandas matches every left row with every matching right row, expanding row count.",
+    use: "Sanity check: Always check df.shape before and after merges to spot unintended many-to-many explosions.",
+    code: "# Check unique keys: assert df['ID'].is_unique"
+  },
+  {
+    id: "Q137",
+    cat: "Pandas",
+    q: "How do you create a new calculated column in a Pandas DataFrame?",
+    exp: "Assign a vectorized expression directly to a new bracketed column name: df['Profit'] = df['Revenue'] - df['Cost'].",
+    use: "Feature engineering: Deriving profit margins, discounts, or date differences.",
+    code: "df['Profit'] = df['Revenue'] - df['Cost']"
+  },
+  {
+    id: "Q138",
+    cat: "Pandas",
+    q: "What does pd.melt() do, and when is it used?",
+    exp: "pd.melt() reshapes a DataFrame from wide format (columns like Jan, Feb, Mar) into long format (two columns: Month and Sales).",
+    use: "Data normalization: Tidy data principles require tall, normalized formats for visualization in Tableau or Seaborn.",
+    code: "# pd.melt(df, id_vars=['Product'], value_vars=['Jan', 'Feb'])"
+  },
+  {
+    id: "Q139",
+    cat: "Pandas",
+    q: "What does the apply() method do in Pandas?",
+    exp: "apply() passes each element (or row/column) through a custom Python function or lambda.",
+    use: "Custom transformations: Applying custom tax tiers or complex text parsing logic across a column.",
+    code: "df['CleanPhone'] = df['Phone'].apply(lambda x: str(x).strip()[-10:])"
+  },
+  {
+    id: "Q140",
+    cat: "Pandas",
+    q: "What is the difference between df['Col'] and df[['Col']]?",
+    exp: "A single pair of brackets df['Col'] extracts the column as a 1D Pandas Series. A double pair of brackets df[['Col']] returns it as a 2D Pandas DataFrame.",
+    use: "Model preparation: Scikit-Learn model trainers expect a 2D DataFrame for feature matrix X, requiring double brackets.",
+    code: "print(type(df['Sales']))   # <class 'pandas.core.series.Series'>\nprint(type(df[['Sales']])) # <class 'pandas.core.frame.DataFrame'>"
+  },
+
+  // SECTION 9: Visualization & EDA (Q141 - Q150)
+  {
+    id: "Q141",
+    cat: "Visualization & EDA",
+    q: "What is Exploratory Data Analysis (EDA), and what are its three primary stages?",
+    exp: "EDA is the process of inspecting, summarizing, and visualizing a dataset to uncover patterns, anomalies, and relationships before formal modeling. Stages: Univariate (one variable), Bivariate (two variables), and Multivariate (multiple variables).",
+    use: "Business reality: Prevents building dashboards or models on top of flawed, corrupted, or misinterpreted data.",
+    code: "# EDA Workflow: Info -> Missing Values -> Outliers -> Distributions -> Correlations"
+  },
+  {
+    id: "Q142",
+    cat: "Visualization & EDA",
+    q: "In Matplotlib, what is the difference between a Figure and an Axes?",
+    exp: "A Figure is the top-level outer canvas container (the window or file). An Axes is an individual plot or subplot sitting inside that canvas containing axes, ticks, and data marks.",
+    use: "Layout control: fig, axes = plt.subplots(1, 2) creates one canvas holding two side-by-side plots.",
+    code: "import matplotlib.pyplot as plt\nfig, ax = plt.subplots()\nax.plot([1, 2, 3], [10, 20, 15])\nax.set_title('Sales Trend')"
+  },
+  {
+    id: "Q143",
+    cat: "Visualization & EDA",
+    q: "When should an analyst use a Scatter Plot vs. a Line Plot?",
+    exp: "Use a Line Plot to display continuous trends over an ordered dimension like time. Use a Scatter Plot to examine the relationship or correlation between two numerical variables.",
+    use: "Visual distinction: Monthly sales trend over 12 months = Line Plot; Marketing Ad Spend vs. Units Sold = Scatter Plot.",
+    code: "plt.scatter(df['AdSpend'], df['Sales'])"
+  },
+  {
+    id: "Q144",
+    cat: "Visualization & EDA",
+    q: "What is a Histogram, and what does it reveal about numerical distributions?",
+    exp: "A histogram groups continuous numeric values into discrete bins and plots bar heights to show frequency distribution, revealing whether data is normal, skewed, or bimodal.",
+    use: "Analytics check: Checking if customer delivery duration is normally distributed or heavily right-skewed.",
+    code: "plt.hist(df['DeliveryMinutes'], bins=20)"
+  },
+  {
+    id: "Q145",
+    cat: "Visualization & EDA",
+    q: "What does a Box Plot (Box-and-Whisker) communicate, and how does it flag potential outliers?",
+    exp: "It displays the 5-number summary: Minimum, Q1 (25th percentile), Median (50th), Q3 (75th), and Maximum. Observations beyond 1.5 * IQR above Q3 or below Q1 are plotted as individual outlier points.",
+    use: "Quality control: Detecting fraudulent transactions with abnormally high purchase amounts.",
+    code: "import seaborn as sns\nsns.boxplot(x=df['Salary'])"
+  },
+  {
+    id: "Q146",
+    cat: "Visualization & EDA",
+    q: "What is a Heatmap in Seaborn, and how is it used with correlation matrices?",
+    exp: "sns.heatmap() visualizes a 2D grid of numbers using color gradients. It is standard for visualizing df.corr() to spot strong positive or negative relationships between features.",
+    use: "Feature selection: Identifying pairs of features that have a correlation coefficient close to +1.0 or -1.0.",
+    code: "sns.heatmap(df.corr(), annot=True, cmap='coolwarm')"
+  },
+  {
+    id: "Q147",
+    cat: "Visualization & EDA",
+    q: "What is the difference between Positive Skew and Negative Skew?",
+    exp: "Positive (Right) Skew has a long tail extending toward higher numbers, pulling the Mean higher than the Median. Negative (Left) Skew has a tail extending toward lower numbers, pulling the Mean below the Median.",
+    use: "Income analytics: Household income is typically right-skewed—a few multi-millionaires pull the mean up, making median the better metric.",
+    code: "# Right-skew: Mean > Median\n# Left-skew: Mean < Median"
+  },
+  {
+    id: "Q148",
+    cat: "Visualization & EDA",
+    q: "What is Cross-Tabulation (pd.crosstab) in categorical analysis?",
+    exp: "pd.crosstab(col1, col2) computes a frequency contingency table showing how two categorical variables overlap.",
+    use: "Customer insights: Evaluating loan approval status across gender or occupation categories.",
+    code: "print(pd.crosstab(df['City'], df['SubscriptionTier']))"
+  },
+  {
+    id: "Q149",
+    cat: "Visualization & EDA",
+    q: "What does 'Correlation does not imply Causation' mean in business analytics?",
+    exp: "Just because two variables move together statistically (e.g., ice cream sales and drowning incidents both rise in summer) does not mean one causes the other; a third lurking variable (temperature) drives both.",
+    use: "Executive communication: App usage may correlate with higher spending, but forcing customers to stay on an app won't magically generate revenue.",
+    code: "# Correlation shows association, not direct cause-and-effect!"
+  },
+  {
+    id: "Q150",
+    cat: "Visualization & EDA",
+    q: "What are three key principles for creating executive-ready charts in Python?",
+    exp: "1. Clarity: Always include meaningful titles, labeled axes, and units (₹, %, count).\n2. Contrast: Use clean, intentional color palettes to highlight key findings rather than decorative clutter.\n3. Simplicity: Call plt.tight_layout() to avoid label clipping and eliminate unnecessary 3D effects.",
+    use: "Interview closing: Effective analytics is not about writing complicated code—it is about translating numbers into clear, defensible business decisions.",
+    code: "plt.title('Q3 Sales Performance (in ₹ Lakhs)')\nplt.xlabel('Region')\nplt.ylabel('Revenue')\nplt.tight_layout()"
+  }
+];
+
+let currentCategory = "All";
+let studyMode = false;
+
+function renderList() {
+  const container = document.getElementById("qaList");
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  container.innerHTML = "";
+
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.exp.toLowerCase().includes(query) || 
+                          item.use.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  document.getElementById("resultCount").innerText = `Showing ${filtered.length} of ${qaData.length} questions`;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted); background: white; border-radius: var(--radius); border: 1px solid var(--border);">No questions match your search or filter.</div>`;
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = `qa-card ${studyMode ? "" : "open"}`;
+    card.id = `card-${item.id}`;
+
+    card.innerHTML = `
+      <div class="qa-header" onclick="toggleCard('${item.id}')">
+        <div class="qa-title-wrapper">
+          <span class="q-id">${item.id}</span>
+          <div>
+            <div class="q-text">${escapeHTML(item.q)}</div>
+            <div class="qa-meta">
+              <span class="cat-tag">${item.cat}</span>
+            </div>
+          </div>
+        </div>
+        <div class="q-toggle-icon">▼</div>
+      </div>
+      <div class="qa-content">
+        <div class="answer-box">
+          <div class="answer-section">
+            <span class="section-label">💡 Plain-English Explanation</span>
+            <p>${escapeHTML(item.exp)}</p>
+          </div>
+          <div class="answer-section">
+            <span class="section-label">🏢 Real-World / Business Analogy</span>
+            <p>${escapeHTML(item.use)}</p>
+          </div>
+          <div class="answer-section">
+            <span class="section-label">💻 Practical Code Example</span>
+            <pre class="code-box"><code>${escapeHTML(item.code)}</code></pre>
+          </div>
+        </div>
+        <div class="qa-card-actions">
+          <button class="btn-copy-card" onclick="copySingleCard('${item.id}', event)">
+            📋 Copy for Docs / Word
+          </button>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, 
+    tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+  );
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  card.classList.toggle("open");
+}
+
+function toggleAll() {
+  const btn = document.getElementById("toggleAllBtn");
+  const cards = document.querySelectorAll(".qa-card");
+  const shouldOpen = btn.innerText === "Expand All";
+
+  cards.forEach(card => {
+    if (shouldOpen) card.classList.add("open");
+    else card.classList.remove("open");
+  });
+
+  btn.innerText = shouldOpen ? "Collapse All" : "Expand All";
+}
+
+function toggleStudyMode() {
+  studyMode = !studyMode;
+  const btn = document.getElementById("studyModeBtn");
+  btn.innerText = `Study Mode: ${studyMode ? "ON" : "OFF"}`;
+  btn.classList.toggle("btn-primary", studyMode);
+  btn.classList.toggle("btn-secondary", !studyMode);
+
+  const cards = document.querySelectorAll(".qa-card");
+  cards.forEach(c => {
+    if (studyMode) c.classList.remove("open");
+    else c.classList.add("open");
+  });
+
+  document.getElementById("toggleAllBtn").innerText = studyMode ? "Expand All" : "Collapse All";
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  const chips = document.querySelectorAll(".chip");
+  chips.forEach(chip => {
+    if (chip.innerText.startsWith(cat) || (cat === "All" && chip.innerText.startsWith("All"))) {
+      chip.classList.add("active");
+    } else {
+      chip.classList.remove("active");
+    }
+  });
+  renderList();
+}
+
+document.getElementById("searchInput").addEventListener("input", renderList);
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 2500);
+}
+
+function copySingleCard(id, event) {
+  event.stopPropagation();
+  const item = qaData.find(d => d.id === id);
+  if (!item) return;
+
+  const textToCopy = `${item.id}. ${item.q}\n\nExplanation:\n${item.exp}\n\nReal-World / Business Use Case:\n${item.use}\n\nCode Example:\n${item.code}\n`;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    showToast(`Copied ${item.id} for Docs / Word!`);
+  });
+}
+
+function copyAllFiltered() {
+  const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  const filtered = qaData.filter(item => {
+    const matchesCat = (currentCategory === "All") || (item.cat === currentCategory);
+    const matchesSearch = item.q.toLowerCase().includes(query) || 
+                          item.exp.toLowerCase().includes(query) || 
+                          item.use.toLowerCase().includes(query) || 
+                          item.id.toLowerCase().includes(query);
+    return matchesCat && matchesSearch;
+  });
+
+  if (filtered.length === 0) {
+    showToast("No questions to copy!");
+    return;
+  }
+
+  const bulkText = filtered.map(item => 
+    `${item.id}. ${item.q}\n\nExplanation:\n${item.exp}\n\nReal-World / Business Use Case:\n${item.use}\n\nCode Example:\n${item.code}\n\n`
+  ).join("---\n\n");
+
+  navigator.clipboard.writeText(bulkText).then(() => {
+    showToast(`Copied all ${filtered.length} questions to clipboard!`);
+  });
+}
+
+// Initial render
+renderList();
+</script>
+
+</body>
+</html>
