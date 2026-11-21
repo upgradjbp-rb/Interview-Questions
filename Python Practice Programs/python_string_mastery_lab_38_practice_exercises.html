@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python String Mastery Lab • 38 Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls, Search, and Category Filtering */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-slice { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-clean { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-count { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-algo { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-lines-leaning"></i> Python String Mastery Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 38 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Search, and Category Filtering -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search all 38 string exercises (e.g. slicing, palindrome, regex, anagram, title case)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (38)</button>
+      <button class="filter-btn" data-filter="cat-slice">Slicing &amp; Indexing</button>
+      <button class="filter-btn" data-filter="cat-clean">Transformation &amp; Cleaning</button>
+      <button class="filter-btn" data-filter="cat-count">Analysis &amp; Counting</button>
+      <button class="filter-btn" data-filter="cat-algo">Algorithms &amp; Patterns</button>
+      
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+    <!-- Dynamically rendered via JavaScript -->
+  </main>
+
+  <footer>
+    Python String Mastery Lab • 38 Practice Exercises • Built for Interactive Learning
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Create a string made of the first, middle, and last character",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Given a string of odd length greater than 2, return a new string made of the first, middle, and last characters of the input string.",
+        purpose: "Learn string indexing, floor division for midpoints, and string concatenation.",
+        input: 'str1 = "James"',
+        output: '"Jms"',
+        hint: "Find the middle index using `len(str1) // 2`. Combine `str1[0]`, `str1[mid]`, and `str1[-1]`.",
+        code: `str1 = "James"
+
+# Calculate middle index
+mid = len(str1) // 2
+
+# Concatenate first, middle, and last character
+res = str1[0] + str1[mid] + str1[-1]
+
+print("Original:", str1)
+print("New String:", res)`,
+        explanation: "In 'James' (length 5), integer division 5 // 2 gives index 2 ('m'). Index 0 gives 'J' and index -1 gives 's'."
+      },
+      {
+        id: 2,
+        title: "Create a string made of the middle three characters",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Given a string of odd length greater than 4, return a new string made of the middle three characters.",
+        purpose: "Master range slicing relative to a central pivot point.",
+        input: 'str1 = "JhonDipPeta" and str2 = "JaSonAy"',
+        output: '"Dip" and "Son"',
+        hint: "Calculate `mid = len(s) // 2`. Extract slice from `mid - 1` to `mid + 2`.",
+        code: `def middle_three(s):
+    mid = len(s) // 2
+    return s[mid - 1 : mid + 2]
+
+print(middle_three("JhonDipPeta"))
+print(middle_three("JaSonAy"))`,
+        explanation: "For length 11, mid is 5 ('i'). The slice [5-1:5+2] is [4:7], which extracts characters at index 4, 5, and 6 ('Dip')."
+      },
+      {
+        id: 3,
+        title: "Append new string in the middle of a given string",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Given two strings `s1` and `s2`, append `s2` directly in the exact middle of `s1`.",
+        purpose: "Splitting strings by index and injecting substrings via concatenation.",
+        input: 's1 = "Ault", s2 = "Kelly"',
+        output: '"AuKellylt"',
+        hint: "Split s1 at `mid = len(s1) // 2`. Join `s1[:mid] + s2 + s1[mid:]`.",
+        code: `s1 = "Ault"
+s2 = "Kelly"
+
+mid = len(s1) // 2
+result = s1[:mid] + s2 + s1[mid:]
+
+print("Result:", result)`,
+        explanation: "len('Ault') is 4, so mid is 2. s1[:2] is 'Au' and s1[2:] is 'lt'. Inserting s2 yields 'AuKellylt'."
+      },
+      {
+        id: 4,
+        title: "Create a new string made of the first, middle, and last characters of each input string",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Given two strings `s1` and `s2`, extract the first, middle, and last characters of each and combine them.",
+        purpose: "Coordinate dual-string index extractions into a composite sequence.",
+        input: 's1 = "America", s2 = "Japan"',
+        output: '"AJrpan"',
+        hint: "Extract first from s1 and s2, mid from s1 and s2, last from s1 and s2, and concatenate.",
+        code: `s1 = "America"
+s2 = "Japan"
+
+first = s1[0] + s2[0]
+middle = s1[len(s1) // 2] + s2[len(s2) // 2]
+last = s1[-1] + s2[-1]
+
+result = first + middle + last
+print("Combined String:", result)`,
+        explanation: "s1 provides 'A', 'r', 'a'; s2 provides 'J', 'p', 'n'. Grouping by position produces 'AJ' + 'rp' + 'an' = 'AJrpan'."
+      },
+      {
+        id: 5,
+        title: "Reverse a given string",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Reverse the contents of a given string using Python's extended slicing notation.",
+        purpose: "Understand sequence stepping with negative step increments.",
+        input: 's = "PYnative"',
+        output: '"evitanYP"',
+        hint: "Use slice syntax with a step of -1: `s[::-1]`.",
+        code: `s = "PYnative"
+reversed_s = s[::-1]
+
+print("Original:", s)
+print("Reversed:", reversed_s)`,
+        explanation: "[::-1] specifies start at default (end), stop at default (beginning), and step backwards by 1."
+      },
+      {
+        id: 6,
+        title: "Find the last position of a given substring",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Write a program to find the last position (index) of a substring 'Emma' in a given string.",
+        purpose: "Explore `str.rfind()` for right-to-left substring searches.",
+        input: 'str1 = "Emma is a data scientist who knows Python. Emma works at google."',
+        output: "Last occurrence of Emma starts at index 43",
+        hint: "Use the `rfind()` method instead of `find()`.",
+        code: `str1 = "Emma is a data scientist who knows Python. Emma works at google."
+index = str1.rfind("Emma")
+
+print(f"Last occurrence of Emma starts at index {index}")`,
+        explanation: "str.rfind() returns the highest index where the substring is found, returning -1 if not found."
+      },
+      {
+        id: 7,
+        title: "Split a string on hyphens",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Split a given string of hyphen-separated words and display each substring on its own line.",
+        purpose: "Tokenize strings using custom delimiters with `str.split()`.",
+        input: 'str1 = "Emma-is-a-data-scientist"',
+        output: "Emma\\nis\\na\\ndata\\nscientist",
+        hint: "Call `str1.split('-')` and loop through the resulting list.",
+        code: `str1 = "Emma-is-a-data-scientist"
+sub_strings = str1.split("-")
+
+for item in sub_strings:
+    print(item)`,
+        explanation: "str.split('-') splits the string on every hyphen, returning a list of cleaned word tokens."
+      },
+      {
+        id: 8,
+        title: "Find all occurrences of a substring in a given string by ignoring the case",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Find and count all occurrences of substring 'USA' in a text sentence regardless of letter case.",
+        purpose: "Case-insensitive substring search with `str.lower()` and `str.count()`.",
+        input: 'str1 = "Welcome to USA. usa awesome, isn\'t it?"',
+        output: "The USA count is: 2",
+        hint: "Convert the target string and search term to lowercase before calling `.count()`.",
+        code: `str1 = "Welcome to USA. usa awesome, isn't it?"
+substring = "USA"
+
+count = str1.lower().count(substring.lower())
+print(f"The {substring} count is: {count}")`,
+        explanation: "Converting both strings to lowercase with .lower() ensures casing differences do not affect the frequency count."
+      },
+      {
+        id: 9,
+        title: "String characters balance test",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Write a program to check if all characters in string `s1` are present inside string `s2`.",
+        purpose: "Character subset testing and membership checks with `all()`.",
+        input: 's1 = "Yn", s2 = "PYnative" and s1 = "Ynf", s2 = "PYnative"',
+        output: "True and False",
+        hint: "Check if `all(char in s2 for char in s1)`.",
+        code: `def is_balanced(s1, s2):
+    return all(char in s2 for char in s1)
+
+print("Test 1:", is_balanced("Yn", "PYnative"))
+print("Test 2:", is_balanced("Ynf", "PYnative"))`,
+        explanation: "The generator expression checks each character of s1 in s2. `all()` returns True only if every single test evaluates to True."
+      },
+      {
+        id: 10,
+        title: "Vowel Counter",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Count the total number of vowels (A, E, I, O, U) present in a string regardless of case.",
+        purpose: "Membership testing across vowel sets using comprehension counting.",
+        input: 'text = "Data Science with Python"',
+        output: "Total vowels: 7",
+        hint: "Sum matches where `char.lower() in 'aeiou'`.",
+        code: `text = "Data Science with Python"
+vowels = "aeiou"
+
+count = sum(1 for char in text.lower() if char in vowels)
+print(f"Total vowels: {count}")`,
+        explanation: "sum(1 for ...) iterates over each character in O(n) time, incrementing the accumulator for each vowel match."
+      },
+      {
+        id: 11,
+        title: "Prefix/Suffix Check",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Check if a given URL starts with 'https://' and ends with '.com' or '.org'.",
+        purpose: "Validate string boundaries using `startswith()` and `endswith()` tuples.",
+        input: 'url = "https://example.com"',
+        output: "Valid Secure Web URL: True",
+        hint: "`endswith()` accepts a tuple of valid candidate suffixes.",
+        code: `url = "https://example.com"
+
+is_secure = url.startswith("https://")
+is_valid_domain = url.endswith((".com", ".org", ".net"))
+
+print("Is secure:", is_secure)
+print("Valid domain:", is_valid_domain)
+print("Valid Secure Web URL:", is_secure and is_valid_domain)`,
+        explanation: "Passing a tuple to .endswith() checks multiple file or domain extensions in a single call."
+      },
+      {
+        id: 12,
+        title: "Swap Case",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Convert all uppercase letters to lowercase and all lowercase letters to uppercase in a given string.",
+        purpose: "Explore `str.swapcase()` and character case inversion.",
+        input: 's = "Python 3.12 Is AWESOME"',
+        output: '"pYTHON 3.12 iS awesome"',
+        hint: "Use the built-in `swapcase()` method.",
+        code: `s = "Python 3.12 Is AWESOME"
+swapped = s.swapcase()
+
+print("Original:", s)
+print("Swapped :", swapped)`,
+        explanation: "str.swapcase() flips uppercase to lowercase and vice versa while leaving numbers and punctuation untouched."
+      },
+      {
+        id: 13,
+        title: "Remove Whitespace",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Remove all leading, trailing, and duplicate spaces, leaving words separated by single spaces.",
+        purpose: "String normalization with `.split()` and `.join()`.",
+        input: 's = "   Learning    Python    Strings   "',
+        output: '"Learning Python Strings"',
+        hint: "Calling `.split()` with no arguments splits on arbitrary whitespace. Join with `' '.join()`.",
+        code: `s = "   Learning    Python    Strings   "
+normalized = " ".join(s.split())
+
+print("Normalized:", repr(normalized))`,
+        explanation: "s.split() discards all runs of leading, trailing, and repeated whitespace. ' '.join() reassembles them with single spaces."
+      },
+      {
+        id: 14,
+        title: "N-th Character Removal",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Write a function that removes the character at index `n` from a non-empty string.",
+        purpose: "Combine slicing before and after a specific index offset.",
+        input: 'remove_at("Python", 2)',
+        output: '"Pyhon"',
+        hint: "Slice up to `n` and after `n`: `s[:n] + s[n+1:]`.",
+        code: `def remove_at(s, n):
+    if 0 <= n < len(s):
+        return s[:n] + s[n+1:]
+    return s
+
+print(remove_at("Python", 2))
+print(remove_at("Strings", 0))`,
+        explanation: "s[:n] extracts characters before index n, and s[n+1:] extracts characters after index n, skipping the character at n."
+      },
+      {
+        id: 15,
+        title: "String Partitioning",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Split a key-value pair string on the first equals sign (`=`) into key, separator, and value.",
+        purpose: "Learn `str.partition()` for strict 3-tuple head/sep/tail splitting.",
+        input: 'config = "DATABASE_URL=postgres://localhost:5432/db"',
+        output: "Key: 'DATABASE_URL', Value: 'postgres://localhost:5432/db'",
+        hint: "Call `config.partition('=')` which returns `(before, sep, after)`.",
+        code: `config = "DATABASE_URL=postgres://localhost:5432/db"
+key, sep, val = config.partition("=")
+
+print("Key  :", key)
+print("Sep  :", sep)
+print("Value:", val)`,
+        explanation: "Unlike split('=', 1), partition() always returns a 3-tuple containing the prefix, delimiter, and remainder."
+      },
+      {
+        id: 16,
+        title: "Extract File Extension",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Extract the file extension from a filename or filepath string without using the `os` module.",
+        purpose: "Right-side splitting with `rpartition` or `rsplit`.",
+        input: 'filename = "annual_report.2026.final.pdf"',
+        output: "Extension: pdf",
+        hint: "Use `filename.rsplit('.', 1)[-1]` or `filename.rpartition('.')[-1]`.",
+        code: `filename = "annual_report.2026.final.pdf"
+ext = filename.rpartition(".")[-1]
+
+print("File extension:", ext)`,
+        explanation: "rpartition('.') searches from the right, ensuring dots in the filename don't interfere with the final extension."
+      },
+      {
+        id: 17,
+        title: "Lowercase First",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Arrange string characters such that all lowercase letters come first, followed by all uppercase letters.",
+        purpose: "Segregation and filtering using character predicates (`islower()`, `isupper()`).",
+        input: 's = "PyNaTive"',
+        output: '"yaivePNT"',
+        hint: "Collect `[c for c in s if c.islower()]` and `[c for c in s if c.isupper()]`, then join.",
+        code: `s = "PyNaTive"
+lower_chars = [c for c in s if c.islower()]
+upper_chars = [c for c in s if c.isupper()]
+
+result = "".join(lower_chars + upper_chars)
+print("Arranged String:", result)`,
+        explanation: "List comprehensions partition characters based on case, preserving relative encounter order before concatenation."
+      },
+      {
+        id: 18,
+        title: "Count all letters, digits, and special symbols from a given string",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Count the total number of alphabetic characters, digits, and special symbols in a given string.",
+        purpose: "Categorize characters using `isalpha()`, `isdigit()`, and character classification.",
+        input: 'str1 = "P@#yn26at^&i5ve"',
+        output: "Chars = 8, Digits = 3, Symbol = 4",
+        hint: "Loop through characters: check `.isalpha()`, `.isdigit()`, and increment a symbol counter for remaining characters.",
+        code: `str1 = "P@#yn26at^&i5ve"
+char_count = digit_count = symbol_count = 0
+
+for char in str1:
+    if char.isalpha():
+        char_count += 1
+    elif char.isdigit():
+        digit_count += 1
+    else:
+        symbol_count += 1
+
+print(f"Chars = {char_count}, Digits = {digit_count}, Symbol = {symbol_count}")`,
+        explanation: "Branching with if/elif/else classifies every character in the string into its appropriate counter in a single pass."
+      },
+      {
+        id: 19,
+        title: "Create a mixed string using alternating characters",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Given two strings `s1` and `s2`, create a new string made of the first char of `s1`, the last char of `s2`, second of `s1`, second-to-last of `s2`, and so on.",
+        purpose: "Coordinate bidirectional dual-pointer iterations across strings.",
+        input: 's1 = "Abc", s2 = "Xyz"',
+        output: '"AzbycX"',
+        hint: "Reverse s2 with `s2[::-1]`, then interleave characters from s1 and reversed s2.",
+        code: `s1 = "Abc"
+s2 = "Xyz"
+s2_rev = s2[::-1]
+
+result = []
+max_len = max(len(s1), len(s2_rev))
+
+for i in range(max_len):
+    if i < len(s1):
+        result.append(s1[i])
+    if i < len(s2_rev):
+        result.append(s2_rev[i])
+
+print("Mixed String:", "".join(result))`,
+        explanation: "Reversing s2 lets you interleave forwards from s1 and s2_rev with symmetric indices."
+      },
+      {
+        id: 20,
+        title: "Calculate the sum and average of the digits present in a string",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Extract all numeric digits from a mixed alphanumeric string and calculate their sum and average.",
+        purpose: "Parse characters conditionally and compute running aggregates.",
+        input: 'str1 = "PYnative29@#8496"',
+        output: "Sum is: 38 Average is 6.33",
+        hint: "Filter digits using `[int(c) for c in str1 if c.isdigit()]`, then calculate sum and average.",
+        code: `str1 = "PYnative29@#8496"
+digits = [int(c) for c in str1 if c.isdigit()]
+
+total = sum(digits)
+avg = total / len(digits) if digits else 0
+
+print(f"Sum is: {total} Average is {avg:.2f}")`,
+        explanation: "c.isdigit() checks for numeric characters. List comprehension maps them to integers for summation and averaging."
+      },
+      {
+        id: 21,
+        title: "Count occurrences of all characters within a string",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Create a dictionary showing the frequency count of each unique character in a given string.",
+        purpose: "Build character frequency maps with dictionaries.",
+        input: 'str1 = "Apple"',
+        output: "{'A': 1, 'p': 2, 'l': 1, 'e': 1}",
+        hint: "Iterate characters and increment with `count_dict[c] = count_dict.get(c, 0) + 1`.",
+        code: `str1 = "Apple"
+count_dict = {}
+
+for char in str1:
+    count_dict[char] = count_dict.get(char, 0) + 1
+
+print("Character count:", count_dict)`,
+        explanation: "count_dict.get(char, 0) retrieves the current tally or defaults to 0 for previously unseen characters."
+      },
+      {
+        id: 22,
+        title: "Remove empty strings from a list of strings",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Remove all empty strings (`\"\"` or strings containing only whitespace) from a given list of strings.",
+        purpose: "Filter lists using truthiness and `.strip()`.",
+        input: 'str_list = ["Emma", "Jon", "", "Kelly", None, "Eric", ""]',
+        output: "['Emma', 'Jon', 'Kelly', 'Eric']",
+        hint: "Filter with `[s for s in str_list if s and s.strip()]`.",
+        code: `str_list = ["Emma", "Jon", "", "Kelly", None, "Eric", ""]
+
+cleaned_list = [s for s in str_list if s and s.strip()]
+print("Cleaned List:", cleaned_list)`,
+        explanation: "`if s` filters out None and empty strings, while `s.strip()` eliminates strings with only whitespace."
+      },
+      {
+        id: 23,
+        title: "Remove special symbols/punctuation from a string",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Remove all special characters, symbols, and punctuation from a given string, keeping only alphanumeric characters and spaces.",
+        purpose: "Clean strings using `string.punctuation` or `c.isalnum()`.",
+        input: 'str1 = "/*Jon is @developer & musician"',
+        output: '"Jon is developer  musician"',
+        hint: "Filter characters where `c.isalnum() or c.isspace()`.",
+        code: `import string
+
+str1 = "/*Jon is @developer & musician"
+# Method using isalnum and space check
+cleaned = "".join(c for c in str1 if c.isalnum() or c.isspace())
+
+print("Cleaned String:", cleaned.strip())`,
+        explanation: "Filtering on isalnum() or isspace() preserves letters, numbers, and spaces while removing all punctuation."
+      },
+      {
+        id: 24,
+        title: "Remove all characters from a string except integers",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Extract only the numeric digits from a string and combine them into a single string of numbers.",
+        purpose: "Filter non-digit characters with `char.isdigit()`.",
+        input: 'str1 = "I am 25 years and 10 months old"',
+        output: '"2510"',
+        hint: "Filter with `[c for c in str1 if c.isdigit()]` and join.",
+        code: `str1 = "I am 25 years and 10 months old"
+digits_only = "".join(c for c in str1 if c.isdigit())
+
+print("Extracted Digits:", digits_only)`,
+        explanation: "c.isdigit() tests each character, and .join() concatenates matching digits into a single string."
+      },
+      {
+        id: 25,
+        title: "Find words with both letters and numbers",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Extract all words from a sentence that contain both alphabetic letters and numeric digits.",
+        purpose: "Token predicate matching using `any(c.isalpha())` and `any(c.isdigit())`.",
+        input: 'str1 = "Emma25 is Data scientist50 and AI expert"',
+        output: "['Emma25', 'scientist50']",
+        hint: "Split text into words; keep words where `any(c.isalpha())` and `any(c.isdigit())` are both True.",
+        code: `str1 = "Emma25 is Data scientist50 and AI expert"
+
+alphanumeric_words = [
+    word for word in str1.split()
+    if any(c.isalpha() for c in word) and any(c.isdigit() for c in word)
+]
+
+print("Matching words:", alphanumeric_words)`,
+        explanation: "Splitting creates word tokens, and evaluating any() on characters detects mixed alphanumeric words."
+      },
+      {
+        id: 26,
+        title: "Replace each special symbol with # in the following string",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Replace every punctuation character or symbol in a string with a `#` symbol.",
+        purpose: "Character substitution using `string.punctuation`.",
+        input: 'str1 = "/*Jon is @developer & musician!!"',
+        output: '"##Jon is #developer # musician##"',
+        hint: "Check `if c in string.punctuation:` and substitute with `'#'`.",
+        code: `import string
+
+str1 = "/*Jon is @developer & musician!!"
+replaced = "".join("#" if c in string.punctuation else c for c in str1)
+
+print("Replaced String:", replaced)`,
+        explanation: "A ternary generator expression swaps any character in string.punctuation for '#' while leaving alphanumeric text unchanged."
+      },
+      {
+        id: 27,
+        title: "Palindrome Check",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Check if a string is a palindrome, ignoring non-alphanumeric characters and letter case.",
+        purpose: "Two-pointer symmetry validation on sanitized strings.",
+        input: 's = "Was it a car or a cat I saw?"',
+        output: "Is Palindrome: True",
+        hint: "Clean the string to alphanumeric lowercase, then compare with its reverse `clean == clean[::-1]`.",
+        code: `def is_palindrome(s):
+    clean = "".join(c.lower() for c in s if c.isalnum())
+    return clean == clean[::-1]
+
+print("Test 1:", is_palindrome("Was it a car or a cat I saw?"))
+print("Test 2:", is_palindrome("Hello World"))`,
+        explanation: "Cleaning normalizes the text to 'wasitacaroracatisaw', which reads identically forwards and backwards."
+      },
+      {
+        id: 28,
+        title: "Anagram Detector",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Determine if two strings are anagrams of each other (contain identical characters in different order).",
+        purpose: "Multi-set character counting with `collections.Counter` or `sorted()`.",
+        input: 's1 = "Debit Card", s2 = "Bad Credit"',
+        output: "Is Anagram: True",
+        hint: "Clean both strings with `[c.lower() for c in s if c.isalnum()]` and compare `Counter(c1) == Counter(c2)`.",
+        code: `from collections import Counter
+
+def are_anagrams(s1, s2):
+    c1 = Counter(c.lower() for c in s1 if c.isalnum())
+    c2 = Counter(c.lower() for c in s2 if c.isalnum())
+    return c1 == c2
+
+print(are_anagrams("Debit Card", "Bad Credit"))
+print(are_anagrams("Python", "Java"))`,
+        explanation: "Counter creates character frequency hash maps. Comparing them verifies identical character distributions in O(n) time."
+      },
+      {
+        id: 29,
+        title: "Unique Character Check",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Check if a string contains only unique characters (no duplicate letters).",
+        purpose: "Duplicate detection using set length comparison.",
+        input: 's1 = "Subdermatoglyphic" and s2 = "Programming"',
+        output: "True and False",
+        hint: "Compare `len(s)` with `len(set(s))`.",
+        code: `def has_all_unique(s):
+    return len(s) == len(set(s))
+
+print("Subdermatoglyphic:", has_all_unique("Subdermatoglyphic"))
+print("Programming      :", has_all_unique("Programming"))`,
+        explanation: "Sets discard duplicates. If the set's length matches the original string's length, every character is unique."
+      },
+      {
+        id: 30,
+        title: "Title Case Logic",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Capitalize the first letter of each word in a string without using the built-in `.title()` method.",
+        purpose: "Tokenization, word capitalization with `.capitalize()`, and reassembly.",
+        input: 's = "welcome to the world of python"',
+        output: '"Welcome To The World Of Python"',
+        hint: "Split words, apply `w.capitalize()` to each, and join with `' '.join()`.",
+        code: `s = "welcome to the world of python"
+title_cased = " ".join(word.capitalize() for word in s.split())
+
+print("Title Cased:", title_cased)`,
+        explanation: "word.capitalize() capitalizes the first character and lowercases remaining characters. ' '.join() merges the words back together."
+      },
+      {
+        id: 31,
+        title: "Remove Duplicate Characters",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Remove all duplicate characters from a string while preserving their original order of appearance.",
+        purpose: "Order-preserving deduplication using dictionary keys.",
+        input: 's = "programming"',
+        output: '"progami"',
+        hint: "Use `list(dict.fromkeys(s))` to preserve character insertion order.",
+        code: `s = "programming"
+# In Python 3.7+, dict key order is guaranteed
+unique_chars = "".join(dict.fromkeys(s))
+
+print("Original:", s)
+print("Deduplicated:", unique_chars)`,
+        explanation: "dict.fromkeys() discards repeated character insertions in O(1) time per character while preserving first-seen encounter order."
+      },
+      {
+        id: 32,
+        title: "Word Reversal",
+        category: "cat-slice",
+        catLabel: "Slicing & Indexing",
+        problem: "Reverse the order of words in a sentence while keeping individual word spellings intact.",
+        purpose: "Token sequence manipulation using list slicing.",
+        input: 's = "Python is really awesome"',
+        output: '"awesome really is Python"',
+        hint: "Split into words, reverse the list with `words[::-1]`, and join with spaces.",
+        code: `s = "Python is really awesome"
+reversed_sentence = " ".join(s.split()[::-1])
+
+print("Reversed Word Order:", reversed_sentence)`,
+        explanation: "s.split() breaks the sentence into a list of words, [::-1] reverses the list order, and ' '.join() reconnects them."
+      },
+      {
+        id: 33,
+        title: "Character Interleaving",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Interleave characters of two strings of unequal length, appending leftover characters at the end.",
+        purpose: "Parallel iteration using `itertools.zip_longest`.",
+        input: 's1 = "ABCD", s2 = "123456"',
+        output: '"A1B2C3D456"',
+        hint: "Use `itertools.zip_longest(s1, s2, fillvalue='')` and join matching pairs.",
+        code: `from itertools import zip_longest
+
+s1 = "ABCD"
+s2 = "123456"
+
+interleaved = "".join(a + b for a, b in zip_longest(s1, s2, fillvalue=""))
+print("Interleaved:", interleaved)`,
+        explanation: "zip_longest continues until the longer string is exhausted, padding missing values from the shorter string with empty strings."
+      },
+      {
+        id: 34,
+        title: "Longest Word",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Find and return the longest word in a sentence, ignoring punctuation.",
+        purpose: "Key-function aggregation with `max(..., key=len)`.",
+        input: 'sentence = "Artificial intelligence and machine learning algorithms"',
+        output: "Longest Word: 'intelligence' (Length: 12)",
+        hint: "Strip punctuation, split into words, and use `max(words, key=len)`.",
+        code: `import re
+
+sentence = "Artificial intelligence and machine learning algorithms"
+words = re.findall(r'\\b\\w+\\b', sentence)
+longest = max(words, key=len)
+
+print(f"Longest Word: '{longest}' (Length: {len(longest)})")`,
+        explanation: "re.findall isolates pure word tokens, and max(..., key=len) finds the word with the highest character count."
+      },
+      {
+        id: 35,
+        title: "Acronym Creator",
+        category: "cat-clean",
+        catLabel: "Transformation & Cleaning",
+        problem: "Generate an acronym from a phrase by combining the uppercase first letters of each word.",
+        purpose: "Token initial extraction and formatting.",
+        input: 'phrase = "asynchronous javascript and xml"',
+        output: "Acronym: AJAX",
+        hint: "Extract `[word[0].upper() for word in phrase.split()]` and join.",
+        code: `phrase = "asynchronous javascript and xml"
+acronym = "".join(word[0].upper() for word in phrase.split())
+
+print("Acronym:", acronym)`,
+        explanation: "Iterates through each word, extracts index 0, converts it to uppercase, and joins them into the final acronym."
+      },
+      {
+        id: 36,
+        title: "Word Frequency",
+        category: "cat-count",
+        catLabel: "Analysis & Counting",
+        problem: "Count the frequency of each word in a paragraph, ignoring punctuation and casing.",
+        purpose: "Text normalization and frequency mapping with `collections.Counter`.",
+        input: 'text = "Fear leads to anger. Anger leads to hate. Hate leads to suffering."',
+        output: "{'leads': 3, 'to': 3, 'anger': 2, 'hate': 2, 'fear': 1, 'suffering': 1}",
+        hint: "Extract words with `re.findall(r'\\b\\w+\\b', text.lower())` and pass to `Counter`.",
+        code: `import re
+from collections import Counter
+
+text = "Fear leads to anger. Anger leads to hate. Hate leads to suffering."
+words = re.findall(r'\\b\\w+\\b', text.lower())
+frequencies = Counter(words)
+
+print("Word Frequencies:", dict(frequencies.most_common()))`,
+        explanation: "Converting to lowercase standardizes words like 'Anger' and 'anger', while regex extracts words without surrounding punctuation."
+      },
+      {
+        id: 37,
+        title: "First Non-Repeating Character",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Find the first character in a string that does not repeat anywhere else in the string.",
+        purpose: "Two-pass frequency analysis in O(n) time.",
+        input: 's = "swiss"',
+        output: "First non-repeating character: 'w'",
+        hint: "Count frequencies with `Counter(s)`, then iterate through `s` and return the first character with a count of 1.",
+        code: `from collections import Counter
+
+def first_unique_char(s):
+    counts = Counter(s)
+    for char in s:
+        if counts[char] == 1:
+            return char
+    return None
+
+print("Result for 'swiss':", first_unique_char("swiss"))
+print("Result for 'repeater':", first_unique_char("repeater"))`,
+        explanation: "Pass 1 tallies frequencies in O(n). Pass 2 inspects characters in their original order to find the first with a count of 1."
+      },
+      {
+        id: 38,
+        title: "String Rotation Check",
+        category: "cat-algo",
+        catLabel: "Algorithms & Patterns",
+        problem: "Determine if string `s2` is a valid circular rotation of string `s1` (e.g. 'waterbottle' and 'erbottlewat').",
+        purpose: "Explore the concatenation trick: `s2 in (s1 + s1)`.",
+        input: 's1 = "waterbottle", s2 = "erbottlewat"',
+        output: "Is Rotation: True",
+        hint: "Check `len(s1) == len(s2) and s2 in (s1 + s1)`.",
+        code: `def is_rotation(s1, s2):
+    return len(s1) == len(s2) and s2 in (s1 + s1)
+
+print("Test 1:", is_rotation("waterbottle", "erbottlewat"))
+print("Test 2:", is_rotation("hello", "lloeh"))`,
+        explanation: "Doubling s1 contains all possible circular rotations. If lengths match and s2 is a substring of s1 + s1, it is a valid rotation."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_strings_38_solved';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      const textArea = document.createElement("textarea");
+      textArea.value = codeText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--card-bg); border-radius: 8px; border: 1px dashed var(--card-border);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--accent);"></i>
+            <p>No matching exercises found. Try a different search keyword.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}. ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+            
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+                ${escapeHtml(ex.input)}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${escapeHtml(ex.output)}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> Show Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Tested Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>Why This Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query || 
+          ex.title.toLowerCase().includes(query) || 
+          ex.problem.toLowerCase().includes(query) || 
+          ex.code.toLowerCase().includes(query) ||
+          ex.catLabel.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
+`

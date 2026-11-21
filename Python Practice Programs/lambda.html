@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Functional Programming &amp; Lambda Lab • 20 Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-lambdas { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-core-fp { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-composition { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-advanced { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-code-merge"></i> Python Functional Programming &amp; Lambda Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 20 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, syntax, or keyword (e.g. lambda, map, reduce, partial, currying, monad)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (20)</button>
+      <button class="filter-btn" data-filter="cat-lambdas">Lambda Foundations</button>
+      <button class="filter-btn" data-filter="cat-core-fp">Core FP (Map/Filter/Reduce)</button>
+      <button class="filter-btn" data-filter="cat-composition">Composition &amp; Currying</button>
+      <button class="filter-btn" data-filter="cat-advanced">Advanced Pipelines &amp; Monads</button>
+    </div>
+  </div>
+
+  <!-- Main Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-lambdas" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Basic Lambda</div>
+          <div class="card-meta"><span class="category-tag cat-lambdas">Lambda Foundations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write an anonymous lambda function that takes two numeric arguments <code>x</code> and <code>y</code> and returns their product ($x \times y$).</p>
+        <div class="purpose-box">Introduces anonymous inline functions using the <code>lambda</code> keyword without <code>def</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>multiply(6, 7)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Product: 42</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Use <code>multiply = lambda x, y: x * y</code>.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1"># Define an anonymous multiplication function
+multiply = lambda x, y: x * y
+
+result = multiply(6, 7)
+print("Product:", result)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Lambdas in Python are limited to a single expression whose evaluated value is implicitly returned.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-lambdas" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: Lambda with Sorting</div>
+          <div class="card-meta"><span class="category-tag cat-lambdas">Lambda Foundations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Sort a list of tuples representing products and their prices <code>[("Apple", 1.2), ("Banana", 0.5), ("Cherry", 2.5)]</code> in ascending order of price using a lambda key.</p>
+        <div class="purpose-box">Applies lambda functions as inline key extractors for <code>sorted()</code> and <code>list.sort()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[("Apple", 1.2), ("Banana", 0.5), ("Cherry", 2.5)]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[('Banana', 0.5), ('Apple', 1.2), ('Cherry', 2.5)]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Pass <code>key=lambda item: item[1]</code> to <code>sorted()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2">products = [("Apple", 1.2), ("Banana", 0.5), ("Cherry", 2.5)]
+
+sorted_products = sorted(products, key=lambda item: item[1])
+print("Sorted by price:", sorted_products)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The <code>key</code> parameter receives a function that transforms each element into a comparable sort key without altering the original tuple.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-core-fp" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: Map Basics</div>
+          <div class="card-meta"><span class="category-tag cat-core-fp">Core FP (Map/Filter/Reduce)</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Transform a list of Celsius temperatures <code>[0, 20, 37, 100]</code> to Fahrenheit ($F = C \times \frac{9}{5} + 32$) using <code>map()</code> and a lambda.</p>
+        <div class="purpose-box">Demonstrates lazy sequence transformation using the standard higher-order function <code>map()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[0, 20, 37, 100]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[32.0, 68.0, 98.6, 212.0]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Wrap the map iterator in <code>list(map(lambda c: (c * 9/5) + 32, celsius))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">celsius = [0, 20, 37, 100]
+
+fahrenheit = list(map(lambda c: (c * 9 / 5) + 32, celsius))
+print("Fahrenheit:", fahrenheit)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>map(func, iterable)</code> returns a memory-efficient iterator that computes transformations lazily upon demand.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-core-fp" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Filter Basics</div>
+          <div class="card-meta"><span class="category-tag cat-core-fp">Core FP (Map/Filter/Reduce)</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Filter a list of words <code>["level", "python", "radar", "lambda", "madam", "code"]</code> to keep only palindromes using <code>filter()</code> and a lambda.</p>
+        <div class="purpose-box">Applies predicate testing to yield only elements that satisfy a boolean condition.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>["level", "python", "radar", "lambda", "madam", "code"]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>['level', 'radar', 'madam']</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">Use <code>filter(lambda s: s == s[::-1], words)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">words = ["level", "python", "radar", "lambda", "madam", "code"]
+
+palindromes = list(filter(lambda s: s == s[::-1], words))
+print("Palindromes:", palindromes)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>filter(predicate, iterable)</code> passes each item into the lambda; items evaluating to <code>True</code> are retained.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-core-fp" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Reduce Basics</div>
+          <div class="card-meta"><span class="category-tag cat-core-fp">Core FP (Map/Filter/Reduce)</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate the cumulative product of <code>[1, 2, 3, 4, 5]</code> ($1 \times 2 \times 3 \times 4 \times 5 = 120$) using <code>functools.reduce()</code>.</p>
+        <div class="purpose-box">Folds an iterable into a single cumulative scalar value using binary reduction.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[1, 2, 3, 4, 5]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Product: 120</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">Import <code>reduce</code> from <code>functools</code> and apply <code>lambda acc, x: acc * x</code>.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">from functools import reduce
+
+nums = [1, 2, 3, 4, 5]
+total_product = reduce(lambda acc, x: acc * x, nums)
+
+print("Product:", total_product)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>reduce(func, iterable)</code> passes the running accumulator and the current element through the binary function until the sequence is fully folded.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-lambdas" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Conditional Lambda</div>
+          <div class="card-meta"><span class="category-tag cat-lambdas">Lambda Foundations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a lambda expression that accepts a student score and returns <code>"Pass"</code> if $\ge 50$, else <code>"Fail"</code> using Python's ternary operator.</p>
+        <div class="purpose-box">Embeds conditional decision logic inside single-expression anonymous functions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>status(72), status(45)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>72: Pass<br>45: Fail</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Use the ternary syntax: <code>lambda score: "Pass" if score &gt;= 50 else "Fail"</code>.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6">grade_status = lambda score: "Pass" if score >= 50 else "Fail"
+
+print("Score 72:", grade_status(72))
+print("Score 45:", grade_status(45))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Standard <code>if/else</code> statements cannot live in a lambda, but Python's inline ternary expression (<code>val if condition else fallback</code>) is fully valid.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-lambdas" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Lambda in a Dictionary</div>
+          <div class="card-meta"><span class="category-tag cat-lambdas">Lambda Foundations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement a simple dispatch calculator using a dictionary of lambdas mapping operators <code>"+"</code>, <code>"-"</code>, <code>"*"</code>, <code>"/"</code> to functions.</p>
+        <div class="purpose-box">Replaces switch/if-else chains with functional lookup dispatch tables.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>calculate("*", 8, 4)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>8 * 4 = 32</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Map strings to binary lambdas: <code>operations = {"+": lambda a, b: a + b, ...}</code>.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">calc = {
+    "+": lambda a, b: a + b,
+    "-": lambda a, b: a - b,
+    "*": lambda a, b: a * b,
+    "/": lambda a, b: a / b if b != 0 else "Error: Div by 0"
+}
+
+op, x, y = "*", 8, 4
+result = calc[op](x, y)
+
+print(f"{x} {op} {y} = {result}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Functions are first-class citizens in Python, meaning they can be stored as dictionary values and called dynamically via lookup keys.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-core-fp" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: Chaining Map &amp; Filter</div>
+          <div class="card-meta"><span class="category-tag cat-core-fp">Core FP (Map/Filter/Reduce)</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given numbers <code>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</code>, filter out the even numbers, then square each of them using chained functional calls.</p>
+        <div class="purpose-box">Combines successive data transformation stages into functional pipelines.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>range(1, 11)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[4, 16, 36, 64, 100]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Feed <code>filter()</code> directly into <code>map()</code>: <code>map(..., filter(...))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">nums = list(range(1, 11))
+
+# Filter evens, then map to their squares
+squared_evens = list(map(lambda x: x ** 2, filter(lambda x: x % 2 == 0, nums)))
+
+print("Squared evens:", squared_evens)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>filter()</code> lazily yields evens one by one straight to <code>map()</code>, avoiding intermediate list allocations in memory.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-lambdas" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Sorted with Multiple Keys</div>
+          <div class="card-meta"><span class="category-tag cat-lambdas">Lambda Foundations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Sort student records <code>[("Alice", "B"), ("Bob", "A"), ("Charlie", "B"), ("David", "A")]</code> primarily by Grade (ascending), and secondarily by Name (alphabetically).</p>
+        <div class="purpose-box">Applies compound tuple keys inside lambda sort functions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[("Alice", "B"), ("Bob", "A"), ("Charlie", "B"), ("David", "A")]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[('Bob', 'A'), ('David', 'A'), ('Alice', 'B'), ('Charlie', 'B')]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Return a tuple from the key lambda: <code>key=lambda student: (student[1], student[0])</code>.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">students = [("Alice", "B"), ("Bob", "A"), ("Charlie", "B"), ("David", "A")]
+
+# Sort by Grade (index 1), then by Name (index 0)
+sorted_students = sorted(students, key=lambda s: (s[1], s[0]))
+
+print("Sorted students:", sorted_students)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Python compares tuples lexicographically: if the first items are identical, it compares the second items to break ties.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-composition" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Partial Functions</div>
+          <div class="card-meta"><span class="category-tag cat-composition">Composition &amp; Currying</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Use <code>functools.partial()</code> to freeze base-2 conversion on <code>int(x, base=10)</code> and create a specialized <code>binary_to_int(binary_str)</code> function.</p>
+        <div class="purpose-box">Pre-binds arguments to functions to create specialized callables.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>binary_to_int("10110")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Parsed integer: 22</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Import <code>partial</code> from <code>functools</code> and write <code>partial(int, base=2)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">from functools import partial
+
+# Freeze the 'base' keyword parameter to 2
+binary_to_int = partial(int, base=2)
+
+print("Parsed integer:", binary_to_int("10110"))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>partial()</code> locks in a subset of arguments or keywords, reducing function arity and simplifying callback signatures.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-composition" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: Function Composition</div>
+          <div class="card-meta"><span class="category-tag cat-composition">Composition &amp; Currying</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement a higher-order <code>compose(f, g)</code> function that returns $(f \circ g)(x) = f(g(x))$. Use it to compose <code>strip_spaces</code> and <code>to_upper</code>.</p>
+        <div class="purpose-box">Mathematical function composition where output of one function feeds as input to the next.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>"  functional python  "</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>"FUNCTIONAL PYTHON"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">Define <code>compose = lambda f, g: lambda x: f(g(x))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">compose = lambda f, g: lambda x: f(g(x))
+
+to_upper = lambda s: s.upper()
+strip_spaces = lambda s: s.strip()
+
+# Creates f(g(x)) -> to_upper(strip_spaces(x))
+clean_and_upper = compose(to_upper, strip_spaces)
+
+raw_str = "  functional python  "
+print("Result:", f"'{clean_and_upper(raw_str)}'")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Function composition builds complex pipelines by chaining simple, pure single-purpose functions together.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-core-fp" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: Flatten with Map &amp; Reduce</div>
+          <div class="card-meta"><span class="category-tag cat-core-fp">Core FP (Map/Filter/Reduce)</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Flatten a 2D matrix <code>[[1, 2], [3, 4], [5, 6]]</code> into a single 1D list using only <code>functools.reduce()</code> and list concatenation.</p>
+        <div class="purpose-box">Applies binary reduction over sequential collections.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[[1, 2], [3, 4], [5, 6]]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[1, 2, 3, 4, 5, 6]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Concatenate lists in reduce: <code>reduce(lambda a, b: a + b, matrix)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">from functools import reduce
+
+matrix = [[1, 2], [3, 4], [5, 6]]
+
+flattened = reduce(lambda acc, row: acc + row, matrix)
+print("Flattened list:", flattened)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>acc + row</code> concatenates sub-lists sequentially into a single flat array without requiring nested loops.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-lambdas" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Custom Key with sorted()</div>
+          <div class="card-meta"><span class="category-tag cat-lambdas">Lambda Foundations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Sort a list of strings <code>["elephant", "dog", "hippopotamus", "cat"]</code> by the number of vowels they contain using a lambda key.</p>
+        <div class="purpose-box">Sorts collections based on computed properties of sequence items.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>["elephant", "dog", "hippopotamus", "cat"]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>['dog', 'cat', 'elephant', 'hippopotamus']</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13">Count vowels inside the key: <code>key=lambda w: sum(1 for c in w if c in "aeiou")</code>.</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">words = ["elephant", "dog", "hippopotamus", "cat"]
+
+# Count vowels dynamically in sort key
+sorted_by_vowels = sorted(
+    words, 
+    key=lambda word: sum(1 for char in word.lower() if char in "aeiou")
+)
+
+print("Sorted by vowel count:", sorted_by_vowels)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Python's Timsort algorithm calls the key function exactly once per element before performing comparisons, keeping performance fast.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Memoization with lru_cache</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced Pipelines &amp; Monads</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Optimize an exponential recursive Fibonacci function to run in $O(n)$ linear time using <code>functools.lru_cache</code>.</p>
+        <div class="purpose-box">Caches pure function return values to eliminate redundant recursive calculations.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>fib(35)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Result: 9227465 (computed instantly)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Decorate the recursive function with <code>@lru_cache(maxsize=None)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+print("fib(35):", fib(35))
+print("Cache statistics:", fib.cache_info())</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>lru_cache</code> intercepts calls, returning precomputed answers for seen arguments instead of recomputing them.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-composition" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15: Currying</div>
+          <div class="card-meta"><span class="category-tag cat-composition">Composition &amp; Currying</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-15')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Transform a binary addition function <code>add(a, b)</code> into a curried form where <code>curried_add(a)(b)</code> accepts arguments one at a time.</p>
+        <div class="purpose-box">Transforms multi-argument functions into chains of single-argument functions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>add_5 = curried_add(5), add_5(10)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Result: 15</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-15">Return a nested lambda: <code>curried_add = lambda a: lambda b: a + b</code>.</div>
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-15"># Curried binary addition
+curried_add = lambda a: lambda b: a + b
+
+add_5 = curried_add(5)
+result = add_5(10)
+
+print("curried_add(5)(10) =", result)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Currying transforms $f(a, b)$ into $f(a)(b)$, allowing partial application of arguments via closures.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16: Pipeline Function</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced Pipelines &amp; Monads</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-16')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Build a generalized <code>pipeline(*funcs)</code> function that feeds an initial value through an arbitrary sequence of functions from left to right.</p>
+        <div class="purpose-box">Applies multi-stage transformations in left-to-right readable order.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Initial: 5 &rarr; (add_2, triple, square)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Pipeline output: 441 ((5+2)*3)^2</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-16">Use <code>reduce()</code>: <code>lambda initial: reduce(lambda acc, f: f(acc), funcs, initial)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-16">from functools import reduce
+
+def pipeline(*funcs):
+    return lambda initial: reduce(lambda acc, f: f(acc), funcs, initial)
+
+add_2 = lambda x: x + 2
+triple = lambda x: x * 3
+square = lambda x: x ** 2
+
+pipe = pipeline(add_2, triple, square)
+print("Pipeline result:", pipe(5))  # (5 + 2) = 7 -> 7 * 3 = 21 -> 21^2 = 441</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Unlike mathematical composition which reads right-to-left ($f(g(x))$), pipelines evaluate left-to-right, making data flows easier to follow.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17: Transducer Pattern</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced Pipelines &amp; Monads</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-17')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement a composable transducer step that maps and filters in a single pass without generating intermediate lists.</p>
+        <div class="purpose-box">Combines map and filter transformations into a single iteration over the input sequence.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[1, 2, 3, 4, 5, 6]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[8, 16, 24] (evens multiplied by 4)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-17">Compose the reducer transformation so operations run sequentially on each element during the reduce loop.</div>
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-17">from functools import reduce
+
+# Transducer helpers
+def mapping(f):
+    return lambda step: lambda acc, val: step(acc, f(val))
+
+def filtering(predicate):
+    return lambda step: lambda acc, val: step(acc, val) if predicate(val) else acc
+
+# Base reducer that appends to list
+append_step = lambda acc, val: acc + [val]
+
+# Build transducer: filter evens, then multiply by 4
+transduce = filtering(lambda x: x % 2 == 0)(mapping(lambda x: x * 4)(append_step))
+
+data = [1, 2, 3, 4, 5, 6]
+result = reduce(transduce, data, [])
+
+print("Transduced output:", result)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Transducers decouple transformation logic from data structures, processing each item through the full pipeline in a single pass.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18: Lazy Evaluation with Generators</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced Pipelines &amp; Monads</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-18')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an infinite generator of even numbers and use <code>itertools.islice</code> to take only the first 5 elements lazily.</p>
+        <div class="purpose-box">Streams infinite sequences on demand with zero memory overhead.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Take 5 from infinite stream 2, 4, 6...</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[0, 2, 4, 6, 8]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-18">Use <code>itertools.count(0, 2)</code> or a <code>while True: yield</code> generator with <code>itertools.islice()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-18">import itertools
+
+def infinite_evens():
+    n = 0
+    while True:
+        yield n
+        n += 2
+
+# Take the first 5 elements lazily without evaluating infinity
+first_5 = list(itertools.islice(infinite_evens(), 5))
+print("First 5 evens:", first_5)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Lazy evaluation defers computation until values are actually consumed, allowing you to model infinite sequences safely.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-composition" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19: Higher-Order Function Library</div>
+          <div class="card-meta"><span class="category-tag cat-composition">Composition &amp; Currying</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-19')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a custom higher-order function <code>negate(predicate)</code> that takes a predicate function and returns a new function with its boolean result inverted.</p>
+        <div class="purpose-box">Returns new functions dynamically by transforming existing predicates.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>is_even = lambda x: x % 2 == 0; is_odd = negate(is_even)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>is_odd(7): True<br>is_odd(8): False</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-19">Define <code>negate = lambda pred: lambda *args, **kwargs: not pred(*args, **kwargs)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-19">def negate(predicate):
+    return lambda *args, **kwargs: not predicate(*args, **kwargs)
+
+is_even = lambda x: x % 2 == 0
+is_odd = negate(is_even)
+
+print("is_odd(7):", is_odd(7))
+print("is_odd(8):", is_odd(8))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Higher-order functions can take functions as arguments and return new customized functions as results.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20: Monadic Chaining (Maybe Monad)</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced Pipelines &amp; Monads</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-20')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement a simple <code>Maybe</code> container class that wraps a value and supports chained <code>.bind()</code> calls, automatically short-circuiting on <code>None</code>.</p>
+        <div class="purpose-box">Applies the Maybe Monad pattern to eliminate nested <code>if x is not None</code> defensive checks.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Chain: 16 &rarr; sqrt &rarr; double &rarr; valid / none</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Success: Maybe(8.0)<br>Failure: Maybe(None)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-20">In <code>.bind(func)</code>, return <code>Maybe(None)</code> if <code>self.val is None</code>, else <code>Maybe(func(self.val))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-20">import math
+
+class Maybe:
+    def __init__(self, value):
+        self.value = value
+
+    def bind(self, func):
+        if self.value is None:
+            return Maybe(None)
+        try:
+            return Maybe(func(self.value))
+        except Exception:
+            return Maybe(None)
+
+    def __repr__(self):
+        return f"Maybe({self.value})"
+
+# Safe processing pipeline
+safe_sqrt = lambda x: math.sqrt(x) if x >= 0 else None
+double = lambda x: x * 2
+
+result_valid = Maybe(16).bind(safe_sqrt).bind(double)
+result_invalid = Maybe(-4).bind(safe_sqrt).bind(double)
+
+print("Valid pipeline:", result_valid)
+print("Invalid pipeline (handled cleanly):", result_invalid)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The <code>Maybe</code> monad wraps value access. If any step returns <code>None</code> or fails, subsequent pipeline steps are skipped safely without raising an exception.</div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python Functional Programming &amp; Lambda Lab • 20 Interactive Practice Problems
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Drawers
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      const copyToClipboard = (text) => {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-999999px";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          return new Promise((resolve, reject) => {
+            document.execCommand('copy') ? resolve() : reject();
+            textArea.remove();
+          });
+        }
+      };
+
+      copyToClipboard(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Category Filtering & Real-time Search
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 20;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_functional_solved') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_functional_solved', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Sync checkbox checked state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on DOM load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

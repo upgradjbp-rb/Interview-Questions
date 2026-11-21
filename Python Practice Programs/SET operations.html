@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Sets Mastery • 31 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-basics { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-math { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-mutation { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-advanced { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-shapes"></i> Python Sets Mastery Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 31 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, syntax, or keyword (e.g. union, frozenset, isdisjoint, comprehension)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (31)</button>
+      <button class="filter-btn" data-filter="cat-basics">Basics &amp; Inspection</button>
+      <button class="filter-btn" data-filter="cat-math">Set Theory &amp; Operations</button>
+      <button class="filter-btn" data-filter="cat-mutation">In-Place Updates &amp; Removal</button>
+      <button class="filter-btn" data-filter="cat-advanced">Advanced, Frozen &amp; Performance</button>
+    </div>
+  </div>
+
+  <!-- Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Basic Set Operations</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a set containing the colors <code>{"red", "green", "blue"}</code>. Add <code>"yellow"</code> and remove <code>"green"</code> using safe removal methods.</p>
+        <div class="purpose-box">Introduces set initialization, <code>add()</code>, and distinguishing between <code>remove()</code> and <code>discard()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Initial: {"red", "green", "blue"}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{'blue', 'red', 'yellow'} (order may vary)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Use <code>.add("yellow")</code> to insert and <code>.discard("green")</code> or <code>.remove("green")</code> to delete.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1">colors = {"red", "green", "blue"}
+
+# Add an element
+colors.add("yellow")
+
+# Safely remove an element
+colors.discard("green")
+
+print("Updated set:", colors)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>discard()</code> deletes an item without raising a <code>KeyError</code> if the item is missing, unlike <code>remove()</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: Clear All Elements</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Clear all elements from an existing set in place so that it becomes an empty set.</p>
+        <div class="purpose-box">Empties a set container while preserving its memory reference.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>my_set = {10, 20, 30}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>set()</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Use the built-in <code>.clear()</code> method on the set instance.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2">my_set = {10, 20, 30}
+my_set.clear()
+
+print("Cleared set:", my_set)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> An empty set is displayed as <code>set()</code> because <code>{}</code> creates an empty dictionary.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: Find the Length of a Set</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Determine the number of unique elements in a set initialized with duplicate values.</p>
+        <div class="purpose-box">Demonstrates automatic deduplication upon set instantiation and $O(1)$ length calculation.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>set([1, 2, 2, 3, 4, 4, 4, 5])</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Length: 5</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Pass the set to the built-in <code>len()</code> function.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">s = set([1, 2, 2, 3, 4, 4, 4, 5])
+print("Length of set:", len(s))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Sets only store unique elements. <code>len(s)</code> reads the internal count directly in $O(1)$ time.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Check if a Set is Empty</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a condition that verifies whether a set is empty using Python's truth value testing.</p>
+        <div class="purpose-box">Leverages Python's truthiness rules rather than explicit length checks.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>empty_set = set()</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Set is empty!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">In Python, an empty set evaluates to <code>False</code> in boolean context: <code>if not my_set:</code>.</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">empty_set = set()
+
+if not empty_set:
+    print("Set is empty!")
+else:
+    print("Set contains elements.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>not s</code> is the idiomatic Pythonic check for an empty container, avoiding redundant <code>len(s) == 0</code> comparisons.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Union of Sets</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Compute the union of two sets using both the operator and the method.</p>
+        <div class="purpose-box">Combines all unique elements from multiple collections.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2, 3}, B = {3, 4, 5}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 2, 3, 4, 5}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">Use the pipe operator <code>A | B</code> or <code>A.union(B)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">A = {1, 2, 3}
+B = {3, 4, 5}
+
+# Method 1: Operator
+result_op = A | B
+
+# Method 2: Method (accepts any iterable)
+result_method = A.union(B)
+
+print("Union:", result_op)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The <code>|</code> operator requires both operands to be sets, whereas <code>.union()</code> accepts any iterable (like lists or tuples).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Intersection of Sets</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find the common items between two sets using the intersection operator and method.</p>
+        <div class="purpose-box">Extracts shared elements across collections in $O(\min(\text{len}(A), \text{len}(B)))$ time.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {10, 20, 30, 40}, B = {30, 40, 50, 60}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{30, 40}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Use the ampersand operator <code>A &amp; B</code> or <code>A.intersection(B)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6">A = {10, 20, 30, 40}
+B = {30, 40, 50, 60}
+
+# Intersection via operator
+common = A & B
+print("Intersection:", common)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>A &amp; B</code> returns a new set containing only items present in both sets.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Difference of Sets</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find elements present in set A but not in set B ($A \setminus B$).</p>
+        <div class="purpose-box">Relative complement operation between sets.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2, 3, 4, 5}, B = {4, 5, 6, 7}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 2, 3}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Use the minus operator: <code>A - B</code> or <code>A.difference(B)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">A = {1, 2, 3, 4, 5}
+B = {4, 5, 6, 7}
+
+diff = A - B
+print("A minus B:", diff)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Set difference is non-commutative: <code>A - B</code> is not equal to <code>B - A</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: Symmetric Difference</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find elements that are in either set A or set B, but not in both.</p>
+        <div class="purpose-box">Computes the symmetric difference (disjunctive union) $(A \cup B) \setminus (A \cap B)$.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2, 3, 4}, B = {3, 4, 5, 6}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 2, 5, 6}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Use the caret operator: <code>A ^ B</code> or <code>A.symmetric_difference(B)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">A = {1, 2, 3, 4}
+B = {3, 4, 5, 6}
+
+sym_diff = A ^ B
+print("Symmetric Difference:", sym_diff)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>A ^ B</code> excludes overlapping items, returning only elements unique to one set or the other.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Find Max and Min</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find the maximum and minimum numeric values from a given set.</p>
+        <div class="purpose-box">Applies aggregate built-in functions over unordered set collections.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>numbers = {42, 12, 89, 5, 67}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Max: 89, Min: 5</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Use the built-in functions <code>max(numbers)</code> and <code>min(numbers)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">numbers = {42, 12, 89, 5, 67}
+
+print(f"Max: {max(numbers)}, Min: {min(numbers)}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Even though sets have no fixed order or indexing, they are iterable, allowing <code>max()</code> and <code>min()</code> to scan them in $O(n)$ time.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Sum of Set Elements</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate the sum of all elements in a set of integers.</p>
+        <div class="purpose-box">Computes cumulative totals over unique elements using <code>sum()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>{10, 20, 30, 40}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Sum: 100</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Pass the set directly into <code>sum(my_set)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">s = {10, 20, 30, 40}
+print("Sum of elements:", sum(s))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>sum()</code> works on any iterable containing numbers, summing unique members in linear time.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-mutation" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: Add a List of Elements</div>
+          <div class="card-meta"><span class="category-tag cat-mutation">In-Place Updates</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Add multiple items from a list into an existing set at once.</p>
+        <div class="purpose-box">Batch-inserts iterable elements using <code>update()</code> instead of looping with <code>add()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>my_set = {1, 2}, items = [3, 4, 5, 2]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 2, 3, 4, 5}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">Call <code>my_set.update(items)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">my_set = {1, 2}
+items = [3, 4, 5, 2]
+
+my_set.update(items)
+print("Updated set:", my_set)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>.update()</code> mutates the set in place by adding all items from the passed iterable, automatically ignoring duplicates.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-mutation" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: Update with Multiple Iterables</div>
+          <div class="card-meta"><span class="category-tag cat-mutation">In-Place Updates</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Update an existing set with elements from both a list and a tuple in a single call.</p>
+        <div class="purpose-box">Passes multiple variable-length iterables to <code>update()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>set A = {1}, list = [2, 3], tuple = (4, 5)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 2, 3, 4, 5}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Pass multiple arguments into <code>.update(list_a, tuple_b)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">A = {1}
+l = [2, 3]
+t = (4, 5)
+
+A.update(l, t)
+print("Resulting set:", A)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>.update()</code> accepts arbitrary positional arguments, ingesting multiple sequences in one step.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Check Subset and Superset</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Check if set A is a subset of set B, and whether B is a superset of A.</p>
+        <div class="purpose-box">Validates inclusion relationships using <code>issubset()</code> and <code>issuperset()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2}, B = {1, 2, 3, 4}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>A subset of B: True<br>B superset of A: True</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13">Use <code>A &lt;= B</code> (or <code>A.issubset(B)</code>) and <code>B &gt;= A</code> (or <code>B.issuperset(A)</code>).</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">A = {1, 2}
+B = {1, 2, 3, 4}
+
+print("A subset of B:", A.issubset(B))      # or A <= B
+print("B superset of A:", B.issuperset(A))  # or B >= A</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>A &lt;= B</code> checks if every element in A is present in B.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Intersection Check with isdisjoint()</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Determine if two sets have completely zero elements in common.</p>
+        <div class="purpose-box">Short-circuited disjointness checking with <code>isdisjoint()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2, 3}, B = {4, 5, 6}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Are sets disjoint? True</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Call <code>A.isdisjoint(B)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">A = {1, 2, 3}
+B = {4, 5, 6}
+
+print("Are sets disjoint?", A.isdisjoint(B))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>isdisjoint()</code> returns <code>True</code> if $A \cap B = \emptyset$. It short-circuits on the very first common element found.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-mutation" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15: Set Difference Update</div>
+          <div class="card-meta"><span class="category-tag cat-mutation">In-Place Updates</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-15')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Remove all elements of set B from set A directly in place.</p>
+        <div class="purpose-box">In-place subtraction via <code>difference_update()</code> / <code>-=</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {10, 20, 30, 40}, B = {30, 40}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>A after update: {10, 20}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-15">Use <code>A.difference_update(B)</code> or <code>A -= B</code>.</div>
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-15">A = {10, 20, 30, 40}
+B = {30, 40}
+
+A.difference_update(B)  # Equivalent to A -= B
+print("A after update:", A)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Unlike <code>A - B</code> which creates a new set, <code>A.difference_update(B)</code> modifies A directly in place.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-mutation" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16: Set Intersection Update</div>
+          <div class="card-meta"><span class="category-tag cat-mutation">In-Place Updates</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-16')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Mutate set A so it only retains elements that are also found in set B.</p>
+        <div class="purpose-box">In-place reduction via <code>intersection_update()</code> / <code>&amp;=</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {"apple", "banana", "cherry"}, B = {"banana", "kiwi"}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{'banana'}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-16">Use <code>A.intersection_update(B)</code> or <code>A &amp;= B</code>.</div>
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-16">A = {"apple", "banana", "cherry"}
+B = {"banana", "kiwi"}
+
+A.intersection_update(B)  # Equivalent to A &= B
+print("A after intersection update:", A)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>intersection_update</code> removes elements from the caller that are absent in the argument iterable.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-mutation" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17: Set Symmetric Difference Update</div>
+          <div class="card-meta"><span class="category-tag cat-mutation">In-Place Updates</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-17')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Mutate set A in place to retain only items in either A or B, but not both.</p>
+        <div class="purpose-box">In-place XOR mutation using <code>symmetric_difference_update()</code> / <code>^=</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2, 3}, B = {3, 4, 5}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 2, 4, 5}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-17">Call <code>A.symmetric_difference_update(B)</code> or <code>A ^= B</code>.</div>
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-17">A = {1, 2, 3}
+B = {3, 4, 5}
+
+A.symmetric_difference_update(B)  # Equivalent to A ^= B
+print("A after symmetric diff update:", A)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Existing common items are pruned from A, while distinct items from B are inserted into A.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-mutation" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18: Remove Items Simultaneously</div>
+          <div class="card-meta"><span class="category-tag cat-mutation">In-Place Updates</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-18')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Remove a collection of specified items <code>{10, 20, 30}</code> from a set all at once.</p>
+        <div class="purpose-box">Batch elimination without individual element checks.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>s = {10, 20, 30, 40, 50}, to_remove = {10, 20, 30}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{40, 50}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-18">Use <code>s.difference_update(to_remove)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-18">s = {10, 20, 30, 40, 50}
+to_remove = {10, 20, 30}
+
+s.difference_update(to_remove)
+print("Set after removing batch:", s)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>difference_update()</code> avoids individual iteration and safely skips items that do not exist in the target set.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19: The Pop Operation</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-19')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Remove and retrieve an arbitrary item from a set using <code>pop()</code>.</p>
+        <div class="purpose-box">Demonstrates non-deterministic popping from unordered hash tables.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>s = {"alpha", "beta", "gamma"}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Popped item and reduced set (2 items remaining)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-19">Call <code>item = s.pop()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-19">s = {"alpha", "beta", "gamma"}
+
+popped_item = s.pop()
+print(f"Removed item: {popped_item}")
+print(f"Remaining set: {s}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Unlike list <code>pop()</code> which takes an index, set <code>pop()</code> takes no arguments and removes an arbitrary element. It raises <code>KeyError</code> if the set is empty.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20: Filter a Set</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-20')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Filter a set of integers to keep only the numbers divisible by 3.</p>
+        <div class="purpose-box">Using set comprehension for conditional filtering.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>numbers = {1, 3, 4, 6, 7, 9, 10, 12}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{3, 6, 9, 12}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-20">Use comprehension syntax: <code>{x for x in s if x % 3 == 0}</code>.</div>
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-20">numbers = {1, 3, 4, 6, 7, 9, 10, 12}
+
+filtered = {x for x in numbers if x % 3 == 0}
+print("Divisible by 3:", filtered)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Set comprehensions produce a fresh set without requiring temporary intermediate lists.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 21 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-21">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 21: Find Common Elements in Lists</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-21')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given three lists of integers, find the numbers present across all three lists using sets.</p>
+        <div class="purpose-box">Multi-way intersection for cross-dataset matching.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>l1 = [1, 2, 3], l2 = [2, 3, 4], l3 = [3, 2, 5]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{2, 3}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-21')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-21')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-21">Chain intersection: <code>set(l1) &amp; set(l2) &amp; set(l3)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-21">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-21')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-21">l1 = [1, 2, 3]
+l2 = [2, 3, 4]
+l3 = [3, 2, 5]
+
+common = set(l1) & set(l2) & set(l3)
+print("Common to all 3:", common)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Converting lists to sets speeds up finding shared elements from $O(n^3)$ with nested loops to $O(n)$ with hash lookups.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22: Count Unique Words</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-22')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Count how many unique words are used in a paragraph (case-insensitive).</p>
+        <div class="purpose-box">Vocabulary analysis in text processing and NLP.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>"Python is great and python is simple"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Unique words: 5</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-22">Split words after lowercase conversion: <code>len(set(text.lower().split()))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-22">text = "Python is great and python is simple"
+
+unique_words = set(text.lower().split())
+print("Unique words count:", len(unique_words))
+print("Vocabulary:", unique_words)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>.lower()</code> groups casing variants (e.g., "Python" and "python"), while <code>set()</code> removes repeated words.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23: Convert Set to Joined String</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-23')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Convert a set of string tokens into a comma-separated string sorted alphabetically.</p>
+        <div class="purpose-box">String serialization and sorting unordered elements.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>{"SQL", "Python", "Tableau"}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>"Python, SQL, Tableau"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-23">Use <code>", ".join(sorted(my_set))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-23">skills = {"SQL", "Python", "Tableau"}
+
+# Sorted gives a deterministic alphabetical list
+joined = ", ".join(sorted(skills))
+print("Joined skills:", joined)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>sorted()</code> returns an ordered list from the unordered set, which <code>.join()</code> formats consistently.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 24 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-24">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 24: Proper Subset and Superset</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-24')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Test whether set A is a *proper* subset of B, and distinguish this from an ordinary subset.</p>
+        <div class="purpose-box">Understanding strict inclusion: $A \subset B \iff A \subseteq B \land A \neq B$.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2}, B = {1, 2}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Subset (&lt;=): True<br>Proper Subset (&lt;): False</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-24')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-24')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-24">Use <code>A &lt; B</code> for strict (proper) subset testing.</div>
+        <div class="drawer solution-drawer" id="sol-24">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-24')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-24">A = {1, 2}
+B = {1, 2}
+
+print("A <= B (Subset):", A <= B)
+print("A < B (Proper Subset):", A < B)
+
+C = {1, 2, 3}
+print("A < C (Proper Subset):", A < C)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>&lt;</code> requires that the superset contains at least one additional element that is not in the subset.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 25 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-25">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 25: Frozen Set</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-25')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an immutable <code>frozenset</code> and use it as a key in a dictionary.</p>
+        <div class="purpose-box">Working with immutable, hashable sets for dictionary keys and set elements.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>frozenset([1, 2, 3])</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Dictionary lookup works with frozenset key!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-25')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-25')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-25">Construct with <code>fs = frozenset([1, 2, 3])</code>.</div>
+        <div class="drawer solution-drawer" id="sol-25">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-25')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-25">fs = frozenset([1, 2, 3])
+
+# Valid: frozenset is hashable
+lookup = {fs: "Authorized Users"}
+
+print(lookup[fs])
+
+# Modifying raises an error:
+# fs.add(4) -> AttributeError: 'frozenset' object has no attribute 'add'</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Standard sets are mutable and unhashable. <code>frozenset</code> is immutable and hashable, so it can be used as a dictionary key or placed inside another set.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 26 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-26">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 26: Set Comprehension</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-26')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Build a set containing the squares of all even numbers between 1 and 10 using set comprehension.</p>
+        <div class="purpose-box">Combines transformation, condition evaluation, and set construction in a single expression.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>range(1, 11)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{4, 16, 36, 64, 100}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-26')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-26')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-26">Syntax: <code>{x**2 for x in range(1, 11) if x % 2 == 0}</code>.</div>
+        <div class="drawer solution-drawer" id="sol-26">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-26')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-26">even_squares = {x**2 for x in range(1, 11) if x % 2 == 0}
+print("Even squares:", even_squares)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Set comprehensions use curly braces <code>{expr for item in iterable if condition}</code> to construct a deduplicated collection.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 27 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-27">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 27: Remove Duplicates (Preserving Order)</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-27')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Remove duplicate items from a list while preserving their original order, using a set for fast lookup tracking.</p>
+        <div class="purpose-box">Achieves $O(n)$ ordered deduplication using an auxiliary set.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[4, 1, 2, 1, 3, 4, 5, 2]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[4, 1, 2, 3, 5]</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-27')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-27')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-27">Maintain a <code>seen = set()</code> and append to a result list only when <code>item not in seen</code>.</div>
+        <div class="drawer solution-drawer" id="sol-27">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-27')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-27">raw_list = [4, 1, 2, 1, 3, 4, 5, 2]
+
+seen = set()
+ordered_unique = []
+
+for item in raw_list:
+    if item not in seen:
+        seen.add(item)
+        ordered_unique.append(item)
+
+print("Ordered unique list:", ordered_unique)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>item not in seen</code> runs in $O(1)$ time, maintaining linear overall runtime while preserving insertion order.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 28 -->
+    <article class="exercise-card" data-category="cat-math" id="ex-28">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 28: Multi-Set Difference</div>
+          <div class="card-meta"><span class="category-tag cat-math">Set Theory &amp; Operations</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-28')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Subtract multiple sets from a base set in a single expression ($A \setminus B \setminus C$).</p>
+        <div class="purpose-box">Chaining set differences across multiple operands.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>A = {1, 2, 3, 4, 5}, B = {2, 3}, C = {4}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{1, 5}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-28')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-28')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-28">Chain the minus operator: <code>A - B - C</code> or call <code>A.difference(B, C)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-28">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-28')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-28">A = {1, 2, 3, 4, 5}
+B = {2, 3}
+C = {4}
+
+# Using method with multiple arguments
+res = A.difference(B, C)  # or A - B - C
+print("Result of A - B - C:", res)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>A.difference(B, C)</code> removes all elements found in either B or C from set A.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 29 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-29">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 29: Set of Tuples</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-29')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Store 2D coordinates as tuples in a set and explain why lists cannot be stored directly.</p>
+        <div class="purpose-box">Understanding object hashability rules for set elements.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Coordinates: (0, 1), (2, 3), (0, 1)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{(0, 1), (2, 3)}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-29')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-29')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-29">Tuples are immutable and hashable, so they can be stored in sets: <code>{(x, y)}</code>.</div>
+        <div class="drawer solution-drawer" id="sol-29">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-29')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-29"># Valid: Tuples are immutable and hashable
+points = {(0, 1), (2, 3), (0, 1)}
+print("Set of coordinates:", points)
+
+# Invalid:
+# bad = {[0, 1]} -> TypeError: unhashable type: 'list'</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Every set element must be hashable. Lists are mutable and cannot be hashed, whereas tuples can.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 30 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-30">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 30: Shallow Copy vs. Assignment</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Inspection</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-30')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Demonstrate the difference between variable alias assignment (<code>b = a</code>) and shallow copying (<code>b = a.copy()</code>).</p>
+        <div class="purpose-box">Avoid unwanted side effects from shared object references.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>original = {1, 2, 3}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Copy remains untouched when original changes</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-30')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-30')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-30">Use <code>copied = original.copy()</code> or <code>set(original)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-30">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-30')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-30">original = {1, 2, 3}
+
+# Shallow copy: creates an independent container
+copied = original.copy()
+
+# Direct assignment: creates a reference alias
+alias = original
+
+original.add(99)
+
+print("Original:", original)  # {1, 2, 3, 99}
+print("Alias:   ", alias)     # {1, 2, 3, 99}
+print("Copied:  ", copied)    # {1, 2, 3}</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>.copy()</code> creates a new set in memory, protecting it from changes made to the original set.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 31 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-31">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 31: Membership Testing Performance</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Performance</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-31')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a benchmark comparison testing <code>item in collection</code> performance between a large list and a set.</p>
+        <div class="purpose-box">Empirically verifies $O(1)$ set hash lookups versus $O(n)$ linear list scans.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>1,000,000 elements, target: -1 (worst case)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Set is orders of magnitude faster than list</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-31')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-31')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-31">Use <code>time.perf_counter()</code> around <code>-1 in large_list</code> vs <code>-1 in large_set</code>.</div>
+        <div class="drawer solution-drawer" id="sol-31">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-31')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-31">import time
+
+size = 1_000_000
+test_list = list(range(size))
+test_set = set(range(size))
+target = -1  # Not present: triggers worst-case linear search
+
+# Measure list lookup
+start = time.perf_counter()
+_ = target in test_list
+list_duration = time.perf_counter() - start
+
+# Measure set lookup
+start = time.perf_counter()
+_ = target in test_set
+set_duration = time.perf_counter() - start
+
+print(f"List lookup: {list_duration:.6f} s (O(n))")
+print(f"Set lookup:  {set_duration:.6f} s (O(1))")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Set lookups use a hash table to jump directly to memory buckets in average $O(1)$ time, making them vastly faster than $O(n)$ list scans for large datasets.</div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python Sets Mastery Lab • 31 Interactive Practice Problems
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Drawers
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Category Filtering & Real-time Search
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 31;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_sets_solved_exercises') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_sets_solved_exercises', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Sync checkbox checked state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on DOM load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

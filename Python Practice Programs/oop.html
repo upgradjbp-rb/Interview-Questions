@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python OOP Mastery • 31 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-basics { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-encap { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-inherit { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-poly { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-dunder { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-cubes"></i> Python OOP Mastery Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 31 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, syntax, or keyword (e.g. super, property, dunder, polymorphism, encapsulation)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (31)</button>
+      <button class="filter-btn" data-filter="cat-basics">Classes &amp; State</button>
+      <button class="filter-btn" data-filter="cat-encap">Encapsulation &amp; Logic</button>
+      <button class="filter-btn" data-filter="cat-inherit">Inheritance &amp; super()</button>
+      <button class="filter-btn" data-filter="cat-poly">Polymorphism &amp; Types</button>
+      <button class="filter-btn" data-filter="cat-dunder">Dunder &amp; Magic Methods</button>
+    </div>
+  </div>
+
+  <!-- Main Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Define an Empty Vehicle Class</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an empty class named <code>Vehicle</code> without any properties and methods using the <code>pass</code> statement, then create an instance of it.</p>
+        <div class="purpose-box">Introduces the <code>class</code> keyword, placeholder indentation with <code>pass</code>, and object instantiation.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>None</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>&lt;__main__.Vehicle object at 0x...&gt;</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Declare <code>class Vehicle:</code> with <code>pass</code> in the body, then instantiate with <code>v = Vehicle()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1">class Vehicle:
+    pass
+
+# Instantiate the empty class
+v = Vehicle()
+print("Instance created:", v)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>pass</code> acts as a syntactical placeholder, allowing valid empty class definitions. Calling <code>Vehicle()</code> instantiates the object in memory.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: Vehicle Class with Instance Attributes</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Vehicle</code> class with <code>max_speed</code> and <code>mileage</code> instance attributes initialized via <code>__init__</code>.</p>
+        <div class="purpose-box">Teaches constructors (<code>__init__</code>) and explicit instance attribute binding via <code>self</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>max_speed = 240, mileage = 18</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Max Speed: 240 km/h, Mileage: 18 km/l</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Define <code>def __init__(self, max_speed, mileage):</code> and assign attributes to <code>self</code>.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2">class Vehicle:
+    def __init__(self, max_speed, mileage):
+        self.max_speed = max_speed
+        self.mileage = mileage
+
+car = Vehicle(240, 18)
+print(f"Max Speed: {car.max_speed} km/h, Mileage: {car.mileage} km/l")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>__init__</code> initializes instance state when an object is created. <code>self</code> binds parameters directly to that specific instance.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: Rectangle Class with Area &amp; Perimeter</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a <code>Rectangle</code> class with attributes <code>width</code> and <code>height</code>, and methods <code>area()</code> and <code>perimeter()</code>.</p>
+        <div class="purpose-box">Demonstrates instance methods operating on internal object state.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>width = 5, height = 10</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Area: 50, Perimeter: 30</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Multiply dimensions in <code>area()</code> and return <code>2 * (self.width + self.height)</code> in <code>perimeter()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+rect = Rectangle(5, 10)
+print(f"Area: {rect.area()}, Perimeter: {rect.perimeter()}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Instance methods require <code>self</code> as their first parameter to access object fields (<code>self.width</code>, <code>self.height</code>).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Student Class with Average Grade</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Student</code> class with attributes <code>name</code> and <code>grades</code> (a list). Include a method <code>average_grade()</code> that computes their GPA average.</p>
+        <div class="purpose-box">Encapsulates collections (lists) inside classes with computed aggregation methods.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>name = "Alice", grades = [85, 90, 95]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Alice's Average: 90.00</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">Divide <code>sum(self.grades)</code> by <code>len(self.grades)</code>, guarding against empty lists.</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">class Student:
+    def __init__(self, name, grades=None):
+        self.name = name
+        self.grades = grades if grades is not None else []
+
+    def average_grade(self):
+        if not self.grades:
+            return 0.0
+        return sum(self.grades) / len(self.grades)
+
+student = Student("Alice", [85, 90, 95])
+print(f"{student.name}'s Average: {student.average_grade():.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Avoid mutable default arguments (use <code>None</code> instead of <code>[]</code>) to ensure instances do not share list references.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Product Class with Stock Value Calculator</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Build a <code>Product</code> class with <code>name</code>, <code>price</code>, and <code>quantity</code>. Implement a method <code>total_stock_value()</code> that calculates inventory value.</p>
+        <div class="purpose-box">Models real-world inventory data and financial properties.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>name="Monitor", price=250.0, quantity=8</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Total Monitor Value: $2000.00</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">Multiply <code>self.price * self.quantity</code> inside the calculation method.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">class Product:
+    def __init__(self, name, price, quantity):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def total_stock_value(self):
+        return self.price * self.quantity
+
+item = Product("Monitor", 250.0, 8)
+print(f"Total {item.name} Value: ${item.total_stock_value():.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Classes bind operational logic directly with the domain data they evaluate.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-encap" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Bank Account with Deposit &amp; Overdraw Protection</div>
+          <div class="card-meta"><span class="category-tag cat-encap">Encapsulation &amp; Logic</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement a <code>BankAccount</code> class with <code>deposit(amount)</code> and <code>withdraw(amount)</code> methods that protect against negative withdrawals and overdrawing.</p>
+        <div class="purpose-box">Encapsulation with boundary validation and state protection.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Initial: 500, Withdraw: 700, Deposit: 300, Withdraw: 700</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Insufficient funds!<br>Withdrawal successful. Balance: 100.00</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Check <code>amount &gt; self.balance</code> before deducting money in <code>withdraw()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6">class BankAccount:
+    def __init__(self, owner, balance=0.0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            return True
+        return False
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            print("Invalid withdrawal amount!")
+            return False
+        if amount > self.balance:
+            print("Insufficient funds!")
+            return False
+        self.balance -= amount
+        print(f"Withdrawal successful. Balance: {self.balance:.2f}")
+        return True
+
+acc = BankAccount("Bob", 500.0)
+acc.withdraw(700.0)
+acc.deposit(300.0)
+acc.withdraw(700.0)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Validating inputs protects internal fields from entering invalid states (such as negative balances).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Light Class with On/Off State Toggle</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Light</code> class initialized to <code>is_on = False</code>. Implement a <code>toggle()</code> method that flips the switch and returns the status.</p>
+        <div class="purpose-box">Finite-state representation using boolean state toggles.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Initial state: Off, call toggle() twice</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Light is now ON<br>Light is now OFF</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Toggle using <code>self.is_on = not self.is_on</code>.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">class Light:
+    def __init__(self):
+        self.is_on = False
+
+    def toggle(self):
+        self.is_on = not self.is_on
+        state = "ON" if self.is_on else "OFF"
+        print(f"Light is now {state}")
+
+bulb = Light()
+bulb.toggle()
+bulb.toggle()</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>not self.is_on</code> flips boolean states cleanly without conditional branching.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-encap" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: User Class with Password Validation</div>
+          <div class="card-meta"><span class="category-tag cat-encap">Encapsulation &amp; Logic</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a <code>User</code> class that accepts a password and validates that it is at least 8 characters long and contains at least one digit.</p>
+        <div class="purpose-box">Applies constructor validation rules to enforce object integrity.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>user1: ("dev", "short"), user2: ("dev", "SecretPass1")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>ValueError: Password too weak!<br>User registered successfully!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Test <code>len(password) &gt;= 8</code> and <code>any(c.isdigit() for c in password)</code> in <code>__init__</code>.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">class User:
+    def __init__(self, username, password):
+        self.username = username
+        self.password = self._validate_password(password)
+
+    def _validate_password(self, password):
+        if len(password) < 8 or not any(c.isdigit() for c in password):
+            raise ValueError("Password too weak! Must be >=8 chars and contain a number.")
+        return password
+
+try:
+    invalid_user = User("john", "short")
+except ValueError as e:
+    print(f"Validation Error: {e}")
+
+valid_user = User("john", "SecretPass1")
+print(f"User '{valid_user.username}' registered successfully!")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Raising exceptions inside the constructor prevents improperly configured objects from being initialized.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Temperature Class with Unit Converters</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Temperature</code> class storing Celsius, and provide methods <code>to_fahrenheit()</code> and <code>to_kelvin()</code>.</p>
+        <div class="purpose-box">Mathematical data transformation methods inside classes.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>celsius = 25.0</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Fahrenheit: 77.0°F, Kelvin: 298.15K</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Formula for Fahrenheit: <code>(C * 9/5) + 32</code>; Kelvin: <code>C + 273.15</code>.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">class Temperature:
+    def __init__(self, celsius):
+        self.celsius = celsius
+
+    def to_fahrenheit(self):
+        return (self.celsius * 9 / 5) + 32
+
+    def to_kelvin(self):
+        return self.celsius + 273.15
+
+temp = Temperature(25.0)
+print(f"Fahrenheit: {temp.to_fahrenheit():.1f}°F, Kelvin: {temp.to_kelvin():.2f}K")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Normalizing data internally to a single standard unit (Celsius) simplifies converting to external formats on demand.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Notebook Class with Add &amp; Display Notes</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Notebook</code> class that maintains a list of notes with <code>add_note(note)</code> and <code>display_notes()</code>.</p>
+        <div class="purpose-box">Managing internal collections and sequential display formatting.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Notes: "Buy milk", "Learn Python"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>1. Buy milk<br>2. Learn Python</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Use <code>enumerate(self.notes, start=1)</code> to format numbers cleanly.</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">class Notebook:
+    def __init__(self):
+        self.notes = []
+
+    def add_note(self, note):
+        self.notes.append(note)
+
+    def display_notes(self):
+        for idx, note in enumerate(self.notes, start=1):
+            print(f"{idx}. {note}")
+
+nb = Notebook()
+nb.add_note("Buy milk")
+nb.add_note("Learn Python")
+nb.display_notes()</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>enumerate()</code> provides automatic 1-based indexing for items in the internal storage list.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-encap" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: Coffee Machine with Multi-Resource Tracking</div>
+          <div class="card-meta"><span class="category-tag cat-encap">Encapsulation &amp; Logic</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Build a <code>CoffeeMachine</code> tracking water, milk, and coffee beans. Decrement resources when <code>make_espresso()</code> runs, checking for shortages.</p>
+        <div class="purpose-box">Complex multi-variable resource constraint verification.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Initial: water=100, beans=50. Cost: water=50, beans=20. Call twice.</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Espresso served!<br>Espresso served!<br>Error: Not enough water!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">Check if water &gt;= 50 and beans &gt;= 20 before deducting quantities.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">class CoffeeMachine:
+    def __init__(self, water, beans):
+        self.water = water
+        self.beans = beans
+
+    def make_espresso(self):
+        if self.water < 50:
+            print("Error: Not enough water!")
+            return False
+        if self.beans < 20:
+            print("Error: Not enough beans!")
+            return False
+
+        self.water -= 50
+        self.beans -= 20
+        print("Espresso served!")
+        return True
+
+machine = CoffeeMachine(100, 50)
+machine.make_espresso()
+machine.make_espresso()
+machine.make_espresso()</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Encapsulating state logic ensures resources are only subtracted after all operational prerequisites pass validation.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: Shared Class Attribute Across Instances</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Define a <code>Vehicle</code> class with a class attribute <code>wheels = 4</code> and instance attributes <code>name</code> and <code>color</code>.</p>
+        <div class="purpose-box">Differentiates shared class attributes from individual instance-level attributes.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Car1("Sedan", "Blue"), Car2("Coupe", "Red")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Both cars have wheels: 4</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Define <code>wheels = 4</code> directly in the class body, outside of <code>__init__</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">class Vehicle:
+    wheels = 4  # Shared class attribute
+
+    def __init__(self, name, color):
+        self.name = name    # Instance attribute
+        self.color = color  # Instance attribute
+
+c1 = Vehicle("Sedan", "Blue")
+c2 = Vehicle("Coupe", "Red")
+
+print(f"{c1.name}: {c1.wheels} wheels")
+print(f"{c2.name}: {c2.wheels} wheels")
+print("Class reference:", Vehicle.wheels)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Class attributes are shared across all instances, whereas instance attributes are stored individually in each object's <code>__dict__</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-inherit" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Bus Subclass Inheriting from Vehicle</div>
+          <div class="card-meta"><span class="category-tag cat-inherit">Inheritance &amp; super()</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Bus</code> child class that inherits all methods and properties from the parent <code>Vehicle</code> class.</p>
+        <div class="purpose-box">Single inheritance and code reuse across hierarchies.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Bus("Volvo", 180, 12)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Vehicle Name: Volvo Speed: 180 Mileage: 12</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13">Define <code>class Bus(Vehicle): pass</code> to inherit without overriding.</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">class Vehicle:
+    def __init__(self, name, max_speed, mileage):
+        self.name = name
+        self.max_speed = max_speed
+        self.mileage = mileage
+
+# Bus inherits everything from Vehicle
+class Bus(Vehicle):
+    pass
+
+school_bus = Bus("Volvo", 180, 12)
+print(f"Vehicle Name: {school_bus.name} Speed: {school_bus.max_speed} Mileage: {school_bus.mileage}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Subclasses declared as <code>Child(Parent)</code> automatically gain access to parent initializers and instance methods.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-inherit" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Override Parent Method Using super()</div>
+          <div class="card-meta"><span class="category-tag cat-inherit">Inheritance &amp; super()</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Override the <code>seating_capacity()</code> method of <code>Vehicle</code> (default 50) in <code>Bus</code>, using <code>super()</code> to access base behavior.</p>
+        <div class="purpose-box">Method overriding while leveraging parent logic with <code>super()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Bus("City Express") with capacity override</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>The seating capacity of a City Express is 50 passengers</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Call <code>super().seating_capacity(capacity=50)</code> from inside the child's method.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">class Vehicle:
+    def __init__(self, name):
+        self.name = name
+
+    def seating_capacity(self, capacity):
+        return f"The seating capacity of a {self.name} is {capacity} passengers"
+
+class Bus(Vehicle):
+    def seating_capacity(self, capacity=50):
+        # Call parent's implementation with default 50
+        return super().seating_capacity(capacity)
+
+b = Bus("City Express")
+print(b.seating_capacity())</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>super()</code> routes method dispatch to the parent class dynamically based on the Method Resolution Order (MRO).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-inherit" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15: Add Maintenance Fee in Child Class via super()</div>
+          <div class="card-meta"><span class="category-tag cat-inherit">Inheritance &amp; super()</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-15')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate total fare where default fare is <code>capacity * 100</code>. For a <code>Bus</code>, add a 10% maintenance charge on top of total fare.</p>
+        <div class="purpose-box">Mathematical adjustments in derived classes utilizing <code>super()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Bus with capacity = 50</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Total Bus fare is: 5500.0</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-15">Get <code>base = super().fare()</code> and return <code>base + (0.10 * base)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-15">class Vehicle:
+    def __init__(self, capacity):
+        self.capacity = capacity
+
+    def fare(self):
+        return self.capacity * 100
+
+class Bus(Vehicle):
+    def fare(self):
+        base_fare = super().fare()
+        # Add 10% maintenance fee
+        total_fare = base_fare + (0.10 * base_fare)
+        return total_fare
+
+school_bus = Bus(50)
+print("Total Bus fare is:", school_bus.fare())</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>super().fare()</code> calculates base pricing without duplicating parent logic in the child class.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-poly" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16: Polymorphism with Dog &amp; Cat speak()</div>
+          <div class="card-meta"><span class="category-tag cat-poly">Polymorphism &amp; Types</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-16')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create <code>Dog</code> and <code>Cat</code> classes each implementing a <code>speak()</code> method. Iterate over a list of animals to demonstrate polymorphism.</p>
+        <div class="purpose-box">Duck typing and polymorphic method invocation across unrelated classes.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>animals = [Dog(), Cat()]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Woof!<br>Meow!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-16">Loop through the list and call <code>animal.speak()</code> uniformly.</div>
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-16">class Dog:
+    def speak(self):
+        return "Woof!"
+
+class Cat:
+    def speak(self):
+        return "Meow!"
+
+animals = [Dog(), Cat()]
+for animal in animals:
+    print(animal.speak())</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Polymorphism allows uniform interfaces: calling <code>.speak()</code> works regardless of the specific concrete class.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-poly" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17: Full-Time vs Part-Time Employee Pay Logic</div>
+          <div class="card-meta"><span class="category-tag cat-poly">Polymorphism &amp; Types</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-17')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an <code>Employee</code> base class with <code>FullTimeEmployee</code> (fixed monthly salary) and <code>PartTimeEmployee</code> (hours * hourly rate) subclasses implementing <code>calculate_pay()</code>.</p>
+        <div class="purpose-box">Polymorphic payroll calculation using subclass-specific business logic.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>FT: salary=5000; PT: hours=80, rate=25</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Full-time Pay: $5000.00<br>Part-time Pay: $2000.00</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-17">Override <code>calculate_pay()</code> in each derived class according to its pay model.</div>
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-17">class Employee:
+    def __init__(self, name):
+        self.name = name
+
+    def calculate_pay(self):
+        raise NotImplementedError("Subclasses must implement calculate_pay()")
+
+class FullTimeEmployee(Employee):
+    def __init__(self, name, monthly_salary):
+        super().__init__(name)
+        self.monthly_salary = monthly_salary
+
+    def calculate_pay(self):
+        return self.monthly_salary
+
+class PartTimeEmployee(Employee):
+    def __init__(self, name, hours, hourly_rate):
+        super().__init__(name)
+        self.hours = hours
+        self.hourly_rate = hourly_rate
+
+    def calculate_pay(self):
+        return self.hours * self.hourly_rate
+
+staff = [FullTimeEmployee("Alice", 5000.0), PartTimeEmployee("Bob", 80, 25.0)]
+for member in staff:
+    print(f"{member.name}'s Pay: ${member.calculate_pay():.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Common parent interfaces allow batch processing over varied objects without needing explicit type inspections.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-poly" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18: Shape Subclasses with Custom area() Methods</div>
+          <div class="card-meta"><span class="category-tag cat-poly">Polymorphism &amp; Types</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-18')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Define a <code>Shape</code> base class, and implement <code>Circle(radius)</code> and <code>Square(side)</code> subclasses that compute their respective areas.</p>
+        <div class="purpose-box">Geometric polymorphism with the <code>math</code> module.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Circle(3), Square(4)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Circle Area: 28.27<br>Square Area: 16.00</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-18">Use <code>math.pi * self.radius ** 2</code> for the circle, and <code>self.side ** 2</code> for the square.</div>
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-18">import math
+
+class Shape:
+    def area(self):
+        pass
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return math.pi * (self.radius ** 2)
+
+class Square(Shape):
+    def __init__(self, side):
+        self.side = side
+
+    def area(self):
+        return self.side ** 2
+
+shapes = [Circle(3), Square(4)]
+for s in shapes:
+    print(f"{s.__class__.__name__} Area: {s.area():.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>s.__class__.__name__</code> dynamically identifies the active subclass at runtime during iteration.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-inherit" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19: Media Subclasses with Type-Specific Attributes</div>
+          <div class="card-meta"><span class="category-tag cat-inherit">Inheritance &amp; super()</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-19')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>MediaItem</code> base class (with <code>title</code> and <code>duration</code>). Derive <code>Movie</code> (adding <code>director</code>) and <code>Song</code> (adding <code>artist</code>).</p>
+        <div class="purpose-box">Subclass constructor extension with <code>super().__init__()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Movie("Inception", 148, "Nolan")<br>Song("Imagine", 3, "Lennon")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Movie: Inception directed by Nolan<br>Song: Imagine performed by Lennon</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-19">Pass shared fields to <code>super().__init__(title, duration)</code> and initialize the unique field on <code>self</code>.</div>
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-19">class MediaItem:
+    def __init__(self, title, duration):
+        self.title = title
+        self.duration = duration
+
+class Movie(MediaItem):
+    def __init__(self, title, duration, director):
+        super().__init__(title, duration)
+        self.director = director
+
+class Song(MediaItem):
+    def __init__(self, title, duration, artist):
+        super().__init__(title, duration)
+        self.artist = artist
+
+m = Movie("Inception", 148, "Nolan")
+s = Song("Imagine", 3, "Lennon")
+print(f"Movie: {m.title} directed by {m.director}")
+print(f"Song: {s.title} performed by {s.artist}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>super().__init__()</code> sets up base class attributes, keeping child initializers focused on their unique extensions.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-inherit" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20: Discounted Order Subclass with 10% Off</div>
+          <div class="card-meta"><span class="category-tag cat-inherit">Inheritance &amp; super()</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-20')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an <code>Order</code> base class with <code>total_amount()</code>. Create a <code>DiscountedOrder</code> subclass that subtracts 10% from the total amount.</p>
+        <div class="purpose-box">Behavioral specialization in financial transactions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Order items: [100, 200, 100]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Standard Total: $400.00<br>Discounted Total: $360.00</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-20">In <code>DiscountedOrder</code>, return <code>super().total_amount() * 0.90</code>.</div>
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-20">class Order:
+    def __init__(self, items):
+        self.items = items
+
+    def total_amount(self):
+        return sum(self.items)
+
+class DiscountedOrder(Order):
+    def total_amount(self):
+        base_total = super().total_amount()
+        return base_total * 0.90
+
+items = [100.0, 200.0, 100.0]
+regular = Order(items)
+discounted = DiscountedOrder(items)
+
+print(f"Standard Total: ${regular.total_amount():.2f}")
+print(f"Discounted Total: ${discounted.total_amount():.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Method overriding allows subclasses to modify calculations while reusing the parent's base logic.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 21 -->
+    <article class="exercise-card" data-category="cat-inherit" id="ex-21">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 21: Vehicle Class Hierarchy with Bike, Truck &amp; Bus</div>
+          <div class="card-meta"><span class="category-tag cat-inherit">Inheritance &amp; super()</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-21')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a class hierarchy branching from <code>Vehicle</code> into <code>Bike</code> (2 wheels), <code>Truck</code> (payload capacity), and <code>Bus</code> (passenger count).</p>
+        <div class="purpose-box">Hierarchical inheritance modeling across sibling subclasses.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Bike("Yamaha"), Truck("Mack", payload=15), Bus("Volvo", seats=40)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Yamaha: 2 wheels<br>Mack payload: 15 tons<br>Volvo seats: 40 passengers</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-21')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-21')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-21">All three subclasses inherit from <code>Vehicle</code> and add their own specialized attributes.</div>
+        <div class="drawer solution-drawer" id="sol-21">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-21')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-21">class Vehicle:
+    def __init__(self, brand):
+        self.brand = brand
+
+class Bike(Vehicle):
+    wheels = 2
+
+class Truck(Vehicle):
+    def __init__(self, brand, payload_tons):
+        super().__init__(brand)
+        self.payload_tons = payload_tons
+
+class Bus(Vehicle):
+    def __init__(self, brand, seats):
+        super().__init__(brand)
+        self.seats = seats
+
+b = Bike("Yamaha")
+t = Truck("Mack", 15)
+bus = Bus("Volvo", 40)
+
+print(f"{b.brand}: {b.wheels} wheels")
+print(f"{t.brand} payload: {t.payload_tons} tons")
+print(f"{bus.brand} seats: {bus.seats} passengers")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Subclassing enables shared base traits (brand) while maintaining distinct attributes (wheels vs payload vs seating).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-poly" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22: Identify Object’s Class Using type()</div>
+          <div class="card-meta"><span class="category-tag cat-poly">Polymorphism &amp; Types</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-22')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an instance of <code>Vehicle</code> and print its exact type identity using the built-in <code>type()</code> function.</p>
+        <div class="purpose-box">Direct runtime class object identification.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>v = Vehicle("Toyota")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>&lt;class '__main__.Vehicle'&gt;</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-22">Call <code>print(type(v))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-22">class Vehicle:
+    def __init__(self, brand):
+        self.brand = brand
+
+v = Vehicle("Toyota")
+print("Type of instance:", type(v))
+print("Class name:", type(v).__name__)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>type(obj)</code> returns the exact class that created the instance. Unlike <code>isinstance()</code>, it does not match parent classes.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-poly" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23: Type Checking with isinstance() &amp; issubclass()</div>
+          <div class="card-meta"><span class="category-tag cat-poly">Polymorphism &amp; Types</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-23')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Check whether a <code>school_bus</code> instance is an instance of <code>Vehicle</code>, and verify whether <code>Bus</code> is a subclass of <code>Vehicle</code>.</p>
+        <div class="purpose-box">Type hierarchy inspection using <code>isinstance()</code> and <code>issubclass()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>class Bus(Vehicle), school_bus = Bus()</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>isinstance(school_bus, Vehicle): True<br>issubclass(Bus, Vehicle): True</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-23">Use <code>isinstance(obj, Class)</code> and <code>issubclass(Child, Parent)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-23">class Vehicle:
+    pass
+
+class Bus(Vehicle):
+    pass
+
+school_bus = Bus()
+
+print("isinstance(school_bus, Vehicle):", isinstance(school_bus, Vehicle))
+print("issubclass(Bus, Vehicle):       ", issubclass(Bus, Vehicle))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>isinstance()</code> accounts for inheritance relationships, returning <code>True</code> for parent types as well.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 24 -->
+    <article class="exercise-card" data-category="cat-dunder" id="ex-24">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 24: Vector Addition Using __add__ Overloading</div>
+          <div class="card-meta"><span class="category-tag cat-dunder">Dunder &amp; Magic Methods</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-24')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a 2D <code>Vector(x, y)</code> class that overloads the <code>+</code> operator via <code>__add__</code> and formats output with <code>__repr__</code>.</p>
+        <div class="purpose-box">Operator overloading with dunder methods.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>v1 = Vector(2, 4), v2 = Vector(3, 1)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Vector(5, 5)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-24')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-24')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-24">Return a new <code>Vector(self.x + other.x, self.y + other.y)</code> inside <code>def __add__(self, other):</code>.</div>
+        <div class="drawer solution-drawer" id="sol-24">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-24')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-24">class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+
+v1 = Vector(2, 4)
+v2 = Vector(3, 1)
+v3 = v1 + v2
+
+print("v1 + v2 =", v3)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>__add__</code> intercepts the <code>+</code> operator, enabling custom objects to work with standard arithmetic syntax.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 25 -->
+    <article class="exercise-card" data-category="cat-dunder" id="ex-25">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 25: Cart Length Using __len__ Overloading</div>
+          <div class="card-meta"><span class="category-tag cat-dunder">Dunder &amp; Magic Methods</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-25')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Cart</code> class that holds an internal item list. Implement <code>__len__</code> so calling <code>len(cart)</code> returns the number of items.</p>
+        <div class="purpose-box">Making custom container classes work with Python's built-in <code>len()</code> function.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>cart with items: ["Apple", "Book", "Pen"]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Total items in cart: 3</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-25')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-25')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-25">Define <code>def __len__(self): return len(self.items)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-25">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-25')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-25">class Cart:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        self.items.append(item)
+
+    def __len__(self):
+        return len(self.items)
+
+cart = Cart()
+cart.add_item("Apple")
+cart.add_item("Book")
+cart.add_item("Pen")
+
+print("Total items in cart:", len(cart))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Implementing <code>__len__</code> allows custom objects to integrate seamlessly with the built-in <code>len()</code> protocol.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 26 -->
+    <article class="exercise-card" data-category="cat-encap" id="ex-26">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 26: Private Balance with Property Getter &amp; Setter</div>
+          <div class="card-meta"><span class="category-tag cat-encap">Encapsulation &amp; Logic</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-26')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Protect an internal <code>_balance</code> attribute using <code>@property</code> and <code>@balance.setter</code>, rejecting negative balances.</p>
+        <div class="purpose-box">Pythonic data encapsulation with managed properties.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Initial: 100, set to 250, set to -50</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Balance: $250.00<br>ValueError: Balance cannot be negative!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-26')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-26')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-26">Decorate getter with <code>@property</code> and setter with <code>@balance.setter</code>.</div>
+        <div class="drawer solution-drawer" id="sol-26">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-26')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-26">class Account:
+    def __init__(self, balance):
+        self._balance = 0
+        self.balance = balance  # Invokes the setter
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, value):
+        if value < 0:
+            raise ValueError("Balance cannot be negative!")
+        self._balance = value
+
+acc = Account(100)
+acc.balance = 250
+print(f"Balance: ${acc.balance:.2f}")
+
+try:
+    acc.balance = -50
+except ValueError as e:
+    print("Caught error:", e)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>@property</code> provides attribute-style syntax (<code>acc.balance</code>) while still validating inputs through behind-the-scenes getter and setter methods.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 27 -->
+    <article class="exercise-card" data-category="cat-dunder" id="ex-27">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 27: Callable Object Class Using __call__</div>
+          <div class="card-meta"><span class="category-tag cat-dunder">Dunder &amp; Magic Methods</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-27')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Multiplier</code> class initialized with a factor <code>n</code>. Implement <code>__call__</code> so instances can be invoked directly like a function.</p>
+        <div class="purpose-box">Making class instances callable like functions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>double = Multiplier(2), call double(10)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>20</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-27')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-27')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-27">Define <code>def __call__(self, x): return self.n * x</code>.</div>
+        <div class="drawer solution-drawer" id="sol-27">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-27')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-27">class Multiplier:
+    def __init__(self, factor):
+        self.factor = factor
+
+    def __call__(self, value):
+        return self.factor * value
+
+double = Multiplier(2)
+triple = Multiplier(3)
+
+print("double(10):", double(10))
+print("triple(10):", triple(10))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>__call__</code> turns object instances into callables, behaving like functions that retain persistent internal state.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 28 -->
+    <article class="exercise-card" data-category="cat-encap" id="ex-28">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 28: Flight Class with Passenger Capacity Check</div>
+          <div class="card-meta"><span class="category-tag cat-encap">Encapsulation &amp; Logic</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-28')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Flight</code> class with a fixed passenger capacity. Add an <code>add_passenger(name)</code> method that rejects bookings once the flight is full.</p>
+        <div class="purpose-box">Capacity constraints and booking logic.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Capacity = 2. Add: "Alice", "Bob", "Charlie"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Booked Alice<br>Booked Bob<br>Booking failed for Charlie: Flight Full!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-28')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-28')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-28">Check if <code>len(self.passengers) &gt;= self.capacity</code> before appending new passengers.</div>
+        <div class="drawer solution-drawer" id="sol-28">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-28')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-28">class Flight:
+    def __init__(self, flight_number, capacity):
+        self.flight_number = flight_number
+        self.capacity = capacity
+        self.passengers = []
+
+    def add_passenger(self, name):
+        if len(self.passengers) >= self.capacity:
+            print(f"Booking failed for {name}: Flight {self.flight_number} Full!")
+            return False
+        self.passengers.append(name)
+        print(f"Booked {name}")
+        return True
+
+flight = Flight("AI-202", 2)
+flight.add_passenger("Alice")
+flight.add_passenger("Bob")
+flight.add_passenger("Charlie")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Validating against maximum capacity guarantees container size limits are never exceeded.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 29 -->
+    <article class="exercise-card" data-category="cat-poly" id="ex-29">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 29: Zoo Class that Feeds All Animals</div>
+          <div class="card-meta"><span class="category-tag cat-poly">Polymorphism &amp; Types</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-29')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Zoo</code> class that aggregates a list of animals (each with an <code>eat()</code> method) and implement <code>feed_all()</code>.</p>
+        <div class="purpose-box">Object composition combined with polymorphic iteration.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Lion("Simba"), Panda("Po")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Simba is eating meat.<br>Po is eating bamboo.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-29')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-29')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-29">Store instances in <code>self.animals</code>, then iterate calling <code>animal.eat()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-29">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-29')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-29">class Lion:
+    def __init__(self, name): self.name = name
+    def eat(self): return f"{self.name} is eating meat."
+
+class Panda:
+    def __init__(self, name): self.name = name
+    def eat(self): return f"{self.name} is eating bamboo."
+
+class Zoo:
+    def __init__(self):
+        self.animals = []
+
+    def add_animal(self, animal):
+        self.animals.append(animal)
+
+    def feed_all(self):
+        for animal in self.animals:
+            print(animal.eat())
+
+zoo = Zoo()
+zoo.add_animal(Lion("Simba"))
+zoo.add_animal(Panda("Po"))
+zoo.feed_all()</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Composition (a Zoo <em>has</em> animals) decouples the manager class from the specific details of each animal type.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 30 -->
+    <article class="exercise-card" data-category="cat-encap" id="ex-30">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 30: Character Class with Auto Level-Up Logic</div>
+          <div class="card-meta"><span class="category-tag cat-encap">Encapsulation &amp; Logic</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-30')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Build a game <code>Character</code> class with <code>level = 1</code> and <code>xp = 0</code>. Add <code>gain_xp(points)</code> that automatically increments level every 100 XP.</p>
+        <div class="purpose-box">Game state machines with automatic threshold level-ups.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>gain_xp(60), gain_xp(70)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Gained 60 XP.<br>Gained 70 XP.<br>Leveled Up! Level: 2 (XP: 30)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-30')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-30')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-30">Use a <code>while self.xp &gt;= 100:</code> loop, deducting 100 XP and adding 1 to <code>level</code>.</div>
+        <div class="drawer solution-drawer" id="sol-30">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-30')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-30">class Character:
+    def __init__(self, name):
+        self.name = name
+        self.level = 1
+        self.xp = 0
+
+    def gain_xp(self, points):
+        self.xp += points
+        print(f"{self.name} gained {points} XP.")
+        while self.xp >= 100:
+            self.xp -= 100
+            self.level += 1
+            print(f"🎉 Leveled Up! Now Level {self.level} (Excess XP: {self.xp})")
+
+hero = Character("Aria")
+hero.gain_xp(60)
+hero.gain_xp(70)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> A <code>while</code> loop ensures characters level up multiple times at once if they receive a large burst of XP.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 31 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-31">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 31: Playlist Class with Add, Remove &amp; Shuffle</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Classes &amp; State</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-31')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Playlist</code> class with <code>add_song(title)</code>, <code>remove_song(title)</code>, and <code>shuffle()</code> using the <code>random</code> module.</p>
+        <div class="purpose-box">Collection management combined with standard library utilities.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Add ["Song A", "Song B", "Song C"], call shuffle()</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Shuffled playlist with all original songs preserved</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-31')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-31')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-31">Use <code>random.shuffle(self.songs)</code> to randomize order in place.</div>
+        <div class="drawer solution-drawer" id="sol-31">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-31')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-31">import random
+
+class Playlist:
+    def __init__(self, name):
+        self.name = name
+        self.songs = []
+
+    def add_song(self, title):
+        self.songs.append(title)
+
+    def remove_song(self, title):
+        if title in self.songs:
+            self.songs.remove(title)
+
+    def shuffle(self):
+        random.shuffle(self.songs)
+
+pl = Playlist("Coding Vibes")
+pl.add_song("Song A")
+pl.add_song("Song B")
+pl.add_song("Song C")
+print("Original:", pl.songs)
+
+pl.shuffle()
+print("Shuffled:", pl.songs)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>random.shuffle()</code> randomizes list order in place without requiring external data structures.</div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python OOP Mastery Lab • 31 Interactive Practice Problems
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Drawers
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Category Filtering & Real-time Search
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 31;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_oop_solved_exercises') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_oop_solved_exercises', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Sync checkbox checked state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on DOM load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

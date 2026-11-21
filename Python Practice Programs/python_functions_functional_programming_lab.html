@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Functions & Functional Programming Lab • 18 Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls, Search, and Filters */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-basics { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-args { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-rec { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-func { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python Functions &amp; Functional Programming Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 18 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Search, and Category Filtering -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises (e.g. *args, lambda, recursion, global, higher-order, map, filter)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (18)</button>
+      <button class="filter-btn" data-filter="cat-basics">Function Basics</button>
+      <button class="filter-btn" data-filter="cat-args">Arguments &amp; Scope</button>
+      <button class="filter-btn" data-filter="cat-rec">Recursion</button>
+      <button class="filter-btn" data-filter="cat-func">Lambdas &amp; Functional Tools</button>
+      
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+    <!-- Dynamically rendered via JavaScript -->
+  </main>
+
+  <footer>
+    Python Functions &amp; Functional Programming Lab • 18 Practice Exercises
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Create a Function with Parameters",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Write a function named `demo(name, age)` that accepts two parameters (name and age) and prints their values.",
+        purpose: "Learn how to define a function with parameters using the `def` keyword and invoke it with positional arguments.",
+        input: 'demo("Ben", 25)',
+        output: "Name: Ben, Age: 25",
+        hint: "Define the function header with `def demo(name, age):` and print the variables inside using an f-string.",
+        code: `def demo(name, age):
+    print(f"Name: {name}, Age: {age}")
+
+# Call the function with sample arguments
+demo("Ben", 25)`,
+        explanation: "The `def` keyword initializes a reusable block of logic. The parameters `name` and `age` serve as placeholders that receive argument values during the function call."
+      },
+      {
+        id: 2,
+        title: "Variable Length of Arguments ( *args )",
+        category: "cat-args",
+        catLabel: "Arguments & Scope",
+        problem: "Write a function `sum_all(*args)` that accepts any number of positional numeric arguments and returns their sum.",
+        purpose: "Understand arbitrary argument lists (*args) that package multiple positional inputs into an iterable tuple.",
+        input: "sum_all(10, 20, 30) and sum_all(5, 15)",
+        output: "60 and 20",
+        hint: "The parameter `*args` collects incoming arguments into a tuple. You can iterate through `args` or pass it directly to `sum()`.",
+        code: `def sum_all(*args):
+    total = sum(args)
+    return total
+
+print("Sum 1:", sum_all(10, 20, 30))
+print("Sum 2:", sum_all(5, 15))`,
+        explanation: "The asterisk `*` tells Python to pack all positional arguments into a single tuple named `args`. This lets the function handle variable call signatures dynamically."
+      },
+      {
+        id: 3,
+        title: "Return Multiple Values from a Function",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Write a function `calculation(a, b)` that calculates both the addition and subtraction of `a` and `b`, returning both results in a single call.",
+        purpose: "Explore tuple packing and unpacking when returning multiple results from a function.",
+        input: "res_add, res_sub = calculation(40, 10)",
+        output: "Addition: 50, Subtraction: 30",
+        hint: "Return comma-separated expressions: `return a + b, a - b`. Python packs them into a tuple that the caller can unpack.",
+        code: `def calculation(a, b):
+    addition = a + b
+    subtraction = a - b
+    return addition, subtraction
+
+add_res, sub_res = calculation(40, 10)
+print(f"Addition: {add_res}, Subtraction: {sub_res}")`,
+        explanation: "Writing `return addition, subtraction` packs both values into a tuple `(50, 30)`. The caller unpacks them simultaneously into `add_res, sub_res`."
+      },
+      {
+        id: 4,
+        title: "Function with Default Argument",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Write a function `show_employee(name, salary=9000)` that accepts an employee name and salary. If salary is omitted in the function call, it should default to 9000.",
+        purpose: "Master default parameter values for optional function inputs.",
+        input: 'show_employee("Ben", 12000) and show_employee("Jessa")',
+        output: "Name: Ben salary: 12000 and Name: Jessa salary: 9000",
+        hint: "Assign default values in the parameter list: `def show_employee(name, salary=9000):`.",
+        code: `def show_employee(name, salary=9000):
+    print(f"Name: {name} salary: {salary}")
+
+show_employee("Ben", 12000)
+show_employee("Jessa")`,
+        explanation: "Parameters with default values make arguments optional. If the caller provides a value, it overrides the default; otherwise, the default is preserved."
+      },
+      {
+        id: 5,
+        title: "Create an Inner Function",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Create an outer function `outer_fun(a, b)` and an inner nested function `inner_fun(a, b)` that adds `a` and `b`. The outer function should call `inner_fun`, add 5 to its result, and return it.",
+        purpose: "Learn function nesting, local function scope, and modular helper organization.",
+        input: "outer_fun(5, 10)",
+        output: "20",
+        hint: "Define `def inner_fun(x, y):` inside `outer_fun`. Call it and add 5 to its returned sum.",
+        code: `def outer_fun(a, b):
+    # Inner nested helper function
+    def inner_fun(x, y):
+        return x + y
+
+    sum_res = inner_fun(a, b)
+    return sum_res + 5
+
+result = outer_fun(5, 10)
+print("Result:", result)`,
+        explanation: "Inner functions are scoped locally within their enclosing outer function, keeping helper routines encapsulated from global namespace pollution."
+      },
+      {
+        id: 6,
+        title: "Create a Recursive Function",
+        category: "cat-rec",
+        catLabel: "Recursion",
+        problem: "Write a recursive function `recursive_sum(n)` that calculates the sum of all numbers from 1 up to `n`.",
+        purpose: "Understand the two core tenets of recursion: base case termination and self-referential decomposition.",
+        input: "recursive_sum(10)",
+        output: "55",
+        hint: "Base case: if `n <= 1`, return `n`. Recursive step: return `n + recursive_sum(n - 1)`.",
+        code: `def recursive_sum(n):
+    if n <= 1:
+        return n
+    return n + recursive_sum(n - 1)
+
+print("Recursive Sum:", recursive_sum(10))`,
+        explanation: "The function breaks down the problem by calling itself with `n - 1` until it hits the base case `n <= 1`, winding back up through the call stack with the accumulated total."
+      },
+      {
+        id: 7,
+        title: "Assign a Different Name to Function and Call It",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Assign a new name `display_student` to an existing function `show_student(name, age)`, and call it successfully through the new alias.",
+        purpose: "Understand that functions in Python are first-class objects that can be referenced, assigned to new variables, and passed around.",
+        input: 'display_student("Emma", 26)',
+        output: "Emma 26",
+        hint: "Assign without parentheses: `display_student = show_student`. Do not call the function during assignment.",
+        code: `def show_student(name, age):
+    print(name, age)
+
+# Assign function reference to a new identifier
+display_student = show_student
+
+# Call via alias
+display_student("Emma", 26)`,
+        explanation: "Functions in Python are first-class citizens. Omitting parentheses accesses the function object itself rather than invoking its return value, allowing direct aliasing."
+      },
+      {
+        id: 8,
+        title: "Generate a List of Even Numbers (Range Function)",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Write a function `generate_evens(start, end)` that returns a list of all even numbers between `start` and `end` (exclusive) using `range()`.",
+        purpose: "Combine functions with built-in generator utilities like `range(start, stop, step)`.",
+        input: "generate_evens(4, 30)",
+        output: "[4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28]",
+        hint: "Ensure the starting number is even, then pass `step=2` into `list(range(start, end, 2))`.",
+        code: `def generate_evens(start, end):
+    # Adjust start to first even number if needed
+    if start % 2 != 0:
+        start += 1
+    return list(range(start, end, 2))
+
+print(generate_evens(4, 30))`,
+        explanation: "`range(start, end, 2)` steps through numbers by increments of 2. Wrapping it in `list()` converts the lazy range generator into an in-memory list."
+      },
+      {
+        id: 9,
+        title: "Find the Largest Item in a List",
+        category: "cat-basics",
+        catLabel: "Function Basics",
+        problem: "Write a function `find_max(numbers)` that finds and returns the largest number in a list without using Python's built-in `max()` function.",
+        purpose: "Practice iterative comparison algorithms and running maximum trackers.",
+        input: "find_max([4, 68, 24, 89, 12, 99, 3])",
+        output: "99",
+        hint: "Initialize `current_max = numbers[0]` and iterate through the rest of the list, updating `current_max` whenever you see a larger value.",
+        code: `def find_max(numbers):
+    if not numbers:
+        return None
+    current_max = numbers[0]
+    for num in numbers[1:]:
+        if num > current_max:
+            current_max = num
+    return current_max
+
+data = [4, 68, 24, 89, 12, 99, 3]
+print("Largest Item:", find_max(data))`,
+        explanation: "By seeding `current_max` with the first element and executing an O(n) loop, each number is verified against the highest value encountered so far."
+      },
+      {
+        id: 10,
+        title: "Call Function using Positional and Keyword Arguments",
+        category: "cat-args",
+        catLabel: "Arguments & Scope",
+        problem: "Define a function `describe_pet(animal_type, pet_name, age)` and call it using both positional and keyword argument variations.",
+        purpose: "Master Python's parameter passing semantics: positional ordering versus keyword specificity.",
+        input: 'describe_pet("dog", "Willie", age=5)',
+        output: "I have a dog named Willie who is 5 years old.",
+        hint: "Positional arguments must always precede keyword arguments in the invocation call.",
+        code: `def describe_pet(animal_type, pet_name, age):
+    print(f"I have a {animal_type} named {pet_name} who is {age} years old.")
+
+# Mix positional and keyword arguments
+describe_pet("dog", "Willie", age=5)
+
+# Pure keyword arguments in any order
+describe_pet(pet_name="Mittens", age=3, animal_type="cat")`,
+        explanation: "Keyword arguments improve call readability and allow parameters to be passed in arbitrary order, provided all positional arguments come first."
+      },
+      {
+        id: 11,
+        title: "Create a Function with Keyword Arguments (**kwargs)",
+        category: "cat-args",
+        catLabel: "Arguments & Scope",
+        problem: "Write a function `user_profile(username, **kwargs)` that accepts arbitrary keyword arguments and prints all profile attributes in key-value pairs.",
+        purpose: "Learn how `**kwargs` packages variable keyword parameters into an accessible dictionary.",
+        input: 'user_profile("jdoe", email="j@site.com", role="Admin", age=30)',
+        output: "User: jdoe | email: j@site.com, role: Admin, age: 30",
+        hint: "Iterate through `kwargs.items()` inside the function body to format keys and values.",
+        code: `def user_profile(username, **kwargs):
+    details = [f"{k}: {v}" for k, v in kwargs.items()]
+    print(f"User: {username} | {', '.join(details)}")
+
+user_profile("jdoe", email="j@site.com", role="Admin", age=30)`,
+        explanation: "The double asterisk `**` packs all unspecified named arguments into a dictionary named `kwargs`, allowing highly extensible and dynamic APIs."
+      },
+      {
+        id: 12,
+        title: "Modifying Global Variables (global keyword)",
+        category: "cat-args",
+        catLabel: "Arguments & Scope",
+        problem: "Write a function `increment_counter()` that modifies an integer variable defined in the global scope using the `global` keyword.",
+        purpose: "Understand LEGB (Local, Enclosing, Global, Built-in) variable scoping rules and explicit global modification.",
+        input: "Call increment_counter() 3 times",
+        output: "Counter: 3",
+        hint: "Declare `global counter` inside the function before performing `counter += 1`.",
+        code: `counter = 0
+
+def increment_counter():
+    global counter  # Explicitly tell Python to use the module-level variable
+    counter += 1
+
+increment_counter()
+increment_counter()
+increment_counter()
+
+print("Global Counter:", counter)`,
+        explanation: "Without the `global` declaration, assigning to `counter` would create a new local variable shadowing the global one and raise an `UnboundLocalError`."
+      },
+      {
+        id: 13,
+        title: "Recursive Factorial (Non-Negative Integers)",
+        category: "cat-rec",
+        catLabel: "Recursion",
+        problem: "Write a function `factorial(n)` that calculates $n!$ using recursion, handling $0! = 1$ and rejecting negative numbers with a `ValueError`.",
+        purpose: "Defensive recursion with validation guard clauses.",
+        input: "factorial(5) and factorial(0)",
+        output: "120 and 1",
+        hint: "Check if `n < 0` and raise an error; if `n in (0, 1)`, return 1; otherwise, return `n * factorial(n - 1)`.",
+        code: `def factorial(n):
+    if n < 0:
+        raise ValueError("Factorial is only defined for non-negative integers.")
+    if n in (0, 1):
+        return 1
+    return n * factorial(n - 1)
+
+print("5! =", factorial(5))
+print("0! =", factorial(0))`,
+        explanation: "Defensive validation prevents infinite recursion loops from negative values. The base case `0! = 1` and `1! = 1` stops the recursive unwinding."
+      },
+      {
+        id: 14,
+        title: "Create a Lambda Function to Square a Number",
+        category: "cat-func",
+        catLabel: "Lambdas & Functional",
+        problem: "Define an anonymous lambda function that takes an integer and returns its square, then evaluate it on 7 and 12.",
+        purpose: "Understand anonymous single-expression lambda syntax (`lambda x: expression`).",
+        input: "square(7) and square(12)",
+        output: "49 and 144",
+        hint: "Define using the syntax: `square = lambda x: x ** 2`.",
+        code: `square = lambda x: x ** 2
+
+print("Square of 7:", square(7))
+print("Square of 12:", square(12))`,
+        explanation: "Lambda functions are concise anonymous functions constrained to a single implicit-return expression, ideal for short mathematical operations."
+      },
+      {
+        id: 15,
+        title: "Filter a List Using Lambda and filter()",
+        category: "cat-func",
+        catLabel: "Lambdas & Functional",
+        problem: "Given a list of numbers, use `filter()` and a `lambda` function to extract all numbers that are greater than 10 and divisible by 3.",
+        purpose: "Apply predicate filtering pipelines using functional primitives.",
+        input: "[3, 9, 12, 15, 18, 20, 21, 25]",
+        output: "[12, 15, 18, 21]",
+        hint: "Pass a lambda condition `lambda x: x > 10 and x % 3 == 0` to `filter()`, and wrap with `list()`.",
+        code: `nums = [3, 9, 12, 15, 18, 20, 21, 25]
+
+filtered_nums = list(filter(lambda x: x > 10 and x % 3 == 0, nums))
+print("Filtered list:", filtered_nums)`,
+        explanation: "`filter(predicate, iterable)` passes each element to the lambda function and yields only those where the expression evaluates to `True`."
+      },
+      {
+        id: 16,
+        title: "Transform a List Using Lambda and map()",
+        category: "cat-func",
+        catLabel: "Lambdas & Functional",
+        problem: "Given a list of Celsius temperatures, use `map()` and a `lambda` to convert each to Fahrenheit ($F = C \\times 9/5 + 32$).",
+        purpose: "Element-wise sequence mapping using functional transformations.",
+        input: "celsius = [0, 20, 35, 100]",
+        output: "[32.0, 68.0, 95.0, 212.0]",
+        hint: "Use `list(map(lambda c: (c * 9/5) + 32, celsius))`.",
+        code: `celsius = [0, 20, 35, 100]
+
+fahrenheit = list(map(lambda c: (c * 9/5) + 32, celsius))
+print("Fahrenheit temperatures:", fahrenheit)`,
+        explanation: "`map(function, iterable)` applies the lambda transformation to every item in the input stream, executing in C-level loop speed."
+      },
+      {
+        id: 17,
+        title: "Sort Complex Data with sorted() and Lambda",
+        category: "cat-func",
+        catLabel: "Lambdas & Functional",
+        problem: "Given a list of product dictionaries with keys `name` and `price`, sort them in ascending order of price using a lambda key extractor.",
+        purpose: "Custom key extraction for Python's Timsort algorithm.",
+        input: "[{'name': 'Keyboard', 'price': 50}, {'name': 'Mouse', 'price': 25}, {'name': 'Monitor', 'price': 200}]",
+        output: "[{'name': 'Mouse', 'price': 25}, {'name': 'Keyboard', 'price': 50}, {'name': 'Monitor', 'price': 200}]",
+        hint: "Pass `key=lambda item: item['price']` into the `sorted()` function.",
+        code: `products = [
+    {'name': 'Keyboard', 'price': 50},
+    {'name': 'Mouse', 'price': 25},
+    {'name': 'Monitor', 'price': 200}
+]
+
+sorted_products = sorted(products, key=lambda item: item['price'])
+print(sorted_products)`,
+        explanation: "The `key` parameter accepts a callable. The lambda extracts the comparison key (`item['price']`) from each dictionary during the sort."
+      },
+      {
+        id: 18,
+        title: "Create a Higher-Order Function",
+        category: "cat-func",
+        catLabel: "Lambdas & Functional",
+        problem: "Write a higher-order function `make_multiplier(factor)` that returns a new closure function capable of multiplying any given number by that factor.",
+        purpose: "Master closures and higher-order functions that accept or return other functions.",
+        input: "double = make_multiplier(2); double(5)",
+        output: "10 and triple(5) = 15",
+        hint: "Define an inner function `def multiplier(x): return x * factor` inside `make_multiplier` and return `multiplier`.",
+        code: `def make_multiplier(factor):
+    # Enclosing scope retains 'factor'
+    def multiplier(x):
+        return x * factor
+    return multiplier
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print("Double 5:", double(5))
+print("Triple 5:", triple(5))`,
+        explanation: "A closure occurs when an inner function remembers variables from its enclosing lexical scope even after the outer function has finished executing."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_functions_18_solved';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      // Fallback for iframe restrictions
+      const textArea = document.createElement("textarea");
+      textArea.value = codeText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--card-bg); border-radius: 8px; border: 1px dashed var(--card-border);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--accent);"></i>
+            <p>No matching exercises found. Try refining your search query.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}. ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+            
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sample Input / Call</div>
+                ${escapeHtml(ex.input)}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${escapeHtml(ex.output)}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> Show Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Clean Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>Why This Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query || 
+          ex.title.toLowerCase().includes(query) || 
+          ex.problem.toLowerCase().includes(query) || 
+          ex.code.toLowerCase().includes(query) ||
+          ex.catLabel.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

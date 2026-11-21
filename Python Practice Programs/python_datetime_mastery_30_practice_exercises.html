@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python DateTime Mastery • 30 Practice Exercises</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls, Search, and Category Filtering */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Category Tag Colors */
+    .cat-basic { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-format { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-delta { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-calendar { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-advanced { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-regular fa-clock"></i> Python DateTime Mastery • 30 Practice Exercises</h1>
+        <div class="badge-counter" id="progress-text">0 / 30 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Search, and Category Filtering -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises (e.g. strftime, timedelta, timezone, leap year, strptime, business days)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (30)</button>
+      <button class="filter-btn" data-filter="cat-basic">Basics &amp; Inspection</button>
+      <button class="filter-btn" data-filter="cat-format">Formatting &amp; Parsing</button>
+      <button class="filter-btn" data-filter="cat-delta">Timedelta &amp; Arithmetic</button>
+      <button class="filter-btn" data-filter="cat-calendar">Calendar &amp; Offsets</button>
+      <button class="filter-btn" data-filter="cat-advanced">Timezones &amp; Business Days</button>
+
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+    <!-- Rendered via JavaScript -->
+  </main>
+
+  <footer>
+    Python DateTime Mastery • 30 Practice Exercises • Built for Interactive Learning
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Print Current Date and Time",
+        category: "cat-basic",
+        catLabel: "Basics & Inspection",
+        problem: "Write a Python script to retrieve and print the current local date and time.",
+        purpose: "Learn how to import the `datetime` module and invoke `datetime.now()` to get the current timestamp.",
+        input: "None (System clock query)",
+        output: "Current Date and Time: 2026-10-05 15:45:12.345678 (example)",
+        hint: "Import `datetime` from the `datetime` module, then call `datetime.now()`.",
+        code: `from datetime import datetime
+
+# Fetch current system timestamp
+now = datetime.now()
+print("Current Date and Time:", now)`,
+        explanation: "`datetime.now()` queries the operating system clock and returns a `datetime` object representing the current local date, time, and microsecond."
+      },
+      {
+        id: 2,
+        title: "Format DateTime",
+        category: "cat-format",
+        catLabel: "Formatting & Parsing",
+        problem: "Format the current datetime object into a human-friendly string matching the format: `DD-MM-YYYY HH:MM:SS`.",
+        purpose: "Understand format codes in `strftime()` to output dates adhering to international or regional standards.",
+        input: "Current datetime instance",
+        output: "Formatted DateTime: 05-10-2026 15:45:12 (example)",
+        hint: "Use format directives: `%d` (zero-padded day), `%m` (month), `%Y` (4-digit year), `%H` (24-hour), `%M` (minute), `%S` (second).",
+        code: `from datetime import datetime
+
+now = datetime.now()
+formatted = now.strftime("%d-%m-%Y %H:%M:%S")
+
+print("Formatted DateTime:", formatted)`,
+        explanation: "`strftime()` stands for 'string format time'. Directives like `%d-%m-%Y` replace placeholders with corresponding timestamp components."
+      },
+      {
+        id: 3,
+        title: "Find Day of Week",
+        category: "cat-basic",
+        catLabel: "Basics & Inspection",
+        problem: "Determine the day of the week for both today and a custom date (e.g., 2026-10-05) as both an integer index and full weekday name.",
+        purpose: "Explore `.weekday()`, `.isoweekday()`, and `%A` formatting.",
+        input: "Date: 2026-10-05",
+        output: "Day Index: 0 (Monday), Day Name: Monday",
+        hint: "Use `.weekday()` (where Monday is 0 and Sunday is 6) and `.strftime('%A')` for the full name.",
+        code: `from datetime import date
+
+d = date(2026, 10, 5)
+
+weekday_index = d.weekday()  # Monday = 0, Sunday = 6
+weekday_name = d.strftime("%A")
+
+print(f"Day Index: {weekday_index} ({weekday_name})")
+print(f"Day Name: {weekday_name}")`,
+        explanation: "`weekday()` returns 0 for Monday through 6 for Sunday. Directives `%A` and `%a` return the full and abbreviated weekday names respectively."
+      },
+      {
+        id: 4,
+        title: "Convert Datetime into String",
+        category: "cat-format",
+        catLabel: "Formatting & Parsing",
+        problem: "Convert a datetime object into a customized string representation such as 'Monday, October 05, 2026'.",
+        purpose: "Use verbose `strftime` format specifiers for human-readable report headers and dashboard greetings.",
+        input: "datetime(2026, 10, 5, 10, 30, 0)",
+        output: "Formatted Date String: 'Monday, October 05, 2026'",
+        hint: "Use `%A` for weekday, `%B` for full month name, `%d` for day, and `%Y` for year.",
+        code: `from datetime import datetime
+
+dt = datetime(2026, 10, 5, 10, 30, 0)
+date_str = dt.strftime("%A, %B %d, %Y")
+
+print("Formatted Date String:", date_str)`,
+        explanation: "`%B` extracts the full month name (e.g., October), and `%A` extracts the full weekday name (e.g., Monday)."
+      },
+      {
+        id: 5,
+        title: "Extract Components",
+        category: "cat-basic",
+        catLabel: "Basics & Inspection",
+        problem: "Extract and print each individual component (year, month, day, hour, minute, second, microsecond) from a datetime object.",
+        purpose: "Access individual numeric properties of `datetime` objects via direct attribute lookups.",
+        input: "datetime(2026, 10, 5, 15, 30, 45, 123456)",
+        output: "Year: 2026, Month: 10, Day: 5, Hour: 15, Minute: 30, Second: 45, Microsecond: 123456",
+        hint: "Read attributes directly: `dt.year`, `dt.month`, `dt.day`, `dt.hour`, `dt.minute`, `dt.second`, `dt.microsecond`.",
+        code: `from datetime import datetime
+
+dt = datetime(2026, 10, 5, 15, 30, 45, 123456)
+
+print(f"Year: {dt.year}")
+print(f"Month: {dt.month}")
+print(f"Day: {dt.day}")
+print(f"Hour: {dt.hour}")
+print(f"Minute: {dt.minute}")
+print(f"Second: {dt.second}")
+print(f"Microsecond: {dt.microsecond}")`,
+        explanation: "DateTime instances provide first-class numerical integer properties for direct component access without string parsing."
+      },
+      {
+        id: 6,
+        title: "Print Time with AM/PM",
+        category: "cat-format",
+        catLabel: "Formatting & Parsing",
+        problem: "Given a 24-hour timestamp (e.g., 17:45:00), format and print it in 12-hour format with AM/PM.",
+        purpose: "Learn the difference between `%H` (24-hour) and `%I` (12-hour) alongside `%p` (AM/PM marker).",
+        input: "time(17, 45, 0)",
+        output: "05:45:00 PM",
+        hint: "Use format string `'%I:%M:%S %p'` with `strftime()`.",
+        code: `from datetime import time
+
+t = time(17, 45, 0)
+formatted_time = t.strftime("%I:%M:%S %p")
+
+print("12-Hour Time:", formatted_time)`,
+        explanation: "`%I` formats the hour from 01 to 12, and `%p` appends the appropriate locale AM or PM indicator."
+      },
+      {
+        id: 7,
+        title: "Print Current Time in Milliseconds",
+        category: "cat-basic",
+        catLabel: "Basics & Inspection",
+        problem: "Retrieve the current Unix timestamp in milliseconds as an integer.",
+        purpose: "Understand epoch time conversion with milliseconds for API payloads and telemetry logging.",
+        input: "Current system clock",
+        output: "Timestamp: 1791200000000 (example integer in ms)",
+        hint: "Use `import time` and calculate `int(time.time() * 1000)` or `int(datetime.now().timestamp() * 1000)`.",
+        code: `import time
+from datetime import datetime
+
+# Method 1: Using time.time()
+timestamp_ms = int(time.time() * 1000)
+print("Current Time in Milliseconds:", timestamp_ms)
+
+# Method 2: Using datetime.timestamp()
+ms_via_dt = int(datetime.now().timestamp() * 1000)
+print("Via datetime object:", ms_via_dt)`,
+        explanation: "`time.time()` and `.timestamp()` return seconds since the Unix epoch (Jan 1, 1970). Multiplying by 1000 and converting to `int` yields milliseconds."
+      },
+      {
+        id: 8,
+        title: "Get the Day of the Year",
+        category: "cat-basic",
+        catLabel: "Basics & Inspection",
+        problem: "Find which day of the year (1 to 366) a given date corresponds to.",
+        purpose: "Learn the `%j` directive and `.timetuple().tm_yday` attribute for ordinal calendar tracking.",
+        input: "Date: 2026-10-05",
+        output: "Day of the year: 278",
+        hint: "Format with `d.strftime('%j')` or inspect `d.timetuple().tm_yday`.",
+        code: `from datetime import date
+
+d = date(2026, 10, 5)
+
+# Method 1: strftime '%j' (zero-padded 001-366)
+day_of_year_str = d.strftime("%j")
+
+# Method 2: timetuple attribute (integer)
+day_of_year_int = d.timetuple().tm_yday
+
+print("Day of the year (string):", day_of_year_str)
+print("Day of the year (integer):", day_of_year_int)`,
+        explanation: "The `timetuple().tm_yday` attribute gives the 1-based day count of the date within its respective year."
+      },
+      {
+        id: 9,
+        title: "Combine Date and Time Objects",
+        category: "cat-basic",
+        catLabel: "Basics & Inspection",
+        problem: "Combine an independent `date` object and a separate `time` object into a unified `datetime` object.",
+        purpose: "Use the factory classmethod `datetime.combine(date, time)`.",
+        input: "d = date(2026, 10, 5), t = time(9, 15, 30)",
+        output: "Combined: 2026-10-05 09:15:30",
+        hint: "Call `datetime.combine(d, t)`.",
+        code: `from datetime import date, time, datetime
+
+d = date(2026, 10, 5)
+t = time(9, 15, 30)
+
+dt = datetime.combine(d, t)
+print("Combined DateTime:", dt)`,
+        explanation: "`datetime.combine()` merges distinct `date` and `time` instances into a single timezone-aware or naive `datetime` instance."
+      },
+      {
+        id: 10,
+        title: "Convert String Into Datetime Object",
+        category: "cat-format",
+        catLabel: "Formatting & Parsing",
+        problem: "Parse a formatted date string '25/12/2026 18:30:00' into a Python `datetime` object.",
+        purpose: "Master `strptime()` ('string parse time') for reading raw textual timestamps.",
+        input: "'25/12/2026 18:30:00'",
+        output: "Parsed datetime: 2026-12-25 18:30:00",
+        hint: "Pass the string and matching format pattern `'%d/%m/%Y %H:%M:%S'` to `datetime.strptime()`.",
+        code: `from datetime import datetime
+
+date_str = "25/12/2026 18:30:00"
+format_pattern = "%d/%m/%Y %H:%M:%S"
+
+dt = datetime.strptime(date_str, format_pattern)
+print("Parsed datetime object:", dt)
+print("Extracted Month:", dt.month)`,
+        explanation: "`datetime.strptime(string, format)` matches the input string against format directives to reconstruct an actual `datetime` object."
+      },
+      {
+        id: 11,
+        title: "Subtract a Week From a Given Date",
+        category: "cat-delta",
+        catLabel: "Timedelta & Arithmetic",
+        problem: "Subtract exactly one week (7 days) from a given date using `timedelta`.",
+        purpose: "Learn relative duration subtraction using `datetime.timedelta(weeks=1)` or `days=7`.",
+        input: "Date: 2026-10-05",
+        output: "One week prior: 2026-09-28",
+        hint: "Subtract `timedelta(weeks=1)` from your date object.",
+        code: `from datetime import date, timedelta
+
+target_date = date(2026, 10, 5)
+past_date = target_date - timedelta(weeks=1)
+
+print("Original Date:", target_date)
+print("One Week Prior:", past_date)`,
+        explanation: "Subtracting a `timedelta` from a `date` automatically handles month and year rollovers without manual calendar calculations."
+      },
+      {
+        id: 12,
+        title: "Add Week to Given Date",
+        category: "cat-delta",
+        catLabel: "Timedelta & Arithmetic",
+        problem: "Add exactly 3 weeks (21 days) to a given date and print the future date.",
+        purpose: "Advance dates into the future using addition with `timedelta`.",
+        input: "Date: 2026-10-05, Duration: 3 weeks",
+        output: "Date after 3 weeks: 2026-10-26",
+        hint: "Add `timedelta(weeks=3)` to the date.",
+        code: `from datetime import date, timedelta
+
+start_date = date(2026, 10, 5)
+future_date = start_date + timedelta(weeks=3)
+
+print("Start Date:", start_date)
+print("Date After 3 Weeks:", future_date)`,
+        explanation: "Adding a `timedelta` shifts the date forward while preserving proper calendar day and month boundaries."
+      },
+      {
+        id: 13,
+        title: "Calculate Days Between Two Dates",
+        category: "cat-delta",
+        catLabel: "Timedelta & Arithmetic",
+        problem: "Calculate the exact number of days remaining between today (e.g. 2026-10-05) and New Year's Day (2027-01-01).",
+        purpose: "Learn that subtracting two `date` objects yields a `timedelta` object whose `.days` attribute contains the difference.",
+        input: "d1 = date(2026, 10, 5), d2 = date(2027, 1, 1)",
+        output: "Difference: 88 days",
+        hint: "Compute `delta = d2 - d1`, then read `delta.days`.",
+        code: `from datetime import date
+
+start = date(2026, 10, 5)
+target = date(2027, 1, 1)
+
+diff = target - start
+print(f"Days between {start} and {target}: {diff.days} days")`,
+        explanation: "Subtracting two date objects returns a `timedelta` instance with the difference accessible via `.days`."
+      },
+      {
+        id: 14,
+        title: "Convert Unix Timestamp to Datetime",
+        category: "cat-format",
+        catLabel: "Formatting & Parsing",
+        problem: "Convert an integer Unix timestamp (e.g., 1791200000) into a readable `datetime` object.",
+        purpose: "Use `datetime.fromtimestamp()` to deserialize integer timestamps into local dates.",
+        input: "epoch_seconds = 1791200000",
+        output: "Converted datetime: 2026-10-05 17:03:20 (example based on timezone)",
+        hint: "Call `datetime.fromtimestamp(epoch_seconds)`.",
+        code: `from datetime import datetime
+
+timestamp = 1791200000
+dt = datetime.fromtimestamp(timestamp)
+
+print("Unix Timestamp:", timestamp)
+print("Converted Datetime:", dt)`,
+        explanation: "`datetime.fromtimestamp()` converts POSIX epoch seconds into a local datetime object."
+      },
+      {
+        id: 15,
+        title: "Get ISO Week Number",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Get the ISO year, week number, and weekday for a given date using `.isocalendar()`.",
+        purpose: "Extract standardized ISO 8601 week numbers used in business financial cycles.",
+        input: "Date: 2026-10-05",
+        output: "ISO Year: 2026, Week: 41, Weekday: 1",
+        hint: "Call `d.isocalendar()` which returns a namedtuple with `(year, week, weekday)`.",
+        code: `from datetime import date
+
+d = date(2026, 10, 5)
+iso_year, iso_week, iso_day = d.isocalendar()
+
+print(f"Date: {d}")
+print(f"ISO Year: {iso_year}, Week Number: {iso_week}, Weekday: {iso_day}")`,
+        explanation: "ISO 8601 defines week 1 as the week containing the first Thursday of the Gregorian year, starting Mondays as day 1."
+      },
+      {
+        id: 16,
+        title: "Subtract 5 Hours and 30 Minutes",
+        category: "cat-delta",
+        catLabel: "Timedelta & Arithmetic",
+        problem: "Subtract 5 hours and 30 minutes from a given datetime timestamp.",
+        purpose: "Use multiple unit parameters (`hours`, `minutes`) inside `timedelta`.",
+        input: "datetime(2026, 10, 5, 18, 0, 0)",
+        output: "Adjusted Datetime: 2026-10-05 12:30:00",
+        hint: "Subtract `timedelta(hours=5, minutes=30)`.",
+        code: `from datetime import datetime, timedelta
+
+dt = datetime(2026, 10, 5, 18, 0, 0)
+offset = timedelta(hours=5, minutes=30)
+new_dt = dt - offset
+
+print("Original Time:", dt)
+print("After -5h 30m:", new_dt)`,
+        explanation: "`timedelta(hours=5, minutes=30)` subtracts both hour and minute durations simultaneously, properly carrying across midnight when necessary."
+      },
+      {
+        id: 17,
+        title: "Check for Leap Year",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Write a function to check if a specified year is a leap year using Python's `calendar` module.",
+        purpose: "Use `calendar.isleap(year)` for calendar calculations.",
+        input: "Years: 2024, 2026, 2100, 2000",
+        output: "2024: True, 2026: False, 2100: False, 2000: True",
+        hint: "Import `calendar` and call `calendar.isleap(year)`.",
+        code: `import calendar
+
+years = [2024, 2026, 2100, 2000]
+
+for y in years:
+    is_leap = calendar.isleap(y)
+    print(f"Year {y} is leap year: {is_leap}")`,
+        explanation: "A year is leap if divisible by 4, except for century years unless also divisible by 400. `calendar.isleap()` encapsulates this logic cleanly."
+      },
+      {
+        id: 18,
+        title: "Calculate Age in Days",
+        category: "cat-delta",
+        catLabel: "Timedelta & Arithmetic",
+        problem: "Calculate a person's exact age in days given their birthdate and today's date.",
+        purpose: "Date arithmetic applied to historical milestone tracking.",
+        input: "Birthdate: 2000-01-15, Reference Date: 2026-10-05",
+        output: "Total Age in Days: 9760 days",
+        hint: "Subtract the birthdate from today: `(today - birthdate).days`.",
+        code: `from datetime import date
+
+birthdate = date(2000, 1, 15)
+today = date(2026, 10, 5)
+
+age_in_days = (today - birthdate).days
+print(f"Birthdate: {birthdate}")
+print(f"Total Age in Days: {age_in_days} days")`,
+        explanation: "Subtracting birthdate from the current date accounts for all intervening leap years and variable month lengths automatically."
+      },
+      {
+        id: 19,
+        title: "Difference in Seconds",
+        category: "cat-delta",
+        catLabel: "Timedelta & Arithmetic",
+        problem: "Calculate the total difference in seconds between two timestamps spanning across days.",
+        purpose: "Use `.total_seconds()` on a `timedelta` object instead of just the `.seconds` attribute.",
+        input: "t1 = 2026-10-05 08:00:00, t2 = 2026-10-07 12:30:00",
+        output: "Total Seconds: 189000.0 seconds",
+        hint: "Call `delta.total_seconds()` (the `.seconds` attribute only holds the remainder within a single day!).",
+        code: `from datetime import datetime
+
+t1 = datetime(2026, 10, 5, 8, 0, 0)
+t2 = datetime(2026, 10, 7, 12, 30, 0)
+
+delta = t2 - t1
+total_secs = delta.total_seconds()
+
+print(f"Timedelta object: {delta}")
+print(f"Total Seconds: {total_secs} seconds")`,
+        explanation: "`delta.seconds` only counts the seconds remainder within a 24-hour cycle. `delta.total_seconds()` calculates the complete span including days and fractions."
+      },
+      {
+        id: 20,
+        title: "Print a Monthly Calendar",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Display a clean ASCII text calendar for a given month and year (e.g., October 2026).",
+        purpose: "Use `calendar.month(year, month)` for formatted console calendar views.",
+        input: "Year: 2026, Month: 10",
+        output: "Formatted text grid of October 2026",
+        hint: "Import `calendar` and print `calendar.month(2026, 10)`.",
+        code: `import calendar
+
+year = 2026
+month = 10
+
+# Generate month string
+cal_str = calendar.month(year, month)
+print(f"Calendar for {year}/{month}:\\n")
+print(cal_str)`,
+        explanation: "`calendar.month()` produces a pre-formatted multi-line ASCII calendar with aligned weekday headers."
+      },
+      {
+        id: 21,
+        title: "Calculate the Date 4 Months From Today",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Calculate the exact date 4 months ahead from a given date without external third-party dependencies.",
+        purpose: "Handle month arithmetic where months vary in length (28 to 31 days).",
+        input: "Start: 2026-10-05, Offset: 4 months",
+        output: "Date 4 Months Ahead: 2027-02-05",
+        hint: "Calculate new month and year using divmod/modulo arithmetic, capping the day to the month's maximum if needed.",
+        code: `from datetime import date
+import calendar
+
+def add_months(sourcedate, months):
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    # Handle month-end day capping (e.g. Oct 31 -> Feb 28)
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return date(year, month, day)
+
+start = date(2026, 10, 5)
+result = add_months(start, 4)
+
+print("Start Date:", start)
+print("4 Months Ahead:", result)`,
+        explanation: "`month // 12` calculates year rollovers, and `calendar.monthrange(year, month)[1]` prevents invalid days (such as February 31st)."
+      },
+      {
+        id: 22,
+        title: "Find the First Day of the Month",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Given any date, return a new `date` object representing the first day of that month.",
+        purpose: "Use `.replace(day=1)` to find month start boundaries.",
+        input: "Date: 2026-10-25",
+        output: "First day of month: 2026-10-01",
+        hint: "Use `d.replace(day=1)`.",
+        code: `from datetime import date
+
+current_date = date(2026, 10, 25)
+first_day = current_date.replace(day=1)
+
+print("Current Date:", current_date)
+print("First Day of Month:", first_day)`,
+        explanation: "`date.replace(day=1)` returns a new date with identical year and month attributes, resetting the day to 1."
+      },
+      {
+        id: 23,
+        title: "Find the Last Day of the Month",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Find the last calendar day of the month for any given date using `calendar.monthrange`.",
+        purpose: "Query month durations dynamically, accounting for leap years.",
+        input: "Date: 2026-02-14",
+        output: "Last Day of Month: 2026-02-28",
+        hint: "Call `calendar.monthrange(d.year, d.month)[1]`, then use `.replace(day=max_days)`.",
+        code: `from datetime import date
+import calendar
+
+d = date(2026, 2, 14)
+
+# monthrange returns (weekday_of_first_day, total_days_in_month)
+_, max_days = calendar.monthrange(d.year, d.month)
+last_day = d.replace(day=max_days)
+
+print(f"Date: {d}")
+print(f"Total days in month: {max_days}")
+print(f"Last Day of Month: {last_day}")`,
+        explanation: "`calendar.monthrange(year, month)` returns a tuple where the second value gives the exact number of days in that month."
+      },
+      {
+        id: 24,
+        title: "Find the Date of the Next Monday",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Given any arbitrary date, calculate the date of the immediate upcoming Monday.",
+        purpose: "Implement modular weekday jump calculations.",
+        input: "Date: 2026-10-07 (Wednesday)",
+        output: "Next Monday: 2026-10-12",
+        hint: "Calculate days until Monday (weekday 0): `(7 - d.weekday()) % 7`. If 0, add 7.",
+        code: `from datetime import date, timedelta
+
+def get_next_monday(d):
+    days_ahead = 0 - d.weekday()  # Monday is 0
+    if days_ahead <= 0:  # Target day already passed this week or is today
+        days_ahead += 7
+    return d + timedelta(days=days_ahead)
+
+current = date(2026, 10, 7)  # Wednesday
+next_mon = get_next_monday(current)
+
+print(f"Current Date: {current} ({current.strftime('%A')})")
+print(f"Next Monday:  {next_mon} ({next_mon.strftime('%A')})")`,
+        explanation: "Modular arithmetic on weekday offsets calculates the exact day count needed to advance to the next Monday."
+      },
+      {
+        id: 25,
+        title: "Round Time to the Nearest Hour",
+        category: "cat-advanced",
+        catLabel: "Timezones & Business Days",
+        problem: "Round a datetime object to the nearest whole hour (e.g., 14:35 -> 15:00, 14:20 -> 14:00).",
+        purpose: "Apply time rounding heuristics for analytics and time series binning.",
+        input: "dt1 = 14:35:00, dt2 = 14:20:00",
+        output: "dt1 rounded: 15:00:00, dt2 rounded: 14:00:00",
+        hint: "Check if `dt.minute >= 30`. If so, add `timedelta(hours=1)` before replacing minutes and seconds with 0.",
+        code: `from datetime import datetime, timedelta
+
+def round_to_nearest_hour(dt):
+    if dt.minute >= 30:
+        dt += timedelta(hours=1)
+    return dt.replace(minute=0, second=0, microsecond=0)
+
+time_a = datetime(2026, 10, 5, 14, 35, 0)
+time_b = datetime(2026, 10, 5, 14, 20, 0)
+
+print(f"{time_a.time()} rounded -> {round_to_nearest_hour(time_a).time()}")
+print(f"{time_b.time()} rounded -> {round_to_nearest_hour(time_b).time()}")`,
+        explanation: "Thresholding on minute $\\ge 30$ advances the hour before zeroing out minutes, seconds, and microseconds."
+      },
+      {
+        id: 26,
+        title: "List All Sundays in a Year",
+        category: "cat-calendar",
+        catLabel: "Calendar & Offsets",
+        problem: "Generate and count all dates that fall on a Sunday within a given year (e.g., 2026).",
+        purpose: "Iterate across annual date ranges using timedelta stepping.",
+        input: "Year: 2026",
+        output: "Total Sundays: 52 (First: 2026-01-04, Last: 2026-12-27)",
+        hint: "Find the first Sunday in January, then advance by `timedelta(days=7)` in a while loop while year matches.",
+        code: `from datetime import date, timedelta
+
+def get_all_sundays(year):
+    # Start at Jan 1st
+    d = date(year, 1, 1)
+    # Advance to first Sunday (weekday() == 6)
+    d += timedelta(days=(6 - d.weekday()) % 7)
+    
+    sundays = []
+    while d.year == year:
+        sundays.append(d)
+        d += timedelta(days=7)
+    return sundays
+
+sundays_2026 = get_all_sundays(2026)
+print(f"Total Sundays in 2026: {len(sundays_2026)}")
+print("First Sunday:", sundays_2026[0])
+print("Last Sunday :", sundays_2026[-1])`,
+        explanation: "After finding the first Sunday, stepping forward by 7 days enumerates every Sunday across the year."
+      },
+      {
+        id: 27,
+        title: "Calculate Business Days Between Two Dates",
+        category: "cat-advanced",
+        catLabel: "Timezones & Business Days",
+        problem: "Calculate the total number of business days (Monday through Friday) between two dates, excluding weekends.",
+        purpose: "Iterative date traversal with weekday filtering.",
+        input: "Start: 2026-10-01 (Thu), End: 2026-10-15 (Thu)",
+        output: "Business Days: 11",
+        hint: "Iterate from start to end with `timedelta(days=1)` and check `if cur.weekday() < 5`.",
+        code: `from datetime import date, timedelta
+
+def count_business_days(start_date, end_date):
+    cur = start_date
+    biz_days = 0
+    while cur <= end_date:
+        if cur.weekday() < 5:  # Mon=0, Tue=1, Wed=2, Thu=3, Fri=4
+            biz_days += 1
+        cur += timedelta(days=1)
+    return biz_days
+
+d1 = date(2026, 10, 1)
+d2 = date(2026, 10, 15)
+
+print(f"Business days between {d1} and {d2}: {count_business_days(d1, d2)}")`,
+        explanation: "Checking `weekday() < 5` skips Saturday (5) and Sunday (6) while counting weekdays in the interval."
+      },
+      {
+        id: 28,
+        title: "Convert Local Time to UTC",
+        category: "cat-advanced",
+        catLabel: "Timezones & Business Days",
+        problem: "Convert a naive or timezone-aware local datetime into UTC using Python 3's built-in `timezone.utc`.",
+        purpose: "Understand timezone normalization for databases and distributed systems.",
+        input: "Local time with UTC offset",
+        output: "UTC timestamp: 2026-10-05 10:15:22+00:00",
+        hint: "Use `.astimezone(timezone.utc)` on a timezone-aware object.",
+        code: `from datetime import datetime, timezone, timedelta
+
+# Create an aware datetime with an offset (e.g. UTC+5:30)
+tz_offset = timezone(timedelta(hours=5, minutes=30))
+local_time = datetime(2026, 10, 5, 15, 45, 22, tzinfo=tz_offset)
+
+# Convert to UTC
+utc_time = local_time.astimezone(timezone.utc)
+
+print("Local Time:", local_time)
+print("UTC Time:  ", utc_time)`,
+        explanation: "`.astimezone(timezone.utc)` converts timezone-aware objects to UTC by adjusting for the time difference."
+      },
+      {
+        id: 29,
+        title: "Get Current Time in a Specific City",
+        category: "cat-advanced",
+        catLabel: "Timezones & Business Days",
+        problem: "Get the current time in Tokyo and New York using Python's standard `zoneinfo` module.",
+        purpose: "Use IANA timezone keys via `zoneinfo.ZoneInfo` (standard library in Python 3.9+).",
+        input: "Timezone keys: 'Asia/Tokyo' and 'America/New_York'",
+        output: "Current times in Tokyo and New York with timezone offsets",
+        hint: "Import `ZoneInfo` from `zoneinfo` and pass it to `datetime.now(ZoneInfo('Asia/Tokyo'))`.",
+        code: `from datetime import datetime
+from zoneinfo import ZoneInfo
+
+# Query current times across IANA timezones
+tokyo_time = datetime.now(ZoneInfo("Asia/Tokyo"))
+ny_time = datetime.now(ZoneInfo("America/New_York"))
+
+print("Tokyo Time:   ", tokyo_time.strftime("%Y-%m-%d %H:%M:%S %Z"))
+print("New York Time:", ny_time.strftime("%Y-%m-%d %H:%M:%S %Z"))`,
+        explanation: "`zoneinfo.ZoneInfo` loads system IANA timezone databases, handling regional daylight saving rules automatically."
+      },
+      {
+        id: 30,
+        title: "Calculate Date After N Working Days",
+        category: "cat-advanced",
+        catLabel: "Timezones & Business Days",
+        problem: "Calculate the calendar date resulting from adding N working days (e.g., 10 business days) to a starting date.",
+        purpose: "Project project deadlines, delivery dates, and business SLAs.",
+        input: "Start: 2026-10-05 (Mon), N: 10 working days",
+        output: "Target Date: 2026-10-19 (Mon)",
+        hint: "Loop while `added < n`: advance by 1 day and increment counter only if `cur.weekday() < 5`.",
+        code: `from datetime import date, timedelta
+
+def add_working_days(start_date, n):
+    cur = start_date
+    added = 0
+    while added < n:
+        cur += timedelta(days=1)
+        if cur.weekday() < 5:  # Only count Mon-Fri
+            added += 1
+    return cur
+
+start = date(2026, 10, 5)  # Monday
+working_days = 10
+due_date = add_working_days(start, working_days)
+
+print("Start Date:", start, f"({start.strftime('%A')})")
+print(f"Date after {working_days} working days:", due_date, f"({due_date.strftime('%A')})")`,
+        explanation: "Advancing day by day and incrementing only on weekdays ensures weekends do not count toward the target business day threshold."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_datetime_30_progress';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+
+      // Reliable clipboard copying for iframe environments
+      const textArea = document.createElement("textarea");
+      textArea.value = codeText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--card-bg); border-radius: 8px; border: 1px dashed var(--card-border);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--accent);"></i>
+            <p>No matching DateTime exercises found. Try a different search term.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}. ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Mark Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+                ${escapeHtml(ex.input)}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${escapeHtml(ex.output)}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> 💡 Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> ✅ Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Tested Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>Why This Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query ||
+          ex.title.toLowerCase().includes(query) ||
+          ex.problem.toLowerCase().includes(query) ||
+          ex.code.toLowerCase().includes(query) ||
+          ex.catLabel.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    // Filter Buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    // Search Input Listener
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial Mount
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

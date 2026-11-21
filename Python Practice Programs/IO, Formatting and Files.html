@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python I/O, Formatting & File Handling Practice</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --card-border: #30363d;
+      --text-main: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-hover: #388bfd;
+      --hint-accent: #d29922;
+      --hint-bg: rgba(210, 153, 34, 0.08);
+      --sol-accent: #3fb950;
+      --sol-bg: rgba(63, 185, 80, 0.08);
+      --code-bg: #090d13;
+      --code-border: #21262d;
+      --badge-bg: #21262d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 17, 23, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .header-content {
+      max-width: 950px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls */
+    .controls {
+      max-width: 950px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 950px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.15s ease, border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #58a6ff60;
+    }
+
+    .card-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(22, 27, 34, 0.6);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-io { background: rgba(88, 166, 255, 0.15); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.3); }
+    .cat-fmt { background: rgba(210, 153, 34, 0.15); color: var(--hint-accent); border: 1px solid rgba(210, 153, 34, 0.3); }
+    .cat-file { background: rgba(63, 185, 80, 0.15); color: var(--sol-accent); border: 1px solid rgba(63, 185, 80, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.3rem;
+    }
+
+    @media (max-width: 600px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.1rem;
+      height: 1.1rem;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(210, 153, 34, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(210, 153, 34, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(63, 185, 80, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(63, 185, 80, 0.2);
+    }
+
+    /* Expandable Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.25s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(210, 153, 34, 0.3);
+      color: #eac54f;
+    }
+
+    .solution-drawer {
+      background: rgba(63, 185, 80, 0.04);
+      border: 1px solid rgba(63, 185, 80, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #11151c;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1f242c;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e6edf3;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.8rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    /* Footer */
+    footer {
+      max-width: 950px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python I/O, Formatting & Files</h1>
+        <div class="badge-counter" id="progress-text">0 / 23 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Buttons -->
+  <div class="controls">
+    <button class="filter-btn active" data-filter="all">All Exercises (23)</button>
+    <button class="filter-btn" data-filter="cat-io">Input & Output</button>
+    <button class="filter-btn" data-filter="cat-fmt">Formatting & Padding</button>
+    <button class="filter-btn" data-filter="cat-file">File Handling</button>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-io" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1. Accept numbers from a user</div>
+          <div class="card-meta">
+            <span class="category-tag cat-io">Input / Output</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-1')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that accepts two integer numbers from the user and calculates their multiplication. Print the final result to the console.</p>
+        <div class="purpose-box">Introduces <code>input()</code> and required type conversion (<code>int()</code>) to execute arithmetic operations.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            First Number: 10<br>Second Number: 20
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The multiplication is: 200
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-1">
+          <i class="fa-solid fa-circle-info"></i> The <code>input()</code> function returns text. Wrap it with <code>int(...)</code> so Python treats it as numerical data.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-1"># Prompt and typecast input to integers
+num1 = int(input("Enter first number: "))
+num2 = int(input("Enter second number: "))
+
+# Calculate product
+res = num1 * num2
+
+# Display formatted result
+print("The multiplication is:", res)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>int(input(...))</code> converts incoming console input directly into whole numbers for calculation.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-io" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2. Display variables with a separator</div>
+          <div class="card-meta">
+            <span class="category-tag cat-io">Input / Output</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-2')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Use the <code>print()</code> function to format the words "Name", "Is", and "James" so they appear separated by three asterisks (<code>***</code>).</p>
+        <div class="purpose-box">Demonstrates how to use the built-in <code>sep</code> keyword argument to link elements.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Strings: "Name", "Is", "James"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Name***Is***James
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-2">
+          Pass individual strings as separate positional arguments inside <code>print()</code> and provide <code>sep='***'</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-2"># Using the sep parameter to join strings
+print('Name', 'Is', 'James', sep='***')</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> By default, <code>sep=' '</code> separates items with a single space. Supplying <code>sep='***'</code> places those characters between each output item.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3. Convert decimal number to octal</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-3')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Accept an integer from the user and display it formatted as an octal number (Base 8).</p>
+        <div class="purpose-box">Introduces formatting specifiers to convert numbers across numeral bases cleanly.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Decimal: 8
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The octal number of decimal number 8 is 10
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-3">
+          Use the <code>:o</code> type specifier in an f-string or <code>oct(num)[2:]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-3">num = int(input("Enter decimal number: "))
+
+# Using modern f-string with octal format specifier ':o'
+print(f"The octal number of decimal number {num} is {num:o}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>{num:o}</code> prints the Base-8 representation without the <code>0o</code> system prefix.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4. Binary representation</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-4')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Accept an integer from the user and display its value in binary format (Base 2).</p>
+        <div class="purpose-box">Demonstrates how integers translate directly to low-level bit strings.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Decimal Number: 45
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The binary representation of 45 is 101101
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-4">
+          Use an f-string format code <code>{num:b}</code> to generate binary without the <code>0b</code> prefix.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-4">num = int(input("Enter a decimal number: "))
+
+# Using f-string with :b specifier
+print(f"The binary representation of {num} is {num:b}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>:b</code> converts positive and negative integers to their clean binary representations.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-io" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5. Accept any three strings from one input() call</div>
+          <div class="card-meta">
+            <span class="category-tag cat-io">Input / Output</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-5')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that takes three names from a user in a single input prompt and assigns them to three separate variables.</p>
+        <div class="purpose-box">Learn how to parse single-line input via string splitting and tuple/variable unpacking.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Emma Jessa Kelly
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Name1: Emma<br>Name2: Jessa<br>Name3: Kelly
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-5">
+          Call <code>.split()</code> directly on <code>input()</code>, which splits words across spaces.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-5"># Unpack multiple values split by whitespace
+name1, name2, name3 = input("Enter three names separated by spaces: ").split()
+
+print('Name1:', name1)
+print('Name2:', name2)
+print('Name3:', name3)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Multiple assignments unpack elements from the list produced by <code>split()</code> into distinct targets.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6. Hexadecimal representation</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-6')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Accept an integer and display its value in hexadecimal format (Base 16).</p>
+        <div class="purpose-box">Essential for memory addressing, byte offsets, and hexadecimal representations.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Decimal Number: 255
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The hexadecimal value is ff
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-6">
+          Use the <code>:x</code> format code for lowercase or <code>:X</code> for uppercase hexadecimal output.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-6">num = int(input("Enter a number: "))
+
+# Format as lowercase hexadecimal
+print(f"The hexadecimal value is {num:x}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>{num:x}</code> produces cleanly formatted hex outputs, converting decimal 255 to <code>ff</code>.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7. Display float number with 2 decimal places</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-7')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Display a float number (e.g. <code>458.541315</code>) rounded to exactly two decimal places.</p>
+        <div class="purpose-box">Crucial for truncating trailing precision to create readable numeric reporting displays.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Number: 458.541315
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            458.54
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-7">
+          Modern Python uses <code>f"{num:.2f}"</code> to format floating-point values to 2 decimals.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-7">num = 458.541315
+
+# Pythonic f-string precision formatting
+print(f"{num:.2f}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>.2f</code> indicates that the value is a float with precision limited to 2 decimal places.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8. Percentage display</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-8')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Ask the user for a numerator and denominator. Calculate percentage and print with two decimal places and a trailing <code>%</code>.</p>
+        <div class="purpose-box">Combines calculations with targeted precision and literal punctuation inside f-strings.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Numerator: 22<br>Denominator: 29
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The result is: 75.86%
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-8">
+          Calculate <code>(num / den) * 100</code> and format using <code>{val:.2f}%</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-8">num = int(input("Enter numerator: "))
+den = int(input("Enter denominator: "))
+
+# Calculate percentage
+percentage = (num / den) * 100
+
+# Format with 2 decimals followed by a literal '%'
+print(f"The result is: {percentage:.2f}%")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> In f-strings, <code>%</code> placed directly outside the expression braces is treated as literal text.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9. Display right-aligned output</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-9')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print a given word right-aligned within a field of 20 characters, followed by a version number.</p>
+        <div class="purpose-box">Controls whitespace alignment flags for building formatted CLI dashboards.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Word: "Python"<br>Number: 3.12
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Python 3.12
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-9">
+          Use <code>{word:>20}</code> to align text right with a width of 20 spaces.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-9">word = input("Enter a word: ")
+version = input("Enter a version number: ")
+
+# Right-align the word in a 20-character wide block
+print(f"{word:>20} {version}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>&gt;</code> specifies right-alignment; the following number defines the total width.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10. Center-aligned text with fill characters</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-10')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Display a string centered within a 40-character field, using hyphens (<code>-</code>) as padding.</p>
+        <div class="purpose-box">Teaches centered alignment with custom fill characters for terminal dividers and titles.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Text: "REPORT SUMMARY"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            -------------REPORT SUMMARY-------------
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-10">
+          Combine the fill character, center operator <code>^</code>, and width: <code>{text:-^40}</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-10">title = "REPORT SUMMARY"
+
+# Center title in 40 characters padded by hyphens
+formatted_title = f"{title:-^40}"
+print(formatted_title)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>-^40</code> centers text within 40 characters using hyphens on both sides.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11. Padding with zeros</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-11')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print a given number padded with leading zeros so the total width is exactly 5 digits.</p>
+        <div class="purpose-box">Standardizes fixed-width numbers for IDs, codes, and sorted file patterns.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Number: 42
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            00042
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-11">
+          Use the string method <code>val.zfill(5)</code> or f-string specifier <code>{num:05d}</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-11">val = int(input("Enter number: "))
+
+# Using modern f-string zero-padding specifier
+print(f"{val:05d}")
+
+# Alternative string method:
+# print(str(val).zfill(5))</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>05d</code> instructs Python to fill empty places on the left with zeros until the length reaches 5 characters.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12. Format variables using str.format()</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-12')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given three variables <code>quantity = 3</code>, <code>totalMoney = 450</code>, and <code>price = 150</code>, use <code>.format()</code> to print a neat summary sentence.</p>
+        <div class="purpose-box">Explores index-based argument references inside standard format templates.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            quantity = 3, totalMoney = 450, price = 150
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            I have 450 dollars so I can buy 3 football for 150.00 dollars.
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-12">
+          Use numerical placeholders: <code>{0}</code>, <code>{1}</code>, and <code>{2:.2f}</code> inside your format string.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-12">quantity = 3
+totalMoney = 450
+price = 150
+
+template = "I have {1} dollars so I can buy {0} football for {2:.2f} dollars."
+print(template.format(quantity, totalMoney, price))</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Positional indices decouple argument ordering from parameter placements within string templates.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13. Currency formatting with commas</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-13')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Display a large balance as currency, including a dollar symbol, comma thousand separators, and two decimal places.</p>
+        <div class="purpose-box">Format large numbers into localized financial displays.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Amount: 1250500.7
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Total Balance: $1,250,500.70
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-13">
+          Combine comma grouping and float precision: <code>{balance:,.2f}</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-13">balance = 1250500.7
+
+# ',.2f' applies thousands separators and two-digit precision
+print(f"Total Balance: ${balance:,.2f}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> The <code>,</code> specifier adds commas every three digits for improved readability.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-io" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14. Accept a list of 5 float numbers</div>
+          <div class="card-meta">
+            <span class="category-tag cat-io">Input / Output</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-14')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that accepts 5 float numbers from user input and stores them inside a Python list.</p>
+        <div class="purpose-box">Learn how to read sequential inputs into standard data structures via loops or comprehensions.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            78.6, 78.6, 85.3, 1.2, 3.5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            [78.6, 78.6, 85.3, 1.2, 3.5]
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-14">
+          Iterate with <code>for _ in range(5):</code> and append <code>float(input())</code> to a list.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-14"># Pythonic approach: List comprehension collecting 5 floats
+numbers = [float(input(f"Enter float #{i+1}: ")) for i in range(5)]
+
+print("User List:", numbers)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> A list comprehension compactly prompts, parses, and collects values into a single list.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-fmt" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15. Tabular output from lists</div>
+          <div class="card-meta">
+            <span class="category-tag cat-fmt">Formatting</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-15')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given two lists <code>names</code> and <code>scores</code>, print them formatted as a clean table with aligned columns.</p>
+        <div class="purpose-box">Combines simultaneous list iteration (<code>zip</code>) with fixed column-width specifiers.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            names = ["Alice", "Bob", "Charlie"]<br>scores = [85, 92, 78]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score<br>----------------<br>Alice&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;85&nbsp;&nbsp;&nbsp;<br>Bob&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;92&nbsp;&nbsp;&nbsp;<br>Charlie&nbsp;&nbsp;&nbsp;78
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-15">
+          Use <code>zip(names, scores)</code> and format names using left-alignment: <code>{name:&lt;10}</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-15">names = ["Alice", "Bob", "Charlie"]
+scores = [85, 92, 78]
+
+# Table Header
+print(f"{'Name':<10} {'Score'}")
+print("-" * 16)
+
+# Parallel iteration
+for name, score in zip(names, scores):
+    print(f"{name:<10} {score}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>zip()</code> pairs matching items, while <code>:&lt;10</code> pads strings to guarantee a consistent column width.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-io" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16. Interactive menu</div>
+          <div class="card-meta">
+            <span class="category-tag cat-io">Input / Output</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-16')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a terminal menu that presents three options: "1. Say Hello", "2. Calculate Square", and "3. Exit". Run the selected action accordingly.</p>
+        <div class="purpose-box">The basis of CLI applications using condition branching and user dispatching.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Choice: 2, Number: 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The square is: 25
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-16">
+          Use an <code>if / elif / else</code> sequence to handle user choices as strings (e.g. <code>choice == "1"</code>).
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-16">print("1. Say Hello\n2. Calculate Square\n3. Exit")
+choice = input("Enter choice (1-3): ").strip()
+
+if choice == "1":
+    print("Hello there! Hope you are having a great day.")
+elif choice == "2":
+    val = int(input("Enter number to square: "))
+    print(f"The square is: {val ** 2}")
+elif choice == "3":
+    print("Exiting... Goodbye!")
+else:
+    print("Invalid choice. Please select 1, 2, or 3.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Checking input as a string avoids crashes from non-numeric input.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-io" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17. Masked password input (getpass)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-io">Input / Output</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-17')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a script that prompts for a username using standard input, and a password using invisible/masked input.</p>
+        <div class="purpose-box">Teaches secure terminal input handling using Python's built-in <code>getpass</code> module.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Username: admin<br>Password: SecretPassword123
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Login successful for admin!
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-17">
+          Import the standard library <code>getpass</code> and call <code>getpass.getpass("Password: ")</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-17">import getpass
+
+user = input("Enter Username: ")
+# Terminal echo is disabled during input entry
+pwd = getpass.getpass("Enter Password: ")
+
+if user == "admin" and pwd == "SecretPassword123":
+    print(f"Login successful for {user}!")
+else:
+    print("Access Denied.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>getpass.getpass()</code> suppresses terminal echoing, protecting sensitive credentials from shoulder-surfing and log history.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-file" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18. Read a file and store its content in a list</div>
+          <div class="card-meta">
+            <span class="category-tag cat-file">File Handling</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-18')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Read an existing file <code>test.txt</code> and store every line as an individual element inside a Python list.</p>
+        <div class="purpose-box">Transforms raw disk file contents into memory structures for parsing and filtering.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            File: test.txt (3 lines)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            ['Line 1', 'Line 2', 'Line 3']
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-18">
+          Use a <code>with open(...)</code> block and strip newline characters using <code>line.strip()</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-18"># Safely open file and strip trailing newline breaks
+with open("test.txt", "r") as f:
+    lines = [line.rstrip('\n') for line in f]
+
+print(lines)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Iterating directly over the file object inside a list comprehension is memory-efficient and automatically cleans up trailing newline characters.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-file" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19. Write list of strings to a file</div>
+          <div class="card-meta">
+            <span class="category-tag cat-file">File Handling</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-19')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Take a list of fruits and persist each entry onto a new line in a file named <code>fruits.txt</code>.</p>
+        <div class="purpose-box">Demonstrates disk persistence using write modes and context managers.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            ["Apple", "Banana", "Cherry", "Date"]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            File 'fruits.txt' created with 4 lines
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-19">
+          Open the file with mode <code>"w"</code> and use <code>f.writelines()</code> or loop through each item adding <code>\n</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-19">fruit_list = ["Apple", "Banana", "Cherry", "Date"]
+
+# Open file with 'w' mode (overwrites if already present)
+with open("fruits.txt", "w") as f:
+    for fruit in fruit_list:
+        f.write(f"{fruit}\n")
+
+print("File 'fruits.txt' has been created successfully.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> The <code>with</code> statement handles closing the file stream automatically, even if errors occur during writing.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-file" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20. Count total lines in a file</div>
+          <div class="card-meta">
+            <span class="category-tag cat-file">File Handling</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-20')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that opens an existing text file and calculates exactly how many lines of text it contains.</p>
+        <div class="purpose-box">Data auditing and memory-friendly file iteration on large files.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            File: sample.txt (12 lines)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The file contains 12 lines.
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-20">
+          Iterate directly through the file object using a loop counter, or use <code>sum(1 for _ in f)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-20"># Efficient line-counting generator expression
+with open("sample.txt", "r") as f:
+    line_count = sum(1 for _ in f)
+
+print(f"The file contains {line_count} lines.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>sum(1 for _ in f)</code> counts lines in $O(1)$ memory without loading the whole file into RAM.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 21 -->
+    <article class="exercise-card" data-category="cat-file" id="ex-21">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 21. Read line number 4 from a file</div>
+          <div class="card-meta">
+            <span class="category-tag cat-file">File Handling</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-21')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Open a text file and display only the fourth line of the content.</p>
+        <div class="purpose-box">Teaches zero-based index access and line-specific extraction from files.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            File: test.txt (Lines 1 to 5)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Line 4
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-21')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-21')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-21">
+          Remember that Python lists use zero-indexing. The 4th line is located at index 3.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-21">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-21')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-21">with open("test.txt", "r") as f:
+    lines = f.readlines()
+    if len(lines) >= 4:
+        print(lines[3].strip())
+    else:
+        print("File contains fewer than 4 lines.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Index <code>[3]</code> retrieves the 4th element; <code>len(lines) &gt;= 4</code> guards against <code>IndexError</code>.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-file" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22. Check if file is empty</div>
+          <div class="card-meta">
+            <span class="category-tag cat-file">File Handling</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-22')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a script that checks a file's metadata. If size is 0 bytes, print "File is empty"; otherwise, show its byte size.</p>
+        <div class="purpose-box">Introduces OS-level file system metadata queries via <code>os.stat</code> or <code>os.path.getsize</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            File: empty_log.txt (0 bytes)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Status: empty_log.txt is empty.
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-22">
+          Use <code>os.path.getsize(filename)</code> or <code>os.stat(filename).st_size</code> after checking <code>os.path.exists()</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-22">import os
+
+filename = "empty_log.txt"
+
+# Defensive verification: check existence first
+if os.path.exists(filename):
+    size = os.path.getsize(filename)
+    if size == 0:
+        print(f"Status: {filename} is empty.")
+    else:
+        print(f"Status: {filename} size is {size} bytes.")
+else:
+    print(f"File '{filename}' does not exist.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>os.path.getsize()</code> directly inspects filesystem metadata without reading any file contents into memory.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-file" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23. Delete a specific file</div>
+          <div class="card-meta">
+            <span class="category-tag cat-file">File Handling</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-23')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that asks for a filename, confirms deletion with the user, and removes it permanently.</p>
+        <div class="purpose-box">Highlights high-risk system operations using defensive checks and user confirmation safeguards.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            File to delete: old_data.csv (confirmed with 'y')
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            File 'old_data.csv' has been deleted.
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-23">
+          Check with <code>os.path.exists(target)</code>, confirm input, and delete using <code>os.remove(target)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-23">import os
+
+target = input("Enter filename to delete: ").strip()
+
+if os.path.exists(target):
+    confirm = input(f"Are you sure you want to delete '{target}'? (y/n): ")
+    if confirm.lower() == 'y':
+        os.remove(target)
+        print(f"File '{target}' has been deleted.")
+    else:
+        print("Operation cancelled.")
+else:
+    print("Error: File does not exist.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>os.remove()</code> bypasses the trash/recycle bin and deletes the target file immediately. Defensive guards prevent accidental data loss.
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Interactive Python Practice Hub • Modern Python 3 Best Practices
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Accordion
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      drawer.classList.toggle('active');
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeText = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #3fb950"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Filter by Category
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+        cards.forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 23;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_solved_exercises') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_solved_exercises', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Update checkboxes state on load
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on page load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Dictionaries Mastery • 40 Practice Exercises</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls, Search, and Category Filtering */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Category Tag Colors */
+    .cat-crud { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-nested { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-comp { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-sort { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-algo { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python Dictionaries Mastery • 40 Practice Exercises</h1>
+        <div class="badge-counter" id="progress-text">0 / 40 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Search, and Category Filtering -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises (e.g. nested, fromkeys, get, merge, json, invert, sort, flatten)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (40)</button>
+      <button class="filter-btn" data-filter="cat-crud">Basics &amp; CRUD</button>
+      <button class="filter-btn" data-filter="cat-nested">Nested &amp; Manipulation</button>
+      <button class="filter-btn" data-filter="cat-comp">Comprehensions &amp; Filtering</button>
+      <button class="filter-btn" data-filter="cat-sort">Sorting &amp; Aggregations</button>
+      <button class="filter-btn" data-filter="cat-algo">Advanced &amp; Algorithms</button>
+
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+    <!-- Dynamically rendered via JavaScript -->
+  </main>
+
+  <footer>
+    Python Dictionaries Mastery • 40 Practice Exercises • Clean, Interactive &amp; Responsive
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Basic Dictionary Operations",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Create a dictionary named `student` with keys 'name', 'age', and 'grade'. Access the 'name', update 'age' to 21, add a new key 'city', and print the resulting dictionary.",
+        purpose: "Learn fundamental dictionary creation, key subscripting, and in-place assignment.",
+        input: "Initial: {'name': 'Alice', 'age': 20, 'grade': 'A'}",
+        output: "{'name': 'Alice', 'age': 21, 'grade': 'A', 'city': 'New York'}",
+        hint: "Access values with `d['key']`, update with `d['key'] = new_val`, and add new keys via `d['new_key'] = val`.",
+        code: `student = {'name': 'Alice', 'age': 20, 'grade': 'A'}
+
+# Access 'name'
+print("Name:", student['name'])
+
+# Update existing key
+student['age'] = 21
+
+# Add new key-value pair
+student['city'] = 'New York'
+
+print("Updated Dictionary:", student)`,
+        explanation: "Dictionaries are mutable mappings. Assigning to an existing key updates its value; assigning to a non-existent key inserts a new key-value pair."
+      },
+      {
+        id: 2,
+        title: "Dictionary Operations (CRUD operations & methods)",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Demonstrate standard CRUD methods on a dictionary: safe read with `.get()`, update with `.update()`, remove with `.pop()`, and inspect `.keys()`, `.values()`, and `.items()`.",
+        purpose: "Master core dictionary built-in methods without triggering KeyError exceptions.",
+        input: "user = {'id': 101, 'role': 'Admin', 'active': True}",
+        output: "Safe get: 'Admin', Pop 'active': True, Updated: {'id': 101, 'role': 'SuperAdmin'}",
+        hint: "Use `user.get('role', 'default')`, `user.pop('active')`, and `user.update({'role': 'SuperAdmin'})`.",
+        code: `user = {'id': 101, 'role': 'Admin', 'active': True}
+
+# Safe Read with default fallback
+role = user.get('role', 'Guest')
+email = user.get('email', 'Not Provided')
+
+# Remove a key safely
+was_active = user.pop('active', None)
+
+# Batch update
+user.update({'role': 'SuperAdmin', 'verified': True})
+
+print("Role:", role, "| Email:", email)
+print("Popped Active:", was_active)
+print("Keys:", list(user.keys()))
+print("Values:", list(user.values()))
+print("Final Dict:", user)`,
+        explanation: "`.get()` avoids KeyErrors when keys are missing. `.pop()` removes and returns the value, while `.update()` merges key-value pairs in-place."
+      },
+      {
+        id: 3,
+        title: "Dictionary from Two Lists",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Convert two separate lists (one containing keys and the other containing values) into a single dictionary using `zip()`.",
+        purpose: "Understand parallel sequence iteration and dictionary constructor casting.",
+        input: "keys = ['Ten', 'Twenty', 'Thirty'], values = [10, 20, 30]",
+        output: "{'Ten': 10, 'Twenty': 20, 'Thirty': 30}",
+        hint: "Pair the lists using `zip(keys, values)` and pass the iterator directly into `dict()`.",
+        code: `keys = ['Ten', 'Twenty', 'Thirty']
+values = [10, 20, 30]
+
+# Pair and cast to dictionary
+result = dict(zip(keys, values))
+print("Constructed Dict:", result)`,
+        explanation: "`zip()` generates an iterable of tuples `('Ten', 10), ('Twenty', 20)...` which the `dict()` constructor consumes to build a hash table."
+      },
+      {
+        id: 4,
+        title: "Clear Dictionary",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Empty an existing dictionary of all its elements using `.clear()` and verify that its memory reference remains intact.",
+        purpose: "Distinguish between reassigning to `{}` and wiping memory with `.clear()`.",
+        input: "profile = {'name': 'John', 'age': 28, 'country': 'Canada'}",
+        output: "{}",
+        hint: "Call `profile.clear()` directly on the dictionary object.",
+        code: `profile = {'name': 'John', 'age': 28, 'country': 'Canada'}
+alias = profile
+
+profile.clear()
+
+print("profile:", profile)
+print("alias  :", alias)
+print("Both references empty:", alias is profile)`,
+        explanation: "`.clear()` empties the dictionary in-place, affecting all variables referencing that dictionary object in memory."
+      },
+      {
+        id: 5,
+        title: "Merge Dictionaries",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Merge two dictionaries into a new third dictionary using the union operator `|` (Python 3.9+) and iterable unpacking `**`.",
+        purpose: "Learn modern non-destructive dictionary merging.",
+        input: "dict1 = {'Ten': 10, 'Twenty': 20}, dict2 = {'Thirty': 30, 'Fourty': 40}",
+        output: "{'Ten': 10, 'Twenty': 20, 'Thirty': 30, 'Fourty': 40}",
+        hint: "Use the pipe operator: `dict3 = dict1 | dict2` or `dict3 = {**dict1, **dict2}`.",
+        code: `dict1 = {'Ten': 10, 'Twenty': 20, 'Thirty': 30}
+dict2 = {'Thirty': 300, 'Fourty': 40, 'Fifty': 50}
+
+# Modern merge operator (Python 3.9+)
+dict3 = dict1 | dict2
+print("Merged (pipe):", dict3)
+
+# Alternative unpacking syntax
+dict4 = {**dict1, **dict2}
+print("Merged (unpack):", dict4)`,
+        explanation: "The `|` operator creates a new dictionary containing keys and values from both operands. If keys collide, values from the right-hand dictionary take precedence."
+      },
+      {
+        id: 6,
+        title: "Access Nested Dictionary",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Given a nested employee dictionary, access and print the employee's department name and developer salary.",
+        purpose: "Navigate multi-level hierarchical dictionaries via chained brackets.",
+        input: "emp = {'emp_id': 1, 'dept': {'name': 'IT', 'head': 'Sarah'}, 'pay': {'salary': 75000, 'bonus': 5000}}",
+        output: "Department: IT, Salary: 75000",
+        hint: "Chain subscript operators: `emp['dept']['name']` and `emp['pay']['salary']`.",
+        code: `emp = {
+    'emp_id': 1,
+    'dept': {'name': 'IT', 'head': 'Sarah'},
+    'pay': {'salary': 75000, 'bonus': 5000}
+}
+
+dept_name = emp['dept']['name']
+salary = emp['pay']['salary']
+
+print(f"Department: {dept_name}, Salary: {salary}")`,
+        explanation: "Each bracket lookup resolves the value of the previous dictionary, enabling direct nested traversal."
+      },
+      {
+        id: 7,
+        title: "Access ‘history’ Key From a Nested Dictionary",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Given a student record dictionary containing nested classes and subjects, extract the score for the 'history' subject.",
+        purpose: "Practice targeting deeply nested values in complex sample structures.",
+        input: "sampleDict = {'class': {'student': {'name': 'Mike', 'marks': {'physics': 70, 'history': 80}}}}",
+        output: "History Marks: 80",
+        hint: "Chain keys from outer to inner: `sampleDict['class']['student']['marks']['history']`.",
+        code: `sampleDict = {
+    'class': {
+        'student': {
+            'name': 'Mike',
+            'marks': {
+                'physics': 70,
+                'history': 80
+            }
+        }
+    }
+}
+
+history_marks = sampleDict['class']['student']['marks']['history']
+print("History Marks:", history_marks)`,
+        explanation: "Traverses 4 levels of nesting: class -> student -> marks -> history to retrieve the value 80."
+      },
+      {
+        id: 8,
+        title: "Initialize Dictionary with Default Values (fromkeys)",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Initialize a dictionary from a list of employee names where each employee has default attributes `{'designation': 'Developer', 'salary': 8000}`.",
+        purpose: "Use `dict.fromkeys()` properly to instantiate maps with uniform templates.",
+        input: "employees = ['Kelly', 'Emma']",
+        output: "{'Kelly': {'designation': 'Developer', 'salary': 8000}, 'Emma': {'designation': 'Developer', 'salary': 8000}}",
+        hint: "Use a dictionary comprehension or deep-copy with `dict.fromkeys()` to prevent shared reference mutations.",
+        code: `employees = ['Kelly', 'Emma']
+defaults = {'designation': 'Developer', 'salary': 8000}
+
+# Using dictionary comprehension to ensure independent dictionaries
+res = {emp: defaults.copy() for emp in employees}
+print(res)`,
+        explanation: "While `dict.fromkeys(employees, defaults)` exists, using comprehension with `.copy()` ensures that each employee receives an independent mutable dictionary rather than a shared reference."
+      },
+      {
+        id: 9,
+        title: "Rename a Key of Dictionary (pop and reassign)",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Rename the key 'city' to 'location' in a given dictionary without losing its associated value.",
+        purpose: "Learn how to rename keys in-place using `.pop()` and re-indexing.",
+        input: "sample_dict = {'name': 'Kelly', 'age': 25, 'salary': 8000, 'city': 'New York'}",
+        output: "{'name': 'Kelly', 'age': 25, 'salary': 8000, 'location': 'New York'}",
+        hint: "Assign the popped key value to the new key name: `sample_dict['location'] = sample_dict.pop('city')`.",
+        code: `sample_dict = {
+    'name': 'Kelly',
+    'age': 25,
+    'salary': 8000,
+    'city': 'New York'
+}
+
+# Pop 'city' and assign its value directly to 'location'
+if 'city' in sample_dict:
+    sample_dict['location'] = sample_dict.pop('city')
+
+print(sample_dict)`,
+        explanation: "`.pop('city')` deletes 'city' and returns its value 'New York', which is immediately bound to 'location'."
+      },
+      {
+        id: 10,
+        title: "Delete a List of Keys",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Given a dictionary and a list of keys to remove, delete all specified keys from the dictionary safely.",
+        purpose: "Batch key deletion using loops or comprehension.",
+        input: "sample_dict = {'name': 'Kelly', 'age': 25, 'salary': 8000, 'city': 'New York'}, keys = ['name', 'salary']",
+        output: "{'age': 25, 'city': 'New York'}",
+        hint: "Loop through keys and call `sample_dict.pop(k, None)` or build a new filtered dictionary.",
+        code: `sample_dict = {
+    'name': 'Kelly',
+    'age': 25,
+    'salary': 8000,
+    'city': 'New York'
+}
+keys_to_remove = ['name', 'salary']
+
+for k in keys_to_remove:
+    sample_dict.pop(k, None)
+
+print("Cleaned Dict:", sample_dict)`,
+        explanation: "Passing `None` as the second argument to `.pop()` prevents a KeyError if a key in the removal list is not found in the dictionary."
+      },
+      {
+        id: 11,
+        title: "Check Value Existence (in dict.values())",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Check whether a specific value (e.g. 200) exists anywhere in a dictionary's values.",
+        purpose: "Membership testing on dictionary value views.",
+        input: "sample_dict = {'a': 100, 'b': 200, 'c': 300}, target = 200",
+        output: "200 present in a dict: True",
+        hint: "Use the `in` operator on `sample_dict.values()`.",
+        code: `sample_dict = {'a': 100, 'b': 200, 'c': 300}
+target = 200
+
+if target in sample_dict.values():
+    print(f"{target} is present in the dictionary.")
+else:
+    print(f"{target} is NOT present in the dictionary.")`,
+        explanation: "`sample_dict.values()` exposes a dynamic view of values that supports linear-time O(n) membership testing via `in`."
+      },
+      {
+        id: 12,
+        title: "Sum All Values",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Calculate the sum of all numerical values stored inside a dictionary.",
+        purpose: "Aggregate dictionary values using the built-in `sum()` function.",
+        input: "expenses = {'rent': 1200, 'groceries': 450, 'utilities': 180, 'internet': 70}",
+        output: "Total Expenses: 1900",
+        hint: "Pass `expenses.values()` directly into `sum()`.",
+        code: `expenses = {'rent': 1200, 'groceries': 450, 'utilities': 180, 'internet': 70}
+total = sum(expenses.values())
+
+print("Total Expenses:", total)`,
+        explanation: "`sum(expenses.values())` iterates through all mapped values in O(n) time and returns their sum."
+      },
+      {
+        id: 13,
+        title: "Extract Subset of Keys",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        problem: "Create a new dictionary containing only a specified subset of keys from an existing dictionary.",
+        purpose: "Subsetting dictionaries using dictionary comprehensions.",
+        input: "sample_dict = {'name': 'Kelly', 'age': 25, 'salary': 8000, 'city': 'New York'}, keys = ['name', 'salary']",
+        output: "{'name': 'Kelly', 'salary': 8000}",
+        hint: "Use `{k: sample_dict[k] for k in keys if k in sample_dict}`.",
+        code: `sample_dict = {
+    'name': 'Kelly',
+    'age': 25,
+    'salary': 8000,
+    'city': 'New York'
+}
+keys_to_extract = ['name', 'salary']
+
+subset = {k: sample_dict[k] for k in keys_to_extract if k in sample_dict}
+print("Subset:", subset)`,
+        explanation: "Iterating through the target keys and verifying membership with `if k in sample_dict` extracts the subset while guarding against missing keys."
+      },
+      {
+        id: 14,
+        title: "Map Two Lists (zip & dict())",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Map a list of country names to their respective capitals using a dictionary comprehension or `zip()`.",
+        purpose: "Transform parallel sequences into structured key-value maps.",
+        input: "countries = ['USA', 'France', 'Japan'], capitals = ['Washington', 'Paris', 'Tokyo']",
+        output: "{'USA': 'Washington', 'France': 'Paris', 'Japan': 'Tokyo'}",
+        hint: "Combine using `{c: cap for c, cap in zip(countries, capitals)}`.",
+        code: `countries = ['USA', 'France', 'Japan']
+capitals = ['Washington', 'Paris', 'Tokyo']
+
+country_map = {country: capital for country, capital in zip(countries, capitals)}
+print("Country Capital Map:", country_map)`,
+        explanation: "Dictionary comprehension over `zip` creates a clear mapping while allowing transformation or filtering logic if needed."
+      },
+      {
+        id: 15,
+        title: "Count Character Frequencies",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Count the frequency of each character in a given string using a standard dictionary loop without external libraries.",
+        purpose: "Implement frequency counting manually using `.get()` accumulator patterns.",
+        input: "text = 'programming'",
+        output: "{'p': 1, 'r': 2, 'o': 1, 'g': 2, 'a': 1, 'm': 2, 'i': 1, 'n': 1}",
+        hint: "Loop through characters: `freq[char] = freq.get(char, 0) + 1`.",
+        code: `text = "programming"
+char_freq = {}
+
+for char in text:
+    char_freq[char] = char_freq.get(char, 0) + 1
+
+print("Character Frequencies:", char_freq)`,
+        explanation: "`freq.get(char, 0)` returns the existing count or 0 for the first occurrence of a character, safely incrementing the tally."
+      },
+      {
+        id: 16,
+        title: "Modify Nested Dictionary",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Given an employee dictionary, increase Brad's salary from 6500 to 8500 inside the nested structure.",
+        purpose: "Mutate nested values in-place by navigating the reference chain.",
+        input: "sample_dict = {'emp1': {'name': 'Jhon', 'salary': 7500}, 'emp2': {'name': 'Emma', 'salary': 8000}, 'emp3': {'name': 'Brad', 'salary': 6500}}",
+        output: "Brad's salary updated to 8500",
+        hint: "Target `sample_dict['emp3']['salary'] = 8500`.",
+        code: `sample_dict = {
+    'emp1': {'name': 'Jhon', 'salary': 7500},
+    'emp2': {'name': 'Emma', 'salary': 8000},
+    'emp3': {'name': 'Brad', 'salary': 6500}
+}
+
+sample_dict['emp3']['salary'] = 8500
+print("Updated Brad Salary:", sample_dict['emp3']['salary'])`,
+        explanation: "Navigating `sample_dict['emp3']` accesses Brad's sub-dictionary by reference, updating `'salary'` directly."
+      },
+      {
+        id: 17,
+        title: "Update Deeply Nested Key",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Write a function `deep_set(d, keys_list, value)` that dynamically traverses an arbitrary list of nested keys and updates the terminal value.",
+        purpose: "Dynamic nested dictionary navigation and mutation.",
+        input: "d = {'a': {'b': {'c': 10}}}, keys = ['a', 'b', 'c'], value = 42",
+        output: "{'a': {'b': {'c': 42}}}",
+        hint: "Iterate through keys up to `keys[:-1]`, advancing a pointer `cur = cur[k]`, then assign `cur[keys[-1]] = val`.",
+        code: `def deep_set(d, keys, value):
+    cur = d
+    for k in keys[:-1]:
+        cur = cur.setdefault(k, {})
+    cur[keys[-1]] = value
+    return d
+
+data = {'a': {'b': {'c': 10}}}
+deep_set(data, ['a', 'b', 'c'], 42)
+print("Updated Deep Dict:", data)`,
+        explanation: "Moving a pointer through the nested levels lets you assign the final value dynamically without hardcoded brackets."
+      },
+      {
+        id: 18,
+        title: "Dictionary Comprehension",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        problem: "Generate a dictionary mapping numbers 1 through 10 to their squared values (`{x: x**2}`).",
+        purpose: "Learn dictionary comprehension syntax `{key_expr: val_expr for item in iterable}`.",
+        input: "Range: 1 to 10",
+        output: "{1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36, 7: 49, 8: 64, 9: 81, 10: 100}",
+        hint: "Write `{x: x**2 for x in range(1, 11)}`.",
+        code: `squares = {x: x**2 for x in range(1, 11)}
+print("Squares:", squares)`,
+        explanation: "Dictionary comprehensions evaluate key and value expressions in a single pass, constructing the mapping in memory."
+      },
+      {
+        id: 19,
+        title: "Filter Dictionary",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        problem: "Filter a dictionary of test scores to retain only students who scored 75 or higher.",
+        purpose: "Filter key-value pairs using comprehensions with trailing `if` predicates.",
+        input: "scores = {'Alice': 88, 'Bob': 62, 'Charlie': 75, 'David': 94, 'Emma': 70}",
+        output: "{'Alice': 88, 'Charlie': 75, 'David': 94}",
+        hint: "Use `{k: v for k, v in scores.items() if v >= 75}`.",
+        code: `scores = {'Alice': 88, 'Bob': 62, 'Charlie': 75, 'David': 94, 'Emma': 70}
+passed = {k: v for k, v in scores.items() if v >= 75}
+
+print("Passing Students:", passed)`,
+        explanation: "Filtering on `scores.items()` checks each score and includes only passing students in the resulting dictionary."
+      },
+      {
+        id: 20,
+        title: "Key of Minimum Value (min with key=dict.get)",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Find the key corresponding to the minimum value in a dictionary using `min(dict, key=dict.get)`.",
+        purpose: "Extract extreme keys using custom comparator functions.",
+        input: "sample_dict = {'Physics': 82, 'Math': 65, 'history': 75}",
+        output: "Minimum score subject: 'Math' (65)",
+        hint: "Use `min(sample_dict, key=sample_dict.get)`.",
+        code: `sample_dict = {'Physics': 82, 'Math': 65, 'history': 75}
+min_subject = min(sample_dict, key=sample_dict.get)
+
+print(f"Minimum score subject: '{min_subject}' ({sample_dict[min_subject]})")`,
+        explanation: "`min(sample_dict)` iterates over keys. Passing `key=sample_dict.get` compares keys by their looked-up values, returning the key with the lowest score."
+      },
+      {
+        id: 21,
+        title: "Key of Maximum Value (max with key=dict.get)",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Find the key corresponding to the maximum value in a dictionary using `max(dict, key=dict.get)`.",
+        purpose: "Extract the highest-scoring key in O(n) time.",
+        input: "sample_dict = {'Physics': 82, 'Math': 95, 'history': 75}",
+        output: "Maximum score subject: 'Math' (95)",
+        hint: "Use `max(sample_dict, key=sample_dict.get)`.",
+        code: `sample_dict = {'Physics': 82, 'Math': 95, 'history': 75}
+max_subject = max(sample_dict, key=sample_dict.get)
+
+print(f"Maximum score subject: '{max_subject}' ({sample_dict[max_subject]})")`,
+        explanation: "`max()` compares dictionary keys using their mapped values via `.get`, returning the key with the highest value."
+      },
+      {
+        id: 22,
+        title: "List of Tuples to Dictionary",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Convert a list of `(key, value)` tuples into a dictionary, handling duplicate keys by grouping values into lists.",
+        purpose: "Transform pairs into multi-valued dictionaries.",
+        input: "pairs = [('apple', 1), ('banana', 2), ('apple', 3), ('orange', 4)]",
+        output: "{'apple': [1, 3], 'banana': [2], 'orange': [4]}",
+        hint: "Use a dictionary with `setdefault(k, []).append(v)`.",
+        code: `pairs = [('apple', 1), ('banana', 2), ('apple', 3), ('orange', 4)]
+grouped = {}
+
+for k, v in pairs:
+    grouped.setdefault(k, []).append(v)
+
+print("Grouped Dictionary:", grouped)`,
+        explanation: "`setdefault(k, [])` retrieves the existing list for key `k` (or initializes an empty one if missing), allowing values to append cleanly."
+      },
+      {
+        id: 23,
+        title: "Find Common Keys (set intersection on keys)",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Find all keys that appear in both `dict1` and `dict2` using set intersection on dictionary keys.",
+        purpose: "Leverage Python dictionary key-view set operations.",
+        input: "d1 = {'a': 1, 'b': 2, 'c': 3}, d2 = {'b': 20, 'c': 30, 'd': 40}",
+        output: "Common keys: {'b', 'c'}",
+        hint: "Use `d1.keys() & d2.keys()`.",
+        code: `d1 = {'a': 1, 'b': 2, 'c': 3}
+d2 = {'b': 20, 'c': 30, 'd': 40}
+
+common_keys = d1.keys() & d2.keys()
+print("Common keys:", common_keys)`,
+        explanation: "In Python 3, `dict.keys()` returns a set-like dictionary view that supports set operations like `&` (intersection), `|` (union), and `-` (difference) without manual conversion."
+      },
+      {
+        id: 24,
+        title: "Dictionary Difference",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Find all key-value pairs that exist in `dict1` whose keys are NOT present in `dict2`.",
+        purpose: "Compute set difference between dictionary key sets.",
+        input: "d1 = {'a': 1, 'b': 2, 'c': 3}, d2 = {'b': 20, 'd': 40}",
+        output: "{'a': 1, 'c': 3}",
+        hint: "Compute diff keys with `d1.keys() - d2.keys()`, then extract matching pairs.",
+        code: `d1 = {'a': 1, 'b': 2, 'c': 3}
+d2 = {'b': 20, 'd': 40}
+
+diff_keys = d1.keys() - d2.keys()
+diff_dict = {k: d1[k] for k in diff_keys}
+
+print("Dictionary Difference:", diff_dict)`,
+        explanation: "`d1.keys() - d2.keys()` returns the keys unique to `d1`. The comprehension reconstructs the difference dictionary."
+      },
+      {
+        id: 25,
+        title: "Dictionary Intersection",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Create a new dictionary containing only keys present in both dictionaries, combining their values into a tuple `(val1, val2)`.",
+        purpose: "Coordinate paired values across dictionary intersections.",
+        input: "d1 = {'x': 10, 'y': 20, 'z': 30}, d2 = {'y': 200, 'z': 300, 'w': 400}",
+        output: "{'y': (20, 200), 'z': (30, 300)}",
+        hint: "Loop through `d1.keys() & d2.keys()` and map `k: (d1[k], d2[k])`.",
+        code: `d1 = {'x': 10, 'y': 20, 'z': 30}
+d2 = {'y': 200, 'z': 300, 'w': 400}
+
+intersection = {k: (d1[k], d2[k]) for k in d1.keys() & d2.keys()}
+print("Intersection:", intersection)`,
+        explanation: "Intersecting the key views identifies shared keys in O(min(len(d1), len(d2))) time, mapping both original values into pairs."
+      },
+      {
+        id: 26,
+        title: "Word Count",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Count the frequency of each word in a sentence, normalizing text to lowercase and ignoring punctuation.",
+        purpose: "Text tokenization and histogram construction with dictionaries.",
+        input: "sentence = 'Apple banana apple orange banana apple'",
+        output: "{'apple': 3, 'banana': 2, 'orange': 1}",
+        hint: "Clean the text, use `.split()`, and count with a loop or `dict.get()`.",
+        code: `sentence = "Apple banana apple orange banana apple"
+words = sentence.lower().split()
+word_counts = {}
+
+for w in words:
+    word_counts[w] = word_counts.get(w, 0) + 1
+
+print("Word Counts:", word_counts)`,
+        explanation: "`.lower()` standardizes word case, `.split()` tokenizes words on spaces, and `.get(w, 0) + 1` accumulates counts in the dictionary."
+      },
+      {
+        id: 27,
+        title: "Remove None Values",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        problem: "Remove all key-value pairs from a dictionary where the value is `None`.",
+        purpose: "Clean incoming payloads and JSON responses.",
+        input: "raw_data = {'id': 1, 'name': 'Alice', 'email': None, 'phone': None, 'role': 'User'}",
+        output: "{'id': 1, 'name': 'Alice', 'role': 'User'}",
+        hint: "Filter with `{k: v for k, v in raw_data.items() if v is not None}`.",
+        code: `raw_data = {'id': 1, 'name': 'Alice', 'email': None, 'phone': None, 'role': 'User'}
+cleaned = {k: v for k, v in raw_data.items() if v is not None}
+
+print("Cleaned Data:", cleaned)`,
+        explanation: "`v is not None` checks identity against the `None` singleton, removing null entries while preserving values like `0` or `False`."
+      },
+      {
+        id: 28,
+        title: "Sort Dictionary by Keys",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Sort an unsorted dictionary alphabetically by its keys.",
+        purpose: "Sort dictionaries by keys using `sorted()`.",
+        input: "d = {'banana': 3, 'apple': 5, 'cherry': 2, 'date': 8}",
+        output: "{'apple': 5, 'banana': 3, 'cherry': 2, 'date': 8}",
+        hint: "Use `{k: d[k] for k in sorted(d)}` or `dict(sorted(d.items()))`.",
+        code: `d = {'banana': 3, 'apple': 5, 'cherry': 2, 'date': 8}
+sorted_by_key = dict(sorted(d.items()))
+
+print("Sorted by Keys:", sorted_by_key)`,
+        explanation: "`sorted(d.items())` sorts key-value tuples by their first element (the key). In Python 3.7+, dictionaries preserve insertion order."
+      },
+      {
+        id: 29,
+        title: "Sort Dictionary by Values",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Sort a dictionary in descending order of its values.",
+        purpose: "Custom comparator sorting using lambda key extractors.",
+        input: "scores = {'Alice': 75, 'Bob': 92, 'Charlie': 85, 'David': 60}",
+        output: "{'Bob': 92, 'Charlie': 85, 'Alice': 75, 'David': 60}",
+        hint: "Use `sorted(scores.items(), key=lambda item: item[1], reverse=True)`.",
+        code: `scores = {'Alice': 75, 'Bob': 92, 'Charlie': 85, 'David': 60}
+sorted_by_value = dict(sorted(scores.items(), key=lambda item: item[1], reverse=True))
+
+print("Sorted by Values:", sorted_by_value)`,
+        explanation: "`key=lambda item: item[1]` sorts tuples by value instead of key, and `reverse=True` orders them from highest to lowest."
+      },
+      {
+        id: 30,
+        title: "Unique Values Check",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Check if all values in a dictionary are unique (contain no duplicate values).",
+        purpose: "Evaluate set length properties on value collections.",
+        input: "d1 = {'a': 1, 'b': 2, 'c': 3} and d2 = {'a': 1, 'b': 2, 'c': 1}",
+        output: "d1 unique: True, d2 unique: False",
+        hint: "Compare `len(d.values()) == len(set(d.values()))`.",
+        code: `def has_unique_values(d):
+    return len(d.values()) == len(set(d.values()))
+
+print("d1 unique:", has_unique_values({'a': 1, 'b': 2, 'c': 3}))
+print("d2 unique:", has_unique_values({'a': 1, 'b': 2, 'c': 1}))`,
+        explanation: "Sets discard duplicates. If the set of values has the same length as the values view, all values are unique."
+      },
+      {
+        id: 31,
+        title: "Check for Subset",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Determine if all key-value pairs of `dict1` are present in `dict2`.",
+        purpose: "Subset validation using dictionary item views.",
+        input: "sub = {'a': 1, 'b': 2}, master = {'a': 1, 'b': 2, 'c': 3, 'd': 4}",
+        output: "Is subset: True",
+        hint: "Check `sub.items() <= master.items()` using the subset comparison operator.",
+        code: `sub = {'a': 1, 'b': 2}
+master = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+
+# Using set comparison directly on item views
+is_subset = sub.items() <= master.items()
+print("Is subset:", is_subset)`,
+        explanation: "`dict.items()` returns a set-like view. The `<=` operator checks if every key-value pair in `sub` exists in `master`."
+      },
+      {
+        id: 32,
+        title: "Sort Dictionary by Value Length",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Sort a dictionary whose values are strings based on the length of each string value.",
+        purpose: "Custom sorting using nested key evaluation functions.",
+        input: "d = {'apple': 'red', 'banana': 'yellow', 'cherry': 'dark-red', 'plum': 'purple'}",
+        output: "{'apple': 'red', 'plum': 'purple', 'banana': 'yellow', 'cherry': 'dark-red'}",
+        hint: "Sort using `key=lambda item: len(item[1])`.",
+        code: `d = {'apple': 'red', 'banana': 'yellow', 'cherry': 'dark-red', 'plum': 'purple'}
+sorted_by_len = dict(sorted(d.items(), key=lambda item: len(item[1])))
+
+print("Sorted by Value Length:", sorted_by_len)`,
+        explanation: "`lambda item: len(item[1])` evaluates the string length of each value, ordering the entries from shortest to longest."
+      },
+      {
+        id: 33,
+        title: "Key with Longest List",
+        category: "cat-sort",
+        catLabel: "Sorting & Aggregations",
+        problem: "Find the key that maps to the longest list in a dictionary of lists.",
+        purpose: "Find extremes among collections using `max(..., key=lambda k: len(d[k]))`.",
+        input: "d = {'groupA': [1, 2], 'groupB': [1, 2, 3, 4, 5], 'groupC': [1, 2, 3]}",
+        output: "Key with longest list: 'groupB' (5 items)",
+        hint: "Use `max(d, key=lambda k: len(d[k]))`.",
+        code: `d = {
+    'groupA': [1, 2],
+    'groupB': [1, 2, 3, 4, 5],
+    'groupC': [1, 2, 3]
+}
+
+longest_key = max(d, key=lambda k: len(d[k]))
+print(f"Key with longest list: '{longest_key}' ({len(d[longest_key])} items)")`,
+        explanation: "`max(d, key=...)` tests each key against `len(d[k])` in O(n) time, returning the key mapped to the largest list."
+      },
+      {
+        id: 34,
+        title: "Convert Dictionary to JSON",
+        category: "cat-crud",
+        catLabel: "Basics & CRUD",
+        problem: "Serialize a Python dictionary to a formatted JSON string with 4-space indentation and sorted keys.",
+        purpose: "Learn serialization using `json.dumps()`.",
+        input: "data = {'name': 'Alice', 'age': 25, 'skills': ['Python', 'SQL'], 'active': True}",
+        output: "Formatted multi-line JSON string",
+        hint: "Import `json` and call `json.dumps(data, indent=4, sort_keys=True)`.",
+        code: `import json
+
+data = {
+    'name': 'Alice',
+    'age': 25,
+    'skills': ['Python', 'SQL'],
+    'active': True
+}
+
+json_str = json.dumps(data, indent=4, sort_keys=True)
+print("Formatted JSON:\\n" + json_str)`,
+        explanation: "`json.dumps()` serializes Python data types to standard JSON, formatting output with indentation and alphabetical key ordering."
+      },
+      {
+        id: 35,
+        title: "Invert Dictionary",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        problem: "Invert a dictionary so that original values become keys and original keys become values (assuming all values are unique and hashable).",
+        purpose: "Key-value role reversal via dictionary comprehensions.",
+        input: "d = {'a': 1, 'b': 2, 'c': 3}",
+        output: "{1: 'a', 2: 'b', 3: 'c'}",
+        hint: "Write `{v: k for k, v in d.items()}`.",
+        code: `d = {'a': 1, 'b': 2, 'c': 3}
+inverted = {v: k for k, v in d.items()}
+
+print("Inverted:", inverted)`,
+        explanation: "Iterating through `d.items()` and yielding `{v: k}` swaps keys and values in a single pass."
+      },
+      {
+        id: 36,
+        title: "Invert with Duplicate Values",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Invert a dictionary where multiple keys share the same value, mapping each value to a list of original keys.",
+        purpose: "Group keys under duplicate values without data loss.",
+        input: "d = {'apple': 'fruit', 'banana': 'fruit', 'carrot': 'veg', 'spinach': 'veg'}",
+        output: "{'fruit': ['apple', 'banana'], 'veg': ['carrot', 'spinach']}",
+        hint: "Loop through items and use `inverted.setdefault(v, []).append(k)`.",
+        code: `d = {'apple': 'fruit', 'banana': 'fruit', 'carrot': 'veg', 'spinach': 'veg'}
+inverted = {}
+
+for k, v in d.items():
+    inverted.setdefault(v, []).append(k)
+
+print("Inverted with Groups:", inverted)`,
+        explanation: "Using `.setdefault(v, [])` creates a list for each distinct value, appending matching keys without overwriting."
+      },
+      {
+        id: 37,
+        title: "Flatten Nested Dictionary",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Flatten a deeply nested dictionary into a single-level dictionary with compound dot-separated keys.",
+        purpose: "Recursive dictionary traversal and key compounding.",
+        input: "nested = {'user': {'name': 'John', 'address': {'city': 'Austin', 'state': 'TX'}}}",
+        output: "{'user.name': 'John', 'user.address.city': 'Austin', 'user.address.state': 'TX'}",
+        hint: "Use recursion: if the value is a dictionary, recurse with an updated prefix; otherwise, store the key-value pair.",
+        code: `def flatten_dict(d, prefix=""):
+    flat = {}
+    for k, v in d.items():
+        new_key = f"{prefix}.{k}" if prefix else k
+        if isinstance(v, dict):
+            flat.update(flatten_dict(v, new_key))
+        else:
+            flat[new_key] = v
+    return flat
+
+nested = {
+    'user': {
+        'name': 'John',
+        'address': {'city': 'Austin', 'state': 'TX'}
+    }
+}
+
+print("Flattened:", flatten_dict(nested))`,
+        explanation: "Recursively checks `isinstance(v, dict)`. Nested dictionaries build a dot-separated path until reaching terminal values."
+      },
+      {
+        id: 38,
+        title: "Group by First Letter",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Given a list of words, group them into a dictionary where each key is an uppercase initial letter and its value is a list of matching words.",
+        purpose: "Categorize list items into dictionary buckets.",
+        input: "words = ['apple', 'banana', 'apricot', 'cherry', 'blueberry', 'avocado']",
+        output: "{'A': ['apple', 'apricot', 'avocado'], 'B': ['banana', 'blueberry'], 'C': ['cherry']}",
+        hint: "Extract `w[0].upper()` and append to `grouped.setdefault(letter, [])`.",
+        code: `words = ['apple', 'banana', 'apricot', 'cherry', 'blueberry', 'avocado']
+grouped = {}
+
+for w in words:
+    initial = w[0].upper()
+    grouped.setdefault(initial, []).append(w)
+
+print("Grouped by First Letter:", grouped)`,
+        explanation: "Extracting `w[0].upper()` determines the bucket key, and `.setdefault()` appends the word to the appropriate letter list."
+      },
+      {
+        id: 39,
+        title: "Merge and Sum Overlapping",
+        category: "cat-algo",
+        catLabel: "Advanced & Algorithms",
+        problem: "Combine two dictionaries containing numeric values such that values for any shared keys are added together.",
+        purpose: "Reconcile colliding keys with arithmetic accumulation.",
+        input: "d1 = {'a': 100, 'b': 200, 'c': 300}, d2 = {'a': 300, 'b': 200, 'd': 400}",
+        output: "{'a': 400, 'b': 400, 'c': 300, 'd': 400}",
+        hint: "Start with a copy of `d1`, then loop over `d2` using `res[k] = res.get(k, 0) + v`.",
+        code: `d1 = {'a': 100, 'b': 200, 'c': 300}
+d2 = {'a': 300, 'b': 200, 'd': 400}
+
+merged = dict(d1)
+for k, v in d2.items():
+    merged[k] = merged.get(k, 0) + v
+
+print("Merged with Sums:", merged)`,
+        explanation: "`merged.get(k, 0)` returns the value from `d1` (or 0 if missing), adding `d2`'s value to calculate the combined sum."
+      },
+      {
+        id: 40,
+        title: "Deep vs. Shallow Copy (copy() vs copy.deepcopy())",
+        category: "cat-nested",
+        catLabel: "Nested & Manipulation",
+        problem: "Demonstrate the difference between a shallow copy (`.copy()`) and a deep copy (`copy.deepcopy()`) on a dictionary containing nested lists.",
+        purpose: "Understand pointer reference semantics and mutation isolation.",
+        input: "original = {'skills': ['Python', 'SQL'], 'status': 'Active'}",
+        output: "Mutating shallow copy modifies original; mutating deep copy does not",
+        hint: "Import `copy`. Compare `original.copy()` with `copy.deepcopy(original)` after mutating nested elements.",
+        code: `import copy
+
+original = {'skills': ['Python', 'SQL'], 'status': 'Active'}
+
+# Shallow copy vs Deep copy
+shallow = original.copy()
+deep = copy.deepcopy(original)
+
+# Modify nested list in shallow copy
+shallow['skills'].append('Git')
+
+# Modify nested list in deep copy
+deep['skills'].append('Docker')
+
+print("Original skills:", original['skills'])
+print("Shallow skills :", shallow['skills'])
+print("Deep skills    :", deep['skills'])`,
+        explanation: "Shallow copies duplicate only top-level references, so nested objects remain shared. `copy.deepcopy()` recursively duplicates all nested structures, providing complete mutation isolation."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_dict_40_progress';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+
+      // Reliable clipboard copying for iframe environments
+      const textArea = document.createElement("textarea");
+      textArea.value = codeText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--card-bg); border-radius: 8px; border: 1px dashed var(--card-border);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--accent);"></i>
+            <p>No matching dictionary exercises found. Try a different search keyword.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}. ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Mark Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+                ${escapeHtml(ex.input)}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${escapeHtml(ex.output)}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> 💡 Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> ✅ Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>Why This Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query ||
+          ex.title.toLowerCase().includes(query) ||
+          ex.problem.toLowerCase().includes(query) ||
+          ex.code.toLowerCase().includes(query) ||
+          ex.catLabel.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    // Filter Button Clicks
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    // Real-time Search Input Listener
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial Mount
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Tuples Mastery • 25 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-basics { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-ops { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-unpack { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-advanced { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-layer-group"></i> Python Tuples Mastery Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 25 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, syntax, or keyword (e.g. trailing comma, unpacking, namedtuple, hashability)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (25)</button>
+      <button class="filter-btn" data-filter="cat-basics">Basics &amp; Indexing</button>
+      <button class="filter-btn" data-filter="cat-ops">Operators &amp; Type Casting</button>
+      <button class="filter-btn" data-filter="cat-unpack">Unpacking &amp; Nesting</button>
+      <button class="filter-btn" data-filter="cat-advanced">Advanced, Memory &amp; Internals</button>
+    </div>
+  </div>
+
+  <!-- Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Basic Tuple Operations</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a tuple with integers 10, 20, 30, 40, and 50. Access the first element, last element, and find the total length.</p>
+        <div class="purpose-box">Introduces tuple instantiation, positive/negative indexing, and <code>len()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(10, 20, 30, 40, 50)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>First: 10, Last: 50, Length: 5</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Use <code>t[0]</code> for first, <code>t[-1]</code> for last, and <code>len(t)</code> for length.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1">t = (10, 20, 30, 40, 50)
+
+first_element = t[0]
+last_element = t[-1]
+total_len = len(t)
+
+print(f"First: {first_element}, Last: {last_element}, Length: {total_len}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Tuples support standard zero-based and negative indexing identical to lists, but with fixed immutability.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: The Trailing Comma</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a single-element tuple containing the integer <code>42</code>. Verify its type is <code>tuple</code> rather than <code>int</code>.</p>
+        <div class="purpose-box">Highlights Python's syntax requirement of a trailing comma for single-element tuples.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Value 42</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Value: (42,), Type: &lt;class 'tuple'&gt;</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Writing <code>(42)</code> evaluates as an integer inside parentheses; you must write <code>(42,)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2"># Without comma -> treated as parenthesized expression:
+not_a_tuple = (42)
+print("Type of (42):", type(not_a_tuple))  # <class 'int'>
+
+# With trailing comma -> defines a tuple:
+single_tuple = (42,)
+print("Value:", single_tuple, "Type:", type(single_tuple))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> In Python, it is the comma that creates a tuple, not the parentheses. A single item requires <code>(x,)</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: Tuple Repetition</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given the tuple <code>("Python",)</code>, repeat it 4 times using the multiplication operator.</p>
+        <div class="purpose-box">Sequence multiplication on immutable tuples.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>("Python",), repeat 4 times</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>('Python', 'Python', 'Python', 'Python')</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Use <code>t * 4</code>.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">item = ("Python",)
+repeated = item * 4
+
+print("Repeated tuple:", repeated)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>* n</code> constructs a new tuple with the original elements repeated $n$ times without mutating the source.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Tuple Concatenation</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Concatenate two tuples <code>(1, 2, 3)</code> and <code>(4, 5, 6)</code> to produce a single combined tuple.</p>
+        <div class="purpose-box">Sequence concatenation using the <code>+</code> operator.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>t1 = (1, 2, 3), t2 = (4, 5, 6)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(1, 2, 3, 4, 5, 6)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">Add tuples with <code>t1 + t2</code>.</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">t1 = (1, 2, 3)
+t2 = (4, 5, 6)
+
+combined = t1 + t2
+print("Concatenated tuple:", combined)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Concatenation allocates a fresh tuple in memory containing elements of both operands in order.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Tuple Slicing</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> From the tuple <code>(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)</code>, extract the middle slice from index 2 to 7 (exclusive), and extract every second element.</p>
+        <div class="purpose-box">Slice bounds <code>[start:stop:step]</code> on tuples.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>tuple(range(10))</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Slice [2:7]: (2, 3, 4, 5, 6)<br>Step [::2]: (0, 2, 4, 6, 8)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">Use <code>t[2:7]</code> for sub-range and <code>t[::2]</code> for step-2 skipping.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">t = tuple(range(10))
+
+sub_slice = t[2:7]
+evens_step = t[::2]
+
+print("Slice [2:7]:", sub_slice)
+print("Every 2nd item:", evens_step)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Slicing a tuple always produces another tuple without modifying the source collection.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Tuple Reversal</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Reverse a given tuple <code>(10, 20, 30, 40, 50)</code> cleanly.</p>
+        <div class="purpose-box">Negative-step slicing on immutable sequences.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(10, 20, 30, 40, 50)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(50, 40, 30, 20, 10)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Use extended slice notation: <code>t[::-1]</code> or <code>tuple(reversed(t))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6">t = (10, 20, 30, 40, 50)
+
+# Pythonic reversal
+reversed_tuple = t[::-1]
+
+print("Reversed tuple:", reversed_tuple)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>[::-1]</code> steps backward from the last element to the first, creating a reversed copy in $O(n)$ time.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Type Casting</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Convert a Python list <code>[1, 2, 3]</code> and string <code>"hello"</code> into tuples.</p>
+        <div class="purpose-box">Construct tuples from diverse iterable data types.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>[1, 2, 3] and "hello"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>From list: (1, 2, 3)<br>From string: ('h', 'e', 'l', 'l', 'o')</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Pass iterables directly to the constructor <code>tuple(...)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">lst = [1, 2, 3]
+text = "hello"
+
+t_from_list = tuple(lst)
+t_from_str = tuple(text)
+
+print("From list:", t_from_list)
+print("From string:", t_from_str)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>tuple()</code> accepts any iterable, iterating through its elements to populate the new immutable tuple.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: Tuple to String</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Convert a tuple of characters <code>('P', 'y', 't', 'h', 'o', 'n')</code> into a single consolidated string.</p>
+        <div class="purpose-box">Serialization of character tuples using <code>str.join()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>('P', 'y', 't', 'h', 'o', 'n')</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>"Python"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Use <code>"".join(my_tuple)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">char_tuple = ('P', 'y', 't', 'h', 'o', 'n')
+
+result_str = "".join(char_tuple)
+print("Joined string:", result_str)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>"".join(...)</code> takes an iterable of string characters and concatenates them with zero delimiters in $O(n)$ time.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Tuple Membership Testing</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Check whether <code>"admin"</code> exists inside a tuple of authorized users, and check whether <code>"guest"</code> is absent.</p>
+        <div class="purpose-box">Membership operators <code>in</code> and <code>not in</code> on tuples.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>users = ("admin", "editor", "analyst")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Is admin present: True<br>Is guest absent: True</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Use <code>"admin" in users</code> and <code>"guest" not in users</code>.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">users = ("admin", "editor", "analyst")
+
+has_admin = "admin" in users
+no_guest = "guest" not in users
+
+print("Is admin present:", has_admin)
+print("Is guest absent:", no_guest)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>in</code> performs linear scan ($O(n)$ search) across the tuple elements until a match is found.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Counting and Finding Index</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given <code>(10, 20, 10, 30, 10, 40)</code>, count occurrences of <code>10</code> and find the first index of <code>30</code>.</p>
+        <div class="purpose-box">Utilize the built-in tuple methods <code>.count()</code> and <code>.index()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(10, 20, 10, 30, 10, 40)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Count of 10: 3<br>First index of 30: 3</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Use <code>t.count(10)</code> and <code>t.index(30)</code>. (Tuples have only these two built-in methods!)</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">t = (10, 20, 10, 30, 10, 40)
+
+count_10 = t.count(10)
+idx_30 = t.index(30)
+
+print(f"Count of 10: {count_10}")
+print(f"First index of 30: {idx_30}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Because tuples are immutable, they expose only two instance methods: <code>count()</code> and <code>index()</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-unpack" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: Tuple Unpacking</div>
+          <div class="card-meta"><span class="category-tag cat-unpack">Unpacking &amp; Nesting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given a tuple <code>("Alice", 28, "Engineer")</code>, unpack its contents into three variables <code>name, age, role</code>. Also demonstrate extended unpacking with <code>*</code>.</p>
+        <div class="purpose-box">Positional assignment and starred expression unpacking.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>("Alice", 28, "Engineer")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Alice is 28 years old and works as Engineer</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">Unpack using <code>name, age, role = my_tuple</code>.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">person = ("Alice", 28, "Engineer")
+name, age, role = person
+print(f"{name} is {age} years old and works as {role}")
+
+# Starred extended unpacking:
+scores = (100, 95, 88, 72, 60)
+first, *middle, last = scores
+print(f"First: {first}, Middle: {middle}, Last: {last}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The number of target variables must match the length, or a starred variable (<code>*var</code>) must be used to collect residuals into a list.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-unpack" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: The Swap Trick</div>
+          <div class="card-meta"><span class="category-tag cat-unpack">Unpacking &amp; Nesting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Swap the values of two variables <code>x = 100</code> and <code>y = 200</code> in a single line using tuple packing and unpacking.</p>
+        <div class="purpose-box">Understand simultaneous evaluation without auxiliary temp variables.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>x = 100, y = 200</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Before: x=100, y=200<br>After: x=200, y=100</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Write <code>x, y = y, x</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">x, y = 100, 200
+print(f"Before: x={x}, y={y}")
+
+# In-place swap via implicit tuple packing
+x, y = y, x
+
+print(f"After:  x={x}, y={y}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The right side <code>y, x</code> is evaluated as an implicit temporary tuple before being unpacked into <code>x, y</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-unpack" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Nested Tuple Access</div>
+          <div class="card-meta"><span class="category-tag cat-unpack">Unpacking &amp; Nesting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> From the nested tuple <code>("CSBS", (101, 102), ("GGITS", "Jabalpur"))</code>, retrieve the second course code (<code>102</code>) and the city (<code>"Jabalpur"</code>).</p>
+        <div class="purpose-box">Multi-dimensional indexing through nested immutable hierarchies.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>("CSBS", (101, 102), ("GGITS", "Jabalpur"))</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Course: 102, City: Jabalpur</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13">Chain square brackets: <code>t[1][1]</code> and <code>t[2][1]</code>.</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">data = ("CSBS", (101, 102), ("GGITS", "Jabalpur"))
+
+course = data[1][1]
+city = data[2][1]
+
+print(f"Course: {course}, City: {city}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>data[1]</code> evaluates to <code>(101, 102)</code>, and adding <code>[1]</code> indexes into that inner tuple.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Tuple Statistics</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Basics &amp; Indexing</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given a tuple of numbers <code>(15, 82, 34, 91, 53, 22)</code>, find its minimum, maximum, sum, and average.</p>
+        <div class="purpose-box">Applies aggregate mathematical functions over tuples.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(15, 82, 34, 91, 53, 22)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Min: 15, Max: 91, Sum: 297, Avg: 49.50</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Use <code>min(t)</code>, <code>max(t)</code>, <code>sum(t)</code>, and calculate average via <code>sum(t) / len(t)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">scores = (15, 82, 34, 91, 53, 22)
+
+min_val = min(scores)
+max_val = max(scores)
+total = sum(scores)
+avg = total / len(scores)
+
+print(f"Min: {min_val}, Max: {max_val}, Sum: {total}, Avg: {avg:.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Tuples support all sequence aggregators in $O(n)$ time while guaranteeing the underlying dataset is immutable.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22: Sort Tuple of Tuples</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-22')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Sort a tuple of student records <code>(("Alice", 85), ("Bob", 95), ("Charlie", 72))</code> in descending order of their marks.</p>
+        <div class="purpose-box">Sort composite nested tuples using custom lambda key functions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(("Alice", 85), ("Bob", 95), ("Charlie", 72))</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(('Bob', 95), ('Alice', 85), ('Charlie', 72))</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-22">Use <code>tuple(sorted(records, key=lambda x: x[1], reverse=True))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-22">records = (("Alice", 85), ("Bob", 95), ("Charlie", 72))
+
+# Sorted returns a list; convert back to tuple
+sorted_records = tuple(sorted(records, key=lambda item: item[1], reverse=True))
+
+print("Sorted records:", sorted_records)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>sorted()</code> extracts elements according to the key lambda and returns an ordered list that can be cast back with <code>tuple()</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23: Tuple Filtering</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-23')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Filter a tuple of numbers <code>(10, 15, 20, 25, 30, 35)</code> to keep only numbers greater than 20.</p>
+        <div class="purpose-box">Tuple comprehension pattern via generator expression casting.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(10, 15, 20, 25, 30, 35)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(25, 30, 35)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-23">Use a generator expression inside <code>tuple()</code>: <code>tuple(x for x in t if x &gt; 20)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-23">numbers = (10, 15, 20, 25, 30, 35)
+
+# Pythonic tuple filtering using generator expression
+filtered = tuple(x for x in numbers if x > 20)
+
+print("Filtered tuple:", filtered)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Python has no syntax for a "tuple comprehension" (parentheses define generators); wrap generator expressions with <code>tuple()</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 24 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-24">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 24: Tuple Mapping</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-24')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Transform a tuple of prices <code>(100, 250, 400)</code> into discounted prices by applying a 10% discount to each item.</p>
+        <div class="purpose-box">Element-wise transformation using <code>map()</code> or generator expressions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>(100, 250, 400)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(90.0, 225.0, 360.0)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-24')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-24')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-24">Use <code>tuple(p * 0.9 for p in prices)</code> or <code>tuple(map(lambda p: p * 0.9, prices))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-24">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-24')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-24">prices = (100, 250, 400)
+
+discounted = tuple(p * 0.90 for p in prices)
+print("Discounted prices:", discounted)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Transforming a tuple yields a newly allocated tuple, leaving the original source unchanged.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 25 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-25">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 25: Tuple Dictionary Mapping</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-25')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Use a tuple of two numbers <code>(x, y)</code> as a dictionary key to store a matrix value at those coordinates.</p>
+        <div class="purpose-box">Leverages tuple immutability and hashability for coordinate-based sparse matrix representation.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Keys: (0, 0), (1, 2)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>matrix[(1, 2)] = "Active"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-25')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-25')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-25">Because tuples are hashable, you can assign <code>grid[(x, y)] = val</code>. (Lists would trigger <code>TypeError: unhashable type</code>).</div>
+        <div class="drawer solution-drawer" id="sol-25">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-25')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-25"># Tuples can serve as composite dictionary keys
+grid = {
+    (0, 0): "Origin",
+    (1, 2): "Active",
+    (3, 5): "Target"
+}
+
+coord = (1, 2)
+print(f"Value at {coord}:", grid[coord])</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Tuples containing only immutable objects are hashable, making them ideal composite keys for multidimensional maps.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 26 -->
+    <article class="exercise-card" data-category="cat-ops" id="ex-26">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 26: Tuple Intersection</div>
+          <div class="card-meta"><span class="category-tag cat-ops">Operators &amp; Type Casting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-26')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find the common items between two tuples <code>(1, 2, 3, 4)</code> and <code>(3, 4, 5, 6)</code> while keeping the result as a tuple.</p>
+        <div class="purpose-box">Combining set-algebra with tuple conversion.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>t1 = (1, 2, 3, 4), t2 = (3, 4, 5, 6)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(3, 4)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-26')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-26')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-26">Use <code>tuple(set(t1) &amp; set(t2))</code> or <code>tuple(x for x in t1 if x in t2)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-26">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-26')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-26">t1 = (1, 2, 3, 4)
+t2 = (3, 4, 5, 6)
+
+# Method: Preserving t1 order
+common = tuple(x for x in t1 if x in t2)
+
+print("Common elements tuple:", common)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Comprehension filtering preserves the order from <code>t1</code>, whereas <code>set() &amp; set()</code> loses ordering.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 27 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-27">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 27: The “Modification” Hack</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-27')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Change the second element of the tuple <code>("Python", 3.8, "Released")</code> to <code>3.12</code> by temporarily converting it to a list.</p>
+        <div class="purpose-box">Learn how developers bypass immutability via list conversion and re-casting.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>("Python", 3.8, "Released")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>('Python', 3.12, 'Released')</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-27')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-27')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-27">Convert with <code>temp = list(t)</code>, modify <code>temp[1] = 3.12</code>, then re-cast: <code>t = tuple(temp)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-27">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-27')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-27">t = ("Python", 3.8, "Released")
+
+# Step 1: Cast to mutable list
+temp = list(t)
+
+# Step 2: Modify in place
+temp[1] = 3.12
+
+# Step 3: Re-cast to immutable tuple
+t = tuple(temp)
+
+print("Updated tuple:", t)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> You cannot modify a tuple in place (<code>t[1] = 3.12</code> raises <code>TypeError</code>). Casting to list creates a brand new tuple reference.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 28 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-28">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 28: Tuple Mutability (Mutable Elements Inside Tuple)</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-28')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a tuple containing an integer and a list: <code>(10, [20, 30])</code>. Append <code>40</code> to the internal list and observe that the tuple's id does not change.</p>
+        <div class="purpose-box">Demystify tuple immutability: the references inside the tuple are fixed, but referenced objects may still mutate.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>t = (10, [20, 30])</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(10, [20, 30, 40])</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-28')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-28')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-28">Access the list using <code>t[1]</code> and call <code>.append(40)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-28">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-28')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-28">t = (10, [20, 30])
+print("Original:", t, "ID:", id(t))
+
+# Mutate the list nested inside the tuple:
+t[1].append(40)
+
+print("After append:", t, "ID:", id(t))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> A tuple guarantees that its internal references cannot change. If one reference points to a mutable list, that list itself can still mutate.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 29 -->
+    <article class="exercise-card" data-category="cat-unpack" id="ex-29">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 29: Nested Tuple Flattening</div>
+          <div class="card-meta"><span class="category-tag cat-unpack">Unpacking &amp; Nesting</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-29')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Flatten a 2D nested tuple <code>((1, 2), (3, 4), (5, 6))</code> into a flat 1D tuple <code>(1, 2, 3, 4, 5, 6)</code>.</p>
+        <div class="purpose-box">Unpack hierarchical tuple containers with nested comprehension generators.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>((1, 2), (3, 4), (5, 6))</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>(1, 2, 3, 4, 5, 6)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-29')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-29')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-29">Use <code>tuple(item for sub in nested for item in sub)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-29">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-29')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-29">nested = ((1, 2), (3, 4), (5, 6))
+
+flat = tuple(item for sub in nested for item in sub)
+print("Flattened tuple:", flat)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Reading the generator expression matches outer and inner loop iteration: for each sub-tuple, yield each item.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 30 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-30">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 30: Memory Efficiency (Tuple vs. List)</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-30')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Compare memory allocation between a list and a tuple containing identical elements using <code>sys.getsizeof()</code>.</p>
+        <div class="purpose-box">Empirically demonstrate why tuples use less memory than lists due to fixed memory block sizing.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>list(range(1000)) vs tuple(range(1000))</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Tuple size is smaller than list size in bytes</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-30')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-30')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-30">Import <code>sys</code> and call <code>sys.getsizeof(...)</code> on both collections.</div>
+        <div class="drawer solution-drawer" id="sol-30">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-30')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-30">import sys
+
+n = 1000
+l = list(range(n))
+t = tuple(range(n))
+
+print(f"List size in bytes:  {sys.getsizeof(l)}")
+print(f"Tuple size in bytes: {sys.getsizeof(t)}")
+print(f"Tuple saves {sys.getsizeof(l) - sys.getsizeof(t)} bytes!")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Lists over-allocate memory to allow $O(1)$ appends, while tuples allocate exactly the memory needed for their fixed elements.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 31 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-31">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 31: NamedTuples</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-31')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Point</code> namedtuple with fields <code>x</code> and <code>y</code>. Access elements both by index and by field name.</p>
+        <div class="purpose-box">Use <code>collections.namedtuple</code> for readable, self-documenting immutable records.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Point(x=10, y=20)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>p.x: 10, p.y: 20, p[0]: 10, p[1]: 20</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-31')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-31')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-31">Import <code>from collections import namedtuple</code> and define <code>Point = namedtuple("Point", ["x", "y"])</code>.</div>
+        <div class="drawer solution-drawer" id="sol-31">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-31')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-31">from collections import namedtuple
+
+# Define structure
+Point = namedtuple("Point", ["x", "y"])
+
+# Instantiate
+p = Point(x=10, y=20)
+
+# Access by field name or position
+print(f"By name:  x={p.x}, y={p.y}")
+print(f"By index: p[0]={p[0]}, p[1]={p[1]}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>namedtuple</code> combines the low memory overhead and immutability of regular tuples with attribute-based field access.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 32 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-32">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 32: The Hashability Paradox</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced &amp; Internals</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-32')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Demonstrate why a tuple containing only integers is hashable (works in <code>set</code> or <code>hash()</code>), but a tuple containing a nested list triggers a <code>TypeError</code>.</p>
+        <div class="purpose-box">Deep-dive into recursive hashability requirements in Python.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>t1 = (1, 2), t2 = (1, [2])</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>hash(t1): Success<br>hash(t2): TypeError: unhashable type: 'list'</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-32')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-32')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-32">Wrap <code>hash(t2)</code> inside a <code>try-except TypeError:</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-32">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-32')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-32">t1 = (1, 2)
+print("t1 hash:", hash(t1))  # Works!
+
+t2 = (1, [2])
+try:
+    print("t2 hash:", hash(t2))
+except TypeError as e:
+    print("t2 error:", e)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> A tuple is only hashable if <em>every element inside it</em> is also hashable. A nested list renders the entire tuple unhashable.</div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python Tuples Mastery Lab • 25 Interactive Practice Problems
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Drawers
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Category Filtering & Real-time Search
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 25;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_tuples_solved_exercises') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_tuples_solved_exercises', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Sync checkbox checked state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on DOM load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Math &amp; Statistics Lab • 23 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-math-core { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-trig-log { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-num-theory { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-stats-central { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-stats-spread { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-calculator"></i> Python Math &amp; Statistics Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 23 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, function, or keyword (e.g. sqrt, gcd, hypot, quantiles, harmonic_mean)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (23)</button>
+      <button class="filter-btn" data-filter="cat-math-core">Core Math</button>
+      <button class="filter-btn" data-filter="cat-trig-log">Trig &amp; Logarithms</button>
+      <button class="filter-btn" data-filter="cat-num-theory">Number Theory &amp; Precision</button>
+      <button class="filter-btn" data-filter="cat-stats-central">Central Tendency</button>
+      <button class="filter-btn" data-filter="cat-stats-spread">Spread &amp; Quantiles</button>
+    </div>
+  </div>
+
+  <!-- Main Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Square Root and Power</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a Python program that computes the square root of 144 and raises 4 to the power of 3.5 using the <code>math</code> module.</p>
+        <div class="purpose-box">Introduces standard floating-point functions <code>math.sqrt()</code> and <code>math.pow()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>num1 = 144, base = 4, exp = 3.5</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Square root: 12.0<br>4 ** 3.5: 128.0</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Import <code>math</code> and call <code>math.sqrt(144)</code> and <code>math.pow(4, 3.5)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1">import math
+
+root = math.sqrt(144)
+power = math.pow(4, 3.5)
+
+print(f"Square root: {root}")
+print(f"4 ** 3.5: {power}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.sqrt()</code> returns a float representing the non-negative square root, while <code>math.pow()</code> always converts both arguments to floats.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: Area of a Circle</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate the area of a circle with a radius of 7.5 using the high-precision constant <code>math.pi</code> ($A = \pi r^2$).</p>
+        <div class="purpose-box">Utilizes standard mathematical constants with full double-precision floating-point accuracy.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>radius = 7.5</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Area of circle: 176.71</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Multiply <code>math.pi * (radius ** 2)</code> and format using <code>:.2f</code>.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2">import math
+
+radius = 7.5
+area = math.pi * (radius ** 2)
+
+print(f"Area of circle: {area:.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.pi</code> is provided as a floating-point constant approximated to 15 decimal places ($3.141592653589793$).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: Factorial Computation</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Compute the factorial of 10 using <code>math.factorial()</code> and measure its exact integer result.</p>
+        <div class="purpose-box">Computes permutations and mathematical factorials in $O(n)$ time returning exact arbitrary-precision integers.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>n = 10</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Factorial of 10: 3628800</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Call <code>math.factorial(10)</code>. It raises a <code>ValueError</code> if given negative numbers.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">import math
+
+n = 10
+fact = math.factorial(n)
+
+print(f"Factorial of {n}: {fact}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.factorial()</code> is implemented in optimized C, making it significantly faster than manual loops or recursion.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Ceiling and Floor</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> For the floating-point numbers <code>4.2</code> and <code>-4.8</code>, compute both their floor and ceiling integer values.</p>
+        <div class="purpose-box">Applies rounding boundaries towards negative infinity (floor) and positive infinity (ceil).</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>x = 4.2, y = -4.8</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>4.2 -> Ceil: 5, Floor: 4<br>-4.8 -> Ceil: -4, Floor: -5</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">Use <code>math.ceil(val)</code> and <code>math.floor(val)</code>. Notice how negative values behave!</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">import math
+
+vals = [4.2, -4.8]
+
+for v in vals:
+    c = math.ceil(v)
+    f = math.floor(v)
+    print(f"{v} -> Ceil: {c}, Floor: {f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> For negative numbers, <code>math.floor(-4.8)</code> moves further down the number line to <code>-5</code>, while <code>math.ceil(-4.8)</code> rounds up to <code>-4</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-num-theory" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Greatest Common Divisor</div>
+          <div class="card-meta"><span class="category-tag cat-num-theory">Number Theory &amp; Precision</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find the Greatest Common Divisor (GCD) of numbers 48, 64, and 80 using <code>math.gcd()</code>.</p>
+        <div class="purpose-box">Applies the Euclidean algorithm across multiple integer arguments.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>numbers = (48, 64, 80)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>GCD of 48, 64, 80 is: 16</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">In Python 3.9+, <code>math.gcd()</code> accepts an arbitrary number of integer arguments: <code>math.gcd(48, 64, 80)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">import math
+
+result = math.gcd(48, 64, 80)
+print(f"GCD of 48, 64, 80 is: {result}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.gcd()</code> returns the greatest integer that divides all supplied inputs without leaving a remainder.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Hypotenuse of a Right Triangle</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given perpendicular sides $a = 9$ and $b = 12$, calculate the length of the hypotenuse using <code>math.hypot()</code>.</p>
+        <div class="purpose-box">Computes Euclidean distance ($\sqrt{a^2 + b^2}$) without intermediate overflow or underflow.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>a = 9, b = 12</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Hypotenuse: 15.0</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Pass both side lengths directly to <code>math.hypot(9, 12)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6">import math
+
+a = 9
+b = 12
+c = math.hypot(a, b)
+
+print(f"Hypotenuse: {c}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.hypot()</code> extends to $n$-dimensional Euclidean distance: <code>math.hypot(x, y, z)</code> computes vector magnitude accurately.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-trig-log" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Natural and Base-10 Logarithms</div>
+          <div class="card-meta"><span class="category-tag cat-trig-log">Trig &amp; Logarithms</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> For the value <code>1000</code>, calculate its natural logarithm ($\ln x$), base-10 logarithm ($\log_{10} x$), and base-2 logarithm ($\log_2 x$).</p>
+        <div class="purpose-box">Applies exponential and logarithmic transforms across different bases.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>x = 1000</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Natural log: 6.9078<br>Base-10 log: 3.0000<br>Base-2 log: 9.9658</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Use <code>math.log(x)</code>, <code>math.log10(x)</code>, and <code>math.log2(x)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">import math
+
+x = 1000
+
+ln_x = math.log(x)
+log10_x = math.log10(x)
+log2_x = math.log2(x)
+
+print(f"Natural log: {ln_x:.4f}")
+print(f"Base-10 log: {log10_x:.4f}")
+print(f"Base-2 log:  {log2_x:.4f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.log(x, base)</code> can compute logarithms for any arbitrary base, but <code>math.log10()</code> and <code>math.log2()</code> provide higher numerical precision.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-trig-log" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: Degrees to Radians, Sine and Cosine</div>
+          <div class="card-meta"><span class="category-tag cat-trig-log">Trig &amp; Logarithms</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Convert an angle of $60^\circ$ to radians, and compute its sine, cosine, and tangent values.</p>
+        <div class="purpose-box">Trigonometric unit conversion and evaluation. Python's trig functions expect radians.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>angle_deg = 60</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Radians: 1.0472<br>sin(60°): 0.8660<br>cos(60°): 0.5000</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Convert using <code>math.radians(60)</code> before passing to <code>math.sin()</code> and <code>math.cos()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">import math
+
+deg = 60
+rad = math.radians(deg)
+
+sin_val = math.sin(rad)
+cos_val = math.cos(rad)
+tan_val = math.tan(rad)
+
+print(f"Radians:  {rad:.4f}")
+print(f"sin(60°): {sin_val:.4f}")
+print(f"cos(60°): {cos_val:.4f}")
+print(f"tan(60°): {tan_val:.4f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Standard trigonometric functions (<code>sin</code>, <code>cos</code>, <code>tan</code>) require radians as input. Use <code>math.radians()</code> and <code>math.degrees()</code> for conversions.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Combinations and Permutations</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate the number of ways to choose 3 items from 8 items ($C(8, 3)$) and arrange 3 items from 8 items ($P(8, 3)$) using <code>math.comb()</code> and <code>math.perm()</code>.</p>
+        <div class="purpose-box">Combinatorics evaluation with exact integer arithmetic without factorial overflow.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>n = 8, k = 3</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Combinations C(8, 3): 56<br>Permutations P(8, 3): 336</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Use <code>math.comb(8, 3)</code> and <code>math.perm(8, 3)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">import math
+
+n, k = 8, 3
+
+combinations = math.comb(n, k)
+permutations = math.perm(n, k)
+
+print(f"Combinations C({n}, {k}): {combinations}")
+print(f"Permutations P({n}, {k}): {permutations}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.comb()</code> and <code>math.perm()</code> compute combinations and permutations directly without computing full factorials first, making them fast and memory-efficient.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-num-theory" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Floating-Point Precision with math.isclose()</div>
+          <div class="card-meta"><span class="category-tag cat-num-theory">Number Theory &amp; Precision</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Demonstrate why <code>0.1 + 0.2 == 0.3</code> evaluates to <code>False</code> in IEEE 754 arithmetic, and verify equality using <code>math.isclose()</code>.</p>
+        <div class="purpose-box">Explores floating-point rounding errors and tolerance-based equality testing.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>a = 0.1 + 0.2, b = 0.3</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Direct equality (==): False<br>math.isclose(): True</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Compare using <code>math.isclose(a, b, rel_tol=1e-9)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">import math
+
+a = 0.1 + 0.2
+b = 0.3
+
+print(f"Computed a: {a:.17f}")
+print(f"Direct equality (==): {a == b}")
+print(f"math.isclose():       {math.isclose(a, b)}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>0.1 + 0.2</code> yields <code>0.30000000000000004</code> due to binary representation limits. Always use <code>math.isclose()</code> when comparing floats.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-num-theory" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: nth Fibonacci Using the Golden Ratio</div>
+          <div class="card-meta"><span class="category-tag cat-num-theory">Number Theory &amp; Precision</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate the 10th Fibonacci number using Binet's closed-form formula and the golden ratio ($\varphi = \frac{1 + \sqrt{5}}{2}$): $F_n = \text{round}\left(\frac{\varphi^n}{\sqrt{5}}\right)$.</p>
+        <div class="purpose-box">Applies closed-form mathematical approximations to algorithmic sequence generation.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>n = 10</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>10th Fibonacci number: 55</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">Compute <code>phi = (1 + math.sqrt(5)) / 2</code>, then evaluate <code>round((phi**n) / math.sqrt(5))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">import math
+
+n = 10
+sqrt_5 = math.sqrt(5)
+phi = (1 + sqrt_5) / 2
+
+# Binet's Formula
+fib_n = round((phi ** n) / sqrt_5)
+
+print(f"{n}th Fibonacci number: {fib_n}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Binet's formula computes Fibonacci numbers in $O(1)$ time by leveraging powers of the golden ratio.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-trig-log" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: Verifying exp() and log() Are Inverses</div>
+          <div class="card-meta"><span class="category-tag cat-trig-log">Trig &amp; Logarithms</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Verify that natural logarithm <code>math.log()</code> and exponential <code>math.exp()</code> are inverse functions for $x = 5.75$ using <code>math.isclose()</code>.</p>
+        <div class="purpose-box">Tests numerical inverse function identities: $\ln(e^x) = x$ and $e^{\ln(x)} = x$.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>x = 5.75</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>log(exp(x)) == x: True<br>exp(log(x)) == x: True</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Compute <code>math.log(math.exp(x))</code> and verify using <code>math.isclose(result, x)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">import math
+
+x = 5.75
+
+test1 = math.log(math.exp(x))
+test2 = math.exp(math.log(x))
+
+print(f"log(exp({x})) == {x}: {math.isclose(test1, x)}")
+print(f"exp(log({x})) == {x}: {math.isclose(test2, x)}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.exp(x)</code> calculates $e^x$. Composing it with natural log recovers the original value within floating-point epsilon tolerance.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-trig-log" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Degrees to DMS Converter</div>
+          <div class="card-meta"><span class="category-tag cat-trig-log">Trig &amp; Logarithms</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Convert a decimal degree coordinate <code>121.135°</code> into Degrees, Minutes, and Seconds (DMS) format using <code>math.modf()</code>.</p>
+        <div class="purpose-box">Extracts fractional and integer components of floating-point numbers without string splitting.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>decimal_deg = 121.135</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>121° 8' 6.00"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13"><code>math.modf(deg)</code> returns <code>(fractional_part, integer_part)</code>. Multiply fractional parts by 60.</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">import math
+
+deg_val = 121.135
+
+frac_deg, degrees = math.modf(deg_val)
+frac_min, minutes = math.modf(frac_deg * 60)
+seconds = frac_min * 60
+
+print(f"{int(degrees)}° {int(minutes)}' {seconds:.2f}\"")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.modf()</code> splits a float into its fractional and integer parts simultaneously while preserving precision and sign.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-num-theory" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Perfect Square Checker Using math.isqrt()</div>
+          <div class="card-meta"><span class="category-tag cat-num-theory">Number Theory &amp; Precision</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a function <code>is_perfect_square(n)</code> that checks whether a given integer is a perfect square using integer square root <code>math.isqrt()</code>.</p>
+        <div class="purpose-box">Performs exact integer square roots to avoid precision errors that occur when converting large numbers to floats.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Test: 2500, 2501</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>2500 is perfect square: True<br>2501 is perfect square: False</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Compute <code>root = math.isqrt(n)</code> and test if <code>root * root == n</code>.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">import math
+
+def is_perfect_square(n):
+    if n < 0:
+        return False
+    r = math.isqrt(n)
+    return r * r == n
+
+print("2500 is perfect square:", is_perfect_square(2500))
+print("2501 is perfect square:", is_perfect_square(2501))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.isqrt()</code> returns the exact integer floor of the square root, avoiding loss of precision on numbers with more than 53 bits.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-math-core" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15: Product of All Primes Below 30</div>
+          <div class="card-meta"><span class="category-tag cat-math-core">Core Math</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-15')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Filter all prime numbers less than 30 and calculate their product using <code>math.prod()</code>.</p>
+        <div class="purpose-box">Calculates products across iterables directly without manual loops or <code>reduce()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Product: 6469693230</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-15">Collect the prime numbers into a list and call <code>math.prod(primes)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-15">import math
+
+def is_prime(num):
+    if num < 2:
+        return False
+    return all(num % i != 0 for i in range(2, math.isqrt(num) + 1))
+
+primes = [p for p in range(30) if is_prime(p)]
+primorial = math.prod(primes)
+
+print("Primes below 30:", primes)
+print("Product (Primorial):", primorial)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>math.prod()</code> works like <code>sum()</code>, computing the running product of an iterable with an initial default of 1.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-stats-central" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16: Mean, Median, and Mode of Exam Scores</div>
+          <div class="card-meta"><span class="category-tag cat-stats-central">Central Tendency</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-16')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given student test marks <code>[78, 85, 92, 85, 88, 90, 78, 85, 95]</code>, compute their mean, median, and mode using the <code>statistics</code> module.</p>
+        <div class="purpose-box">Calculates the three primary measures of central tendency on sample data.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>scores = [78, 85, 92, 85, 88, 90, 78, 85, 95]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Mean: 86.22<br>Median: 85.00<br>Mode: 85</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-16">Use <code>statistics.mean()</code>, <code>statistics.median()</code>, and <code>statistics.mode()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-16">import statistics
+
+scores = [78, 85, 92, 85, 88, 90, 78, 85, 95]
+
+avg = statistics.mean(scores)
+med = statistics.median(scores)
+mod = statistics.mode(scores)
+
+print(f"Mean:   {avg:.2f}")
+print(f"Median: {med:.2f}")
+print(f"Mode:   {mod}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>mean()</code> calculates the arithmetic average, <code>median()</code> finds the middle value of sorted data, and <code>mode()</code> returns the most frequent observation.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-stats-spread" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17: Sample vs Population Standard Deviation</div>
+          <div class="card-meta"><span class="category-tag cat-stats-spread">Spread &amp; Quantiles</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-17')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> For the dataset <code>[10, 12, 23, 23, 16, 23, 21, 16]</code>, compute both the sample standard deviation ($N - 1$) and the population standard deviation ($N$).</p>
+        <div class="purpose-box">Applies Bessel's correction to account for sample variance vs true population dispersion.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>data = [10, 12, 23, 23, 16, 23, 21, 16]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Sample StDev (stdev): 5.24<br>Population StDev (pstdev): 4.90</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-17">Use <code>statistics.stdev()</code> for sample data and <code>statistics.pstdev()</code> for entire populations.</div>
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-17">import statistics
+
+data = [10, 12, 23, 23, 16, 23, 21, 16]
+
+sample_std = statistics.stdev(data)
+population_std = statistics.pstdev(data)
+
+print(f"Sample StDev (stdev):     {sample_std:.2f}")
+print(f"Population StDev (pstdev): {population_std:.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>stdev()</code> divides by $N - 1$ (Bessel's correction) to avoid underestimating variability when estimating a population from a sample.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-stats-spread" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18: Variance of Temperatures</div>
+          <div class="card-meta"><span class="category-tag cat-stats-spread">Spread &amp; Quantiles</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-18')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given recorded daily temperatures <code>[31.2, 32.5, 30.1, 29.8, 33.4, 31.9]</code>, compute both the sample variance and population variance.</p>
+        <div class="purpose-box">Measures data dispersion ($\sigma^2$ and $s^2$) using <code>variance()</code> and <code>pvariance()</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>temps = [31.2, 32.5, 30.1, 29.8, 33.4, 31.9]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Sample Variance: 1.83<br>Population Variance: 1.52</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-18">Call <code>statistics.variance(temps)</code> and <code>statistics.pvariance(temps)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-18">import statistics
+
+temps = [31.2, 32.5, 30.1, 29.8, 33.4, 31.9]
+
+s_var = statistics.variance(temps)
+p_var = statistics.pvariance(temps)
+
+print(f"Sample Variance:     {s_var:.2f}")
+print(f"Population Variance: {p_var:.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Variance represents standard deviation squared ($\text{Var} = \sigma^2$). It measures the average squared distance of data points from the mean.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-stats-central" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19: median_low() and median_high()</div>
+          <div class="card-meta"><span class="category-tag cat-stats-central">Central Tendency</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-19')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> For the even-length dataset <code>[1, 3, 5, 7]</code>, compare the standard interpolated <code>median()</code> with <code>median_low()</code> and <code>median_high()</code>.</p>
+        <div class="purpose-box">Selects actual members of the dataset as the median instead of calculating an interpolated average.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>data = [1, 3, 5, 7]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Standard Median: 4.0<br>Low Median: 3<br>High Median: 5</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-19">Use <code>statistics.median_low()</code> and <code>statistics.median_high()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-19">import statistics
+
+data = [1, 3, 5, 7]
+
+med = statistics.median(data)
+m_low = statistics.median_low(data)
+m_high = statistics.median_high(data)
+
+print(f"Standard Median: {med}")
+print(f"Low Median:      {m_low}")
+print(f"High Median:     {m_high}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> When an even number of data points exists, <code>median_low</code> chooses the smaller middle element and <code>median_high</code> chooses the larger, ensuring the returned median is an actual data point from the original set.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-stats-central" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20: Finding All Modes with multimode()</div>
+          <div class="card-meta"><span class="category-tag cat-stats-central">Central Tendency</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-20')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given the bimodal dataset <code>["cat", "dog", "dog", "cat", "bird", "fish"]</code>, extract all most-frequently occurring modes using <code>statistics.multimode()</code>.</p>
+        <div class="purpose-box">Handles multimodal distributions where multiple values share the highest frequency.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>["cat", "dog", "dog", "cat", "bird", "fish"]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Modes: ['cat', 'dog']</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-20"><code>statistics.multimode(data)</code> returns a list containing all tied top-frequency elements.</div>
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-20">import statistics
+
+pets = ["cat", "dog", "dog", "cat", "bird", "fish"]
+
+modes = statistics.multimode(pets)
+print("Modes:", sorted(modes))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>statistics.mode()</code> returns only the first mode it finds when there is a tie, while <code>multimode()</code> returns a list of all values that share the highest frequency.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 21 -->
+    <article class="exercise-card" data-category="cat-stats-spread" id="ex-21">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 21: Quartiles with statistics.quantiles()</div>
+          <div class="card-meta"><span class="category-tag cat-stats-spread">Spread &amp; Quantiles</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-21')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Divide the dataset <code>[15, 20, 35, 40, 50, 65, 70, 80, 90, 100]</code> into 4 equal intervals (quartiles: Q1, Q2, Q3) using <code>statistics.quantiles()</code>.</p>
+        <div class="purpose-box">Computes cut points for percentiles, quartiles, and deciles.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>data = [15, 20, 35, 40, 50, 65, 70, 80, 90, 100], n = 4</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Q1: 31.25, Q2 (Median): 57.50, Q3: 82.50</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-21')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-21')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-21">Call <code>statistics.quantiles(data, n=4)</code> to get the 3 quartile dividing points.</div>
+        <div class="drawer solution-drawer" id="sol-21">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-21')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-21">import statistics
+
+data = [15, 20, 35, 40, 50, 65, 70, 80, 90, 100]
+
+# n=4 cuts data into 4 intervals via 3 cut points (Q1, Q2, Q3)
+q1, q2, q3 = statistics.quantiles(data, n=4)
+
+print(f"Q1 (25th percentile): {q1:.2f}")
+print(f"Q2 (Median):          {q2:.2f}")
+print(f"Q3 (75th percentile): {q3:.2f}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>statistics.quantiles(data, n)</code> returns $n - 1$ cut points that divide the distribution into $n$ equal-probability ranges.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-stats-central" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22: Harmonic Mean of Internet Speeds</div>
+          <div class="card-meta"><span class="category-tag cat-stats-central">Central Tendency</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-22')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> A round-trip journey is made at 40 km/h going and 60 km/h returning. Compute the true average speed using <code>statistics.harmonic_mean()</code>.</p>
+        <div class="purpose-box">Calculates the correct average for rates, ratios, and speeds ($H = \frac{n}{\sum \frac{1}{x_i}}$).</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>speeds = [40, 60]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Harmonic Average Speed: 48.00 km/h</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-22">Pass the list of rates directly into <code>statistics.harmonic_mean([40, 60])</code>.</div>
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-22">import statistics
+
+speeds = [40, 60]
+
+avg_speed = statistics.harmonic_mean(speeds)
+print(f"Harmonic Average Speed: {avg_speed:.2f} km/h")
+
+# Compare with simple arithmetic mean (which is misleading for rates)
+arithmetic_avg = statistics.mean(speeds)
+print(f"Simple Arithmetic Mean: {arithmetic_avg:.2f} km/h (Misleading)")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The harmonic mean is the mathematically correct way to average rates (like speeds or bandwidths) when each rate is applied over the same fixed distance or amount of work.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-stats-central" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23: Geometric Mean for Compound Growth Rate</div>
+          <div class="card-meta"><span class="category-tag cat-stats-central">Central Tendency</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-23')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> An investment grew by 10% in Year 1 ($1.10$), 50% in Year 2 ($1.50$), and dropped 20% in Year 3 ($0.80$). Compute the compound annual growth factor using <code>statistics.geometric_mean()</code>.</p>
+        <div class="purpose-box">Calculates the true average for multiplicative processes, percentages, and financial returns.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>growth_multipliers = [1.10, 1.50, 0.80]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Geometric Mean Multiplier: 1.0970<br>Average Annual Growth: 9.70%</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-23">Use <code>statistics.geometric_mean(growth_factors)</code>. Subtract 1 to get the percentage growth rate.</div>
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-23">import statistics
+
+multipliers = [1.10, 1.50, 0.80]
+
+geo_mean = statistics.geometric_mean(multipliers)
+annual_growth_rate = (geo_mean - 1) * 100
+
+print(f"Geometric Mean Multiplier: {geo_mean:.4f}")
+print(f"Average Annual Growth:     {annual_growth_rate:.2f}%")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>geometric_mean()</code> computes the $n$-th root of the product of $n$ numbers. It is the appropriate metric for compounding financial returns and growth factors.</div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python Math &amp; Statistics Lab • 23 Interactive Practice Problems
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Drawers
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      const copyToClipboard = (text) => {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-999999px";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          return new Promise((resolve, reject) => {
+            document.execCommand('copy') ? resolve() : reject();
+            textArea.remove();
+          });
+        }
+      };
+
+      copyToClipboard(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Category Filtering & Real-time Search
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 23;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_math_stats_solved') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_math_stats_solved', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Sync checkbox checked state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on DOM load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

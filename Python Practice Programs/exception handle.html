@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Exception Handling Mastery • 20 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-basics { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-control { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-custom { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-advanced { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-triangle-exclamation"></i> Python Exception Handling Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 20 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, syntax, or keyword (e.g. ZeroDivisionError, re-raising, custom exception, retry)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (20)</button>
+      <button class="filter-btn" data-filter="cat-basics">Core Standard Errors</button>
+      <button class="filter-btn" data-filter="cat-control">Control Flow &amp; Clauses</button>
+      <button class="filter-btn" data-filter="cat-custom">Custom Exceptions &amp; Chaining</button>
+      <button class="filter-btn" data-filter="cat-advanced">Advanced, Threads &amp; Decorators</button>
+    </div>
+  </div>
+
+  <!-- Main Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Basic Try-Except</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Core Standard Errors</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that converts a user string into an integer. If the string is invalid, catch the <code>ValueError</code> and print a user-friendly error message.</p>
+        <div class="purpose-box">Introduces the fundamental syntax of <code>try...except</code> to prevent uncaught runtime crashes.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>text = "abc"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Error: 'abc' cannot be converted to an integer.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Wrap <code>int(val)</code> inside a <code>try:</code> block and specify <code>except ValueError:</code>.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1">user_input = "abc"
+
+try:
+    number = int(user_input)
+    print(f"Parsed number: {number}")
+except ValueError:
+    print(f"Error: '{user_input}' cannot be converted to an integer.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Targeting <code>ValueError</code> catches numeric conversion failures without masking unrelated bugs like misspelled variable names.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: Division Safety</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Core Standard Errors</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a function <code>safe_divide(a, b)</code> that returns the division result or catches <code>ZeroDivisionError</code> and returns <code>None</code>.</p>
+        <div class="purpose-box">Protects mathematical pipelines from division-by-zero crashes.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>safe_divide(10, 0)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Error: Division by zero is undefined.<br>Result: None</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Handle <code>ZeroDivisionError</code> specifically in the <code>except</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2">def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        print("Error: Division by zero is undefined.")
+        return None
+
+res = safe_divide(10, 0)
+print(f"Result: {res}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Catching <code>ZeroDivisionError</code> allows the application to gracefully yield a sentinel (such as <code>None</code> or <code>0.0</code>) instead of halting.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: File Not Found</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Core Standard Errors</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Attempt to open and read a non-existent file <code>missing_data.txt</code>. Catch <code>FileNotFoundError</code> and print an informative fallback message.</p>
+        <div class="purpose-box">Teaches defensive I/O handling on missing disk resources.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>open("missing_data.txt", "r")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File 'missing_data.txt' was not found on disk.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Wrap the <code>with open(...)</code> statement inside a <code>try</code> block and catch <code>FileNotFoundError</code>.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">filename = "missing_data.txt"
+
+try:
+    with open(filename, "r") as f:
+        content = f.read()
+except FileNotFoundError:
+    print(f"File '{filename}' was not found on disk.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>FileNotFoundError</code> is a subclass of <code>OSError</code>. Handling it specifically avoids misleading generic messages.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Index Out of Range</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Core Standard Errors</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given a list of 3 items, safely access an element at index <code>5</code>. Intercept the <code>IndexError</code> and provide a default fallback value.</p>
+        <div class="purpose-box">Prevents index traversal errors in variable-length sequences.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>items = ["a", "b", "c"], index = 5</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Index 5 out of range! Returned default: None</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">Catch <code>IndexError</code> when indexing into <code>items[index]</code>.</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">items = ["a", "b", "c"]
+target_idx = 5
+
+try:
+    val = items[target_idx]
+except IndexError:
+    print(f"Index {target_idx} out of range! Returned default: None")
+    val = None
+
+print(f"Value: {val}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>IndexError</code> occurs whenever an integer subscript falls outside <code>[-len(seq), len(seq) - 1]</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Key Error Handling</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Core Standard Errors</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Access an unregistered key <code>"email"</code> from a user dictionary using bracket notation. Catch the <code>KeyError</code> and report the missing key name.</p>
+        <div class="purpose-box">Understand dictionary lookups and how bracket access triggers <code>KeyError</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>user = {"name": "Alice", "role": "Admin"}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Missing required dictionary key: 'email'</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">Catch <code>KeyError as err</code> and inspect <code>err</code> to see the missing key.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">user = {"name": "Alice", "role": "Admin"}
+
+try:
+    email = user["email"]
+except KeyError as err:
+    print(f"Missing required dictionary key: {err}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> While <code>dict.get()</code> returns a default value silently, catching <code>KeyError</code> is preferred when the absence of a key represents an exceptional scenario.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-basics" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Type Error Guard</div>
+          <div class="card-meta"><span class="category-tag cat-basics">Core Standard Errors</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Attempt to concatenate a string and an integer (e.g., <code>"Age: " + 25</code>). Intercept the <code>TypeError</code> and fix it dynamically.</p>
+        <div class="purpose-box">Detects incompatible type operations and provides runtime type-casting.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>prefix = "Age: ", value = 25</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>TypeError caught! Fallback formatted output: Age: 25</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Catch <code>TypeError</code> and convert the operand with <code>str(value)</code> in the except block.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6">prefix = "Age: "
+value = 25
+
+try:
+    message = prefix + value
+except TypeError as err:
+    print(f"TypeError caught: {err}")
+    message = f"{prefix}{value}"
+
+print("Final message:", message)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Python is strongly typed and will not implicitly coerce integers into strings during binary addition (<code>+</code>).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-control" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Multiple Exceptions</div>
+          <div class="card-meta"><span class="category-tag cat-control">Control Flow &amp; Clauses</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Parse two user inputs and divide them. Handle <code>ValueError</code> (non-numeric input) and <code>ZeroDivisionError</code> with distinct error messages.</p>
+        <div class="purpose-box">Differentiates error responses using chained <code>except</code> branches.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Case 1: ("10", "0")<br>Case 2: ("10", "foo")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Case 1: Cannot divide by zero.<br>Case 2: Invalid number format.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Use multiple <code>except</code> statements sequentially after a single <code>try</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">def process_division(val1, val2):
+    try:
+        n1 = float(val1)
+        n2 = float(val2)
+        return n1 / n2
+    except ValueError:
+        print("Invalid number format! Both inputs must be numeric.")
+    except ZeroDivisionError:
+        print("Cannot divide by zero!")
+    return None
+
+process_division("10", "0")
+process_division("10", "foo")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Python matches <code>except</code> blocks top-to-bottom, executing only the first matching handler.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-control" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: Finally Block</div>
+          <div class="card-meta"><span class="category-tag cat-control">Control Flow &amp; Clauses</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Simulate a database connection object. Ensure the connection is always closed in a <code>finally</code> block, even if a query error occurs.</p>
+        <div class="purpose-box">Guarantees resource teardown regardless of whether an exception is raised or caught.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Query that triggers a RuntimeError</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Connected.<br>Query failed!<br>Database connection closed.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Place the cleanup routine inside a <code>finally:</code> block at the end of the <code>try-except</code> construct.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">def run_query():
+    print("Database connection opened.")
+    try:
+        # Simulate query failure
+        raise RuntimeError("Syntax error in SQL query")
+    except RuntimeError as err:
+        print(f"Query failed: {err}")
+    finally:
+        print("Database connection closed cleanly.")
+
+run_query()</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The <code>finally</code> block executes under all conditions—even if the <code>try</code> block returns early or encounters an unhandled exception.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-control" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Else Clause</div>
+          <div class="card-meta"><span class="category-tag cat-control">Control Flow &amp; Clauses</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Use the <code>try...except...else</code> construct to parse a number. Print success and double the value <em>only</em> if no exception was raised.</p>
+        <div class="purpose-box">Separates the risky operation inside <code>try</code> from the subsequent code that depends on its success.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>text = "50"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Success! Doubled: 100</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Place the follow-up logic in the <code>else:</code> block, which runs only when <code>try</code> raises no exceptions.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">def parse_and_double(raw_val):
+    try:
+        val = int(raw_val)
+    except ValueError:
+        print("Parsing failed: Not an integer.")
+    else:
+        # Runs ONLY if try succeeded without exceptions
+        print(f"Success! Doubled: {val * 2}")
+
+parse_and_double("50")
+parse_and_double("invalid")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> The <code>else</code> block prevents accidentally catching exceptions raised by the processing code itself rather than by the code under test in <code>try</code>.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-control" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Nested Try-Except</div>
+          <div class="card-meta"><span class="category-tag cat-control">Control Flow &amp; Clauses</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Safely read an integer from a file: catch <code>FileNotFoundError</code> in the outer block, and catch <code>ValueError</code> in an inner block if the file content cannot be parsed.</p>
+        <div class="purpose-box">Applies hierarchical exception recovery for multi-stage dependencies.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Simulated file content: "not_a_number"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File opened, but content could not be parsed as an integer.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Place a second <code>try...except ValueError</code> block inside the body of the outer <code>try</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">import io
+
+# Simulating file read via StringIO
+mock_file = io.StringIO("corrupted_data")
+
+try:
+    content = mock_file.read()
+    try:
+        number = int(content)
+        print("Number:", number)
+    except ValueError:
+        print("Inner error: File content is not a valid integer.")
+except IOError:
+    print("Outer error: Failed to read from file stream.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Nested exception handlers isolate failures to specific sub-steps, allowing the program to handle I/O issues independently from data corruption.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-control" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: Re-raising Exceptions</div>
+          <div class="card-meta"><span class="category-tag cat-control">Control Flow &amp; Clauses</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Intercept an exception to log an alert message locally, then re-raise the exact same exception up to the caller using a bare <code>raise</code>.</p>
+        <div class="purpose-box">Observes errors for telemetry or side effects without swallowing the exception.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Critical failure inside service method</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[Audit Log] Error detected: Connection dropped<br>Re-raised up stack</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">A bare <code>raise</code> statement with no arguments re-throws the active exception in the current scope.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">def perform_task():
+    try:
+        raise ConnectionError("Connection dropped unexpectedly.")
+    except ConnectionError as err:
+        print(f"[Audit Log] Intercepted for metrics: {err}")
+        # Re-raise the identical exception
+        raise
+
+try:
+    perform_task()
+except ConnectionError:
+    print("Caller caught re-raised exception successfully.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> A bare <code>raise</code> preserves the original exception traceback, avoiding misleading stack trace resets.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-custom" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: Custom Exception Class</div>
+          <div class="card-meta"><span class="category-tag cat-custom">Custom Exceptions &amp; Chaining</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a custom exception <code>InsufficientFundsError</code> that inherits from <code>Exception</code>, stores <code>balance</code> and <code>amount</code>, and formats a descriptive error message.</p>
+        <div class="purpose-box">Builds domain-specific error types tailored to business requirements.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>balance = 100, withdraw = 250</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>InsufficientFundsError: Cannot withdraw $250 with balance $100.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Subclass <code>Exception</code> and call <code>super().__init__(message)</code> inside <code>__init__</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">class InsufficientFundsError(Exception):
+    def __init__(self, balance, amount):
+        self.balance = balance
+        self.amount = amount
+        super().__init__(f"Cannot withdraw ${amount} with balance ${balance}.")
+
+def withdraw(balance, amount):
+    if amount > balance:
+        raise InsufficientFundsError(balance, amount)
+    return balance - amount
+
+try:
+    withdraw(100, 250)
+except InsufficientFundsError as e:
+    print(f"Caught custom error: {e}")
+    print(f"Deficit: ${e.amount - e.balance}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Custom exceptions can carry custom metadata (like <code>deficit</code>), enabling upstream handlers to take automated recovery actions.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-custom" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Exception Chaining</div>
+          <div class="card-meta"><span class="category-tag cat-custom">Custom Exceptions &amp; Chaining</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Catch a low-level <code>sqlite3.OperationalError</code> (simulated) and wrap it inside an application-level <code>DatabaseError</code> using explicit exception chaining (<code>raise ... from ...</code>).</p>
+        <div class="purpose-box">Preserves root cause debugging context across architectural abstraction layers.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Simulated driver operational error</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>DatabaseError: Failed query (Caused by: disk I/O error)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13">Use the syntax <code>raise HighLevelError("...") from low_level_err</code>.</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">class DatabaseError(Exception):
+    pass
+
+def query_user():
+    try:
+        # Simulate driver error
+        raise OSError("Disk read timeout on sector 4")
+    except OSError as root_cause:
+        raise DatabaseError("High-level database query failed") from root_cause
+
+try:
+    query_user()
+except DatabaseError as e:
+    print(f"Application error: {e}")
+    print(f"Root cause (__cause__): {e.__cause__}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>raise ... from ...</code> populates the <code>__cause__</code> attribute, preserving the original error's traceback in the output.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-control" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Validate User Input Loop</div>
+          <div class="card-meta"><span class="category-tag cat-control">Control Flow &amp; Clauses</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write an input validation routine using a <code>while True</code> loop that prompts until the user enters a valid positive integer.</p>
+        <div class="purpose-box">Combines iteration with exception recovery to sanitize console inputs.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Simulated inputs: ["bad", "-4", "42"]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Valid positive integer received: 42</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Catch <code>ValueError</code> and prompt again; use <code>break</code> on success.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">def get_positive_int(simulated_inputs):
+    inputs_iter = iter(simulated_inputs)
+    while True:
+        raw = next(inputs_iter)
+        try:
+            val = int(raw)
+            if val <= 0:
+                raise ValueError("Number must be greater than zero.")
+            return val
+        except ValueError as err:
+            print(f"Invalid input '{raw}': {err}. Retrying...")
+
+result = get_positive_int(["bad", "-4", "42"])
+print(f"Valid positive integer received: {result}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Raising a <code>ValueError</code> for out-of-range values lets both type and range validation share a single <code>except</code> block.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15: Context Manager with Exceptions</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced, Threads &amp; Decorators</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-15')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a context manager class <code>SuppressException</code> using <code>__enter__</code> and <code>__exit__</code> that suppresses a given exception type.</p>
+        <div class="purpose-box">Understands how context manager <code>__exit__</code> blocks inspect and suppress exceptions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Suppressing KeyError on dict access</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Exception suppressed. Program continues normally.</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-15">Return <code>True</code> from <code>__exit__(self, exc_type, exc_val, exc_tb)</code> to suppress the active exception.</div>
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-15">class SuppressException:
+    def __init__(self, exc_type):
+        self.exc_type = exc_type
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type and issubclass(exc_type, self.exc_type):
+            print(f"Suppressed {exc_type.__name__}: {exc_val}")
+            return True  # Suppresses the exception
+        return False
+
+# Equivalent to contextlib.suppress(KeyError)
+with SuppressException(KeyError):
+    d = {}
+    _ = d["non_existent_key"]
+
+print("Execution continued successfully past the context block.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> If <code>__exit__()</code> returns <code>True</code>, Python clears the exception and resumes execution right after the <code>with</code> statement.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-custom" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16: Exception Hierarchy</div>
+          <div class="card-meta"><span class="category-tag cat-custom">Custom Exceptions &amp; Chaining</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-16')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create an application error base class <code>AppError</code>, with derived classes <code>ValidationError</code> and <code>AuthError</code>. Catch both using the base class.</p>
+        <div class="purpose-box">Uses inheritance polymorphism to catch groups of domain exceptions with a single handler.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Raising ValidationError("Invalid Email")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Caught via AppError base handler: Invalid Email</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-16">Subclass <code>ValidationError(AppError)</code>, then write <code>except AppError as e:</code>.</div>
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-16">class AppError(Exception):
+    """Base application exception."""
+    pass
+
+class ValidationError(AppError):
+    pass
+
+class AuthError(AppError):
+    pass
+
+def register_user(email):
+    if "@" not in email:
+        raise ValidationError("Invalid email address syntax.")
+
+try:
+    register_user("invalid-email.com")
+except AppError as e:
+    # Catches both ValidationError and AuthError
+    print(f"Caught by AppError handler ({type(e).__name__}): {e}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>except BaseClass</code> catches all derived subclasses, making it easy to create catch-all handlers for specific subsystems.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17: Logging Exceptions</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced, Threads &amp; Decorators</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-17')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Use Python's built-in <code>logging</code> module to capture an unexpected exception along with its full stack trace using <code>logger.exception()</code>.</p>
+        <div class="purpose-box">Production diagnostics using standard logging facilities.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>ZeroDivisionError in worker function</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>ERROR:root:Fatal processing failure<br>Traceback (most recent call last)...</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-17">Call <code>logging.exception("message")</code> inside the <code>except</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-17">import logging
+
+# Configure basic logger
+logging.basicConfig(level=logging.ERROR)
+
+def calculate_metrics():
+    try:
+        return 100 / 0
+    except ZeroDivisionError:
+        # Logs the error message along with the full traceback automatically
+        logging.exception("Fatal processing failure encountered in calculate_metrics")
+
+calculate_metrics()</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>logging.exception()</code> logs at the <code>ERROR</code> level and automatically includes <code>sys.exc_info()</code> traceback details.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18: Retry Decorator</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced, Threads &amp; Decorators</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-18')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a <code>@retry(max_attempts=3)</code> decorator that catches exceptions and retries the function before ultimately giving up.</p>
+        <div class="purpose-box">Builds resilient retry mechanisms for flaky network or I/O operations.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Fails 2 times, succeeds on 3rd attempt</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Attempt 1 failed. Retrying...<br>Attempt 2 failed. Retrying...<br>Success on attempt 3!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-18">Wrap the function call inside a <code>for attempt in range(max_attempts):</code> loop within the decorator wrapper.</div>
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-18">import functools
+
+def retry(max_attempts=3):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as err:
+                    print(f"Attempt {attempt} failed: {err}")
+                    if attempt == max_attempts:
+                        raise
+            return None
+        return wrapper
+    return decorator
+
+# Test simulation
+calls = 0
+@retry(max_attempts=3)
+def fetch_api():
+    global calls
+    calls += 1
+    if calls < 3:
+        raise ConnectionResetError("Server dropped connection")
+    return "Payload received successfully!"
+
+print(fetch_api())</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Re-raising on the final attempt (<code>if attempt == max_attempts: raise</code>) ensures unexpected permanent failures aren't silently swallowed.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19: Thread-Safe Exception Handling</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced, Threads &amp; Decorators</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-19')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Exceptions in worker threads don't bubble up to the main thread. Use <code>concurrent.futures.ThreadPoolExecutor</code> to capture worker exceptions via <code>future.result()</code>.</p>
+        <div class="purpose-box">Manages and surfaces asynchronous exceptions across worker thread boundaries.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Thread worker raising ValueError("Thread crash")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Main thread caught worker exception: Thread crash</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-19">Calling <code>future.result()</code> re-raises any exception that was thrown inside the worker thread.</div>
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-19">from concurrent.futures import ThreadPoolExecutor
+
+def background_task(x):
+    if x < 0:
+        raise ValueError(f"Negative values not permitted: {x}")
+    return x * 2
+
+with ThreadPoolExecutor(max_workers=2) as executor:
+    future = executor.submit(background_task, -5)
+    
+    try:
+        # Calling result() re-raises the exception in the main thread
+        res = future.result()
+        print("Result:", res)
+    except ValueError as err:
+        print(f"Main thread caught worker exception: {err}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>concurrent.futures</code> captures worker exceptions and re-raises them in the calling thread when <code>.result()</code> is evaluated.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-advanced" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20: Exception in Generator</div>
+          <div class="card-meta"><span class="category-tag cat-advanced">Advanced, Threads &amp; Decorators</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-20')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a generator that yields numbers. Use <code>generator.throw()</code> to inject a <code>RuntimeError</code> into the generator and catch it inside the generator's loop.</p>
+        <div class="purpose-box">Demonstrates bidirectional exception passing into coroutines and generator streams.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>gen.throw(RuntimeError, "Custom interrupt")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Generator intercepted error: Custom interrupt<br>Resumed after error</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-20">Wrap the <code>yield</code> expression inside a <code>try-except</code> block inside the generator.</div>
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-20">def resilient_stream():
+    val = 1
+    while True:
+        try:
+            yield val
+            val += 1
+        except RuntimeError as err:
+            print(f"Generator caught injected error: {err}")
+            val = 0  # Reset on error
+
+gen = resilient_stream()
+print("First yield:", next(gen))
+print("Second yield:", next(gen))
+
+# Inject exception into the suspended yield point
+res = gen.throw(RuntimeError("External reset requested"))
+print("Yielded after reset:", res)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>gen.throw()</code> raises the exception at the point where the generator is currently suspended on a <code>yield</code> statement.</div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python Exception Handling Mastery Lab • 20 Interactive Practice Problems
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Drawers
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      const copyToClipboard = (text) => {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text);
+        } else {
+          const textArea = document.createElement("textarea");
+          textArea.value = text;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-999999px";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          return new Promise((resolve, reject) => {
+            document.execCommand('copy') ? resolve() : reject();
+            textArea.remove();
+          });
+        }
+      };
+
+      copyToClipboard(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Category Filtering & Real-time Search
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 20;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_exceptions_solved_exercises') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_exceptions_solved_exercises', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Sync checkbox checked state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on DOM load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

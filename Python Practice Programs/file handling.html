@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python File Handling Lab • 34 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-basic-io { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-parsing { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-transform { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-os-ops { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-solid fa-file-code"></i> Python File Handling Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 34 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by name, syntax, or keyword (e.g. readlines, binary, rename, regex, split)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (34)</button>
+      <button class="filter-btn" data-filter="cat-basic-io">Basic I/O &amp; Modes</button>
+      <button class="filter-btn" data-filter="cat-parsing">Parsing &amp; Analytics</button>
+      <button class="filter-btn" data-filter="cat-transform">Transformation &amp; Cleaning</button>
+      <button class="filter-btn" data-filter="cat-os-ops">OS &amp; File System Operations</button>
+    </div>
+  </div>
+
+  <!-- Main Exercises List -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1: Write User Name to File</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-1')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that takes a user's name and writes it into a file named <code>user.txt</code> using the <code>"w"</code> mode.</p>
+        <div class="purpose-box">Introduces the <code>with open()</code> context manager and writing text streams.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>name = "Alice"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File user.txt created with content "Alice"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-1">Use <code>with open("user.txt", "w") as f:</code> and call <code>f.write(name)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-1">name = "Alice"
+
+with open("user.txt", "w") as f:
+    f.write(name)
+
+print("User name written successfully.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>"w"</code> mode creates the file if it does not exist or overwrites it if it already exists. The <code>with</code> context manager closes the file automatically.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2: Read and Print Complete File</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-2')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Open and read the entire contents of <code>user.txt</code> using the <code>read()</code> method and print it to the terminal.</p>
+        <div class="purpose-box">Reads the entire contents of a file into a single string variable.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>user.txt containing "Alice"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File Content: Alice</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-2">Open with mode <code>"r"</code> and call <code>f.read()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-2">with open("user.txt", "r") as f:
+    content = f.read()
+
+print("File Content:", content)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>f.read()</code> reads the file from the current pointer up to EOF (End Of File) into memory.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3: Read File Line by Line Using Loop</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-3')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Open a multi-line file and print each line individually using a <code>for line in f:</code> loop without loading the whole file into RAM at once.</p>
+        <div class="purpose-box">Demonstrates memory-efficient generator-based file iteration.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>File with 3 lines of text</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Line 1<br>Line 2<br>Line 3</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-3">Iterate directly: <code>for line in f: print(line.strip())</code>.</div>
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-3">with open("sample.txt", "r") as f:
+    for line in f:
+        print(line.rstrip("\n"))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Iterating over the file object reads lines lazily one-by-one with $O(1)$ memory usage.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4: Read File Lines into a List</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-4')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Read all lines of a text file into a Python list of strings with trailing newlines removed.</p>
+        <div class="purpose-box">Converts external file contents into structured list objects.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>File with lines "Apple", "Banana"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>['Apple', 'Banana']</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-4">Use a list comprehension: <code>[line.strip() for line in f]</code> or <code>f.readlines()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-4">with open("sample.txt", "r") as f:
+    lines = [line.rstrip("\n") for line in f]
+
+print("Lines list:", lines)</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Stripping <code>\n</code> prevents formatting issues when handling list elements later in your code.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5: Append New Sentence to Existing File</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-5')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Append a new sentence to <code>log.txt</code> without overwriting existing content using append mode <code>"a"</code>.</p>
+        <div class="purpose-box">Understands append mode behavior and file pointer positioning at EOF.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>New entry: "System check completed."</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Appended to log.txt</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-5">Open using <code>"a"</code> mode: <code>with open("log.txt", "a") as f:</code>.</div>
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-5">new_sentence = "System check completed.\n"
+
+with open("log.txt", "a") as f:
+    f.write(new_sentence)
+
+print("Sentence appended successfully.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>"a"</code> preserves existing contents and positions the write pointer at the end of the file.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6: Clear All File Content</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-6')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Truncate an existing file <code>cache.txt</code> so its file size becomes 0 bytes without deleting the file itself.</p>
+        <div class="purpose-box">Empties a file using truncation modes or <code>f.truncate(0)</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>cache.txt with existing data</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>cache.txt size: 0 bytes</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-6">Opening a file in <code>"w"</code> mode without writing anything immediately truncates it to 0 bytes.</div>
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-6"># Opening in 'w' mode instantly clears/truncates the file
+with open("cache.txt", "w") as f:
+    pass
+
+print("File cleared successfully.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>open(file, 'w')</code> truncates the file immediately upon opening, resetting its length to 0.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7: Write Text to New File (Safe Creation)</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-7')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write data to a file using exclusive creation mode <code>"x"</code> to avoid accidentally overwriting an existing file.</p>
+        <div class="purpose-box">Prevents accidental data loss using Python's exclusive creation mode.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Filename "unique_report.txt"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File created or FileExistsError caught</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-7">Use mode <code>"x"</code>: <code>open("unique_report.txt", "x")</code>.</div>
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-7">try:
+    with open("unique_report.txt", "x") as f:
+        f.write("Initial exclusive report data.\n")
+    print("New file created successfully.")
+except FileExistsError:
+    print("Error: File already exists! Operation aborted to prevent overwrite.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Mode <code>"x"</code> creates and opens a new file for writing, but raises a <code>FileExistsError</code> if the target file already exists.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-os-ops" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8: Check If File Exists</div>
+          <div class="card-meta"><span class="category-tag cat-os-ops">OS &amp; File System</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-8')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Verify whether <code>config.json</code> exists on disk using <code>os.path.exists()</code> or modern <code>pathlib.Path</code>.</p>
+        <div class="purpose-box">Checks for file existence before attempting disk operations.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>path = "config.json"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File exists: True/False</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-8">Use <code>from pathlib import Path</code> and call <code>Path("config.json").is_file()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-8">from pathlib import Path
+
+file_path = Path("config.json")
+
+if file_path.is_file():
+    print(f"{file_path} exists and is a file.")
+else:
+    print(f"{file_path} does not exist.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>pathlib.Path.is_file()</code> confirms both that the path exists and that it points to a file rather than a directory.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9: Handle Missing File with Try-Except</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-9')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Attempt to open <code>missing.txt</code> in read mode. Catch the resulting <code>FileNotFoundError</code> and display a clean notification.</p>
+        <div class="purpose-box">Applies standard error handling to deal with missing file exceptions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>open("missing.txt", "r")</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Error: File 'missing.txt' not found!</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-9">Wrap your <code>open()</code> call in a <code>try: ... except FileNotFoundError:</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-9">try:
+    with open("missing.txt", "r") as f:
+        data = f.read()
+except FileNotFoundError:
+    print("Error: File 'missing.txt' not found!")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Using <code>try/except</code> follows the Python principle: "Easier to Ask for Forgiveness than Permission" (EAFP).</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10: Count Total Lines in File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-10')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Count how many lines of text exist in <code>document.txt</code> using a generator expression with $O(1)$ memory usage.</p>
+        <div class="purpose-box">Performs file auditing and size profiling efficiently.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>document.txt with 45 lines</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Total lines: 45</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-10">Use <code>sum(1 for _ in f)</code> inside the <code>with</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-10">with open("document.txt", "r") as f:
+    line_count = sum(1 for _ in f)
+
+print(f"Total lines: {line_count}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>sum(1 for _ in f)</code> avoids storing lines in memory, making it safe to run on multi-gigabyte log files.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11: Count Total Words in File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-11')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a script to calculate the total number of words across all lines in <code>essay.txt</code>.</p>
+        <div class="purpose-box">Extracts and counts whitespace-separated tokens across lines.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>essay.txt containing "Hello world from Python"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Total words: 4</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-11">Iterate line by line and accumulate <code>len(line.split())</code>.</div>
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-11">word_count = 0
+
+with open("essay.txt", "r") as f:
+    for line in f:
+        word_count += len(line.split())
+
+print(f"Total words: {word_count}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>line.split()</code> splits on any whitespace sequence (spaces, tabs, newlines) without leaving empty items.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12: Count Total Characters in File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-12')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate the total number of characters in a file, both with and without whitespace included.</p>
+        <div class="purpose-box">Computes character density and raw stream length.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>text = "Hi there\n"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Total chars: 9<br>Without whitespace: 7</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-12">Use <code>len(char)</code> and check <code>char.isspace()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-12">with open("essay.txt", "r") as f:
+    content = f.read()
+
+total_chars = len(content)
+non_whitespace = sum(1 for c in content if not c.isspace())
+
+print(f"Total characters: {total_chars}")
+print(f"Excluding whitespace: {non_whitespace}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>c.isspace()</code> detects spaces, tabs, and newline characters accurately.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13: Count Specific Word Occurrences in File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-13')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Count how many times the word <code>"python"</code> appears in <code>tutorial.txt</code>, case-insensitively.</p>
+        <div class="purpose-box">Performs targeted keyword frequency searches across file streams.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>target = "python"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>'python' appeared 8 times</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-13">Lowercase words before comparing: <code>[w.lower() for w in line.split()]</code>.</div>
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-13">target = "python"
+occurrences = 0
+
+with open("tutorial.txt", "r") as f:
+    for line in f:
+        words = [w.strip(".,!?:;\"'()").lower() for w in line.split()]
+        occurrences += words.count(target)
+
+print(f"'{target}' appeared {occurrences} times.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Stripping punctuation characters from tokens prevents words like <code>"python,"</code> or <code>"python."</code> from being missed.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14: Read Only First N Lines</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-14')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement the Unix <code>head -n</code> command in Python to read and print only the first <code>N = 5</code> lines of a file.</p>
+        <div class="purpose-box">Applies early loop termination using line counters or <code>itertools.islice</code>.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>N = 5 lines</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>First 5 lines displayed</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-14">Use <code>itertools.islice(f, 5)</code> or break out of a line loop when the counter reaches 5.</div>
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-14">from itertools import islice
+
+n = 5
+with open("large_file.txt", "r") as f:
+    for line in islice(f, n):
+        print(line.rstrip("\n"))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>itertools.islice()</code> stops reading after $N$ lines, without loading the remainder of the file.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15: Read Only Last N Lines</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-15')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Implement the Unix <code>tail -n</code> command using <code>collections.deque</code> with a fixed maximum length to keep only the last $N$ lines in memory.</p>
+        <div class="purpose-box">Uses sliding-window ring buffers to read trailing lines with fixed $O(N)$ memory.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>N = 3 lines from a 50-line file</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Last 3 lines printed</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-15">Pass the file directly to <code>collections.deque(f, maxlen=3)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-15">from collections import deque
+
+n = 3
+with open("large_file.txt", "r") as f:
+    last_lines = deque(f, maxlen=n)
+
+for line in last_lines:
+    print(line.rstrip("\n"))</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>deque(..., maxlen=n)</code> automatically discards older entries as new lines arrive, keeping memory usage capped at $N$ items.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16: Read Specific Line Numbers from File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-16')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Read and print lines 2, 4, and 7 from <code>data.txt</code> using <code>enumerate()</code> without keeping unneeded lines in memory.</p>
+        <div class="purpose-box">Applies selective line extraction via index-matched filtering.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Target line numbers: {2, 4, 7}</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Matched line text for lines 2, 4, 7</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-16">Use <code>for idx, line in enumerate(f, start=1):</code> and check <code>if idx in targets:</code>.</div>
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-16">target_lines = {2, 4, 7}
+
+with open("data.txt", "r") as f:
+    for num, line in enumerate(f, start=1):
+        if num in target_lines:
+            print(f"Line {num}: {line.rstrip()}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Using a set (<code>{2, 4, 7}</code>) gives $O(1)$ membership checks, while <code>start=1</code> matches conventional 1-based line numbering.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17: Find Longest Word in File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-17')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Scan a document and find the single longest word, along with its character length.</p>
+        <div class="purpose-box">Applies <code>max()</code> with custom key functions over generator expressions.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Document with words: ["cat", "encyclopedia", "dog"]</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Longest word: encyclopedia (12 chars)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-17">Split the words and use <code>max(words, key=len)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-17">with open("document.txt", "r") as f:
+    words = f.read().split()
+
+if words:
+    longest = max(words, key=len)
+    print(f"Longest word: '{longest}' ({len(longest)} characters)")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>key=len</code> tells <code>max()</code> to compare words by length instead of alphabetical order.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18: Count Each Letter Frequency in File</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-18')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Count the occurrence frequency of every alphabetical character using <code>collections.Counter</code>.</p>
+        <div class="purpose-box">Constructs letter-frequency histograms for cryptography and text profiling.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>text = "Hello World"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>{'l': 3, 'o': 2, 'h': 1, 'e': 1, 'w': 1, 'r': 1, 'd': 1}</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-18">Filter with <code>c.lower() for c in content if c.isalpha()</code> inside <code>Counter()</code>.</div>
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-18">from collections import Counter
+
+with open("sample.txt", "r") as f:
+    letters = [c.lower() for c in f.read() if c.isalpha()]
+
+freq = Counter(letters)
+for letter, count in freq.most_common(5):
+    print(f"'{letter}': {count}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>Counter.most_common(k)</code> returns the $k$ most frequent characters in descending order.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-parsing" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19: Search Word and Print Matching Line Numbers</div>
+          <div class="card-meta"><span class="category-tag cat-parsing">Parsing &amp; Analytics</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-19')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Search for a query keyword like <code>"ERROR"</code> across all lines of a log file and print the line number alongside the line text (like <code>grep -n</code>).</p>
+        <div class="purpose-box">Recreates command-line keyword matching and line mapping.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>query = "ERROR" in app.log</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>[Line 14] ERROR: Database timeout</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-19">Use <code>if query in line:</code> inside an <code>enumerate(f, start=1)</code> loop.</div>
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-19">query = "ERROR"
+
+with open("app.log", "r") as f:
+    for line_no, line in enumerate(f, start=1):
+        if query in line:
+            print(f"[Line {line_no}] {line.rstrip()}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>query in line</code> performs fast substring matching on the line buffer.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-transform" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20: Strip Extra Whitespace and Save to New File</div>
+          <div class="card-meta"><span class="category-tag cat-transform">Transformation &amp; Cleaning</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-20')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Read a messy text file with leading/trailing spaces and blank lines, clean every line, and write the result to <code>cleaned.txt</code>.</p>
+        <div class="purpose-box">Data sanitization and normalized file-to-file streaming.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Messy file with extra spaces</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>cleaned.txt with trimmed lines</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-20">Open both files at once: <code>with open(src) as f_in, open(dst, "w") as f_out:</code>.</div>
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-20">with open("raw.txt", "r") as infile, open("cleaned.txt", "w") as outfile:
+    for line in infile:
+        stripped = line.strip()
+        if stripped:  # Exclude blank lines
+            outfile.write(stripped + "\n")
+
+print("Cleaned file generated successfully.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Opening both files concurrently in a single <code>with</code> statement allows streaming line-by-line transforms without loading the entire input file into memory.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 21 -->
+    <article class="exercise-card" data-category="cat-transform" id="ex-21">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 21: Convert Uppercase to Lowercase and Vice Versa</div>
+          <div class="card-meta"><span class="category-tag cat-transform">Transformation &amp; Cleaning</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-21')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Invert the casing of every character in an input file using <code>str.swapcase()</code> and save the result to <code>swapped.txt</code>.</p>
+        <div class="purpose-box">Applies character-level transformations across file streams.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>"Python 3.12 Lab"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>"pYTHON 3.12 lAB"</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-21')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-21')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-21">Call <code>line.swapcase()</code> for each line and write it out.</div>
+        <div class="drawer solution-drawer" id="sol-21">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-21')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-21">with open("input.txt", "r") as infile, open("swapped.txt", "w") as outfile:
+    for line in infile:
+        outfile.write(line.swapcase())
+
+print("Case swapping complete.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>swapcase()</code> changes uppercase letters to lowercase and vice versa, leaving numbers and punctuation unchanged.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-transform" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22: Find and Replace a Word Throughout File</div>
+          <div class="card-meta"><span class="category-tag cat-transform">Transformation &amp; Cleaning</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-22')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Replace all occurrences of <code>"draft"</code> with <code>"final"</code> across an existing file and update the file on disk.</p>
+        <div class="purpose-box">Performs in-place file replacement using read-replace-write cycles.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Replace "draft" with "final"</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File updated on disk</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-22">Read all content into a string, use <code>content.replace(old, new)</code>, then write back in <code>"w"</code> mode.</div>
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-22">filename = "document.txt"
+
+with open(filename, "r") as f:
+    content = f.read()
+
+# Replace all occurrences
+updated_content = content.replace("draft", "final")
+
+with open(filename, "w") as f:
+    f.write(updated_content)
+
+print(f"Replaced occurrences in {filename}.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Reading the file completely before reopening it with <code>"w"</code> prevents race conditions and accidental data loss.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-os-ops" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23: Get File Size in Kilobytes</div>
+          <div class="card-meta"><span class="category-tag cat-os-ops">OS &amp; File System</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-23')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Query the exact size of <code>dataset.csv</code> from operating system metadata and print it formatted in Kilobytes (KB).</p>
+        <div class="purpose-box">Retrieves file metadata without reading actual file contents.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>dataset.csv (4096 bytes)</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Size: 4.00 KB (4096 bytes)</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-23">Use <code>os.path.getsize(path)</code> or <code>Path(path).stat().st_size</code>. Divide by 1024 for KB.</div>
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-23">import os
+
+filename = "dataset.csv"
+
+if os.path.exists(filename):
+    size_bytes = os.path.getsize(filename)
+    size_kb = size_bytes / 1024
+    print(f"Size: {size_kb:.2f} KB ({size_bytes} bytes)")
+else:
+    print("File not found.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>os.path.getsize()</code> makes a system call to read file metadata directly, taking $O(1)$ time regardless of file size.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 24 -->
+    <article class="exercise-card" data-category="cat-basic-io" id="ex-24">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 24: Copy File Using Binary Mode</div>
+          <div class="card-meta"><span class="category-tag cat-basic-io">Basic I/O &amp; Modes</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-24')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a chunk-based copy routine in binary mode (<code>"rb"</code> / <code>"wb"</code>) to duplicate a file efficiently without reading the whole file into RAM at once.</p>
+        <div class="purpose-box">Teaches chunked binary streaming (<code>buffer_size = 64KB</code>) for copying large files.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Copy source.bin to dest.bin</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Binary copy complete</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-24')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-24')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-24">Loop with <code>while chunk := src.read(64 * 1024): dst.write(chunk)</code>.</div>
+        <div class="drawer solution-drawer" id="sol-24">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-24')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-24">CHUNK_SIZE = 64 * 1024  # 64 KB
+
+with open("source.bin", "rb") as src, open("dest.bin", "wb") as dst:
+    while True:
+        chunk = src.read(CHUNK_SIZE)
+        if not chunk:
+            break
+        dst.write(chunk)
+
+print("Binary chunk copy finished successfully.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> Reading in fixed-size binary chunks handles arbitrarily large files without exhausting available RAM.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 25 -->
+    <article class="exercise-card" data-category="cat-os-ops" id="ex-25">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 25: Rename a Single File</div>
+          <div class="card-meta"><span class="category-tag cat-os-ops">OS &amp; File System</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-25')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Safely rename <code>old_name.txt</code> to <code>new_name.txt</code> using <code>os.rename()</code>, handling errors if the source file is missing.</p>
+        <div class="purpose-box">Applies atomic filesystem renaming with error handling.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>old_name.txt -> new_name.txt</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>File renamed successfully</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-25')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-25')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-25">Use <code>os.rename("old_name.txt", "new_name.txt")</code> inside a <code>try-except</code> block.</div>
+        <div class="drawer solution-drawer" id="sol-25">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-25')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-25">import os
+
+try:
+    os.rename("old_name.txt", "new_name.txt")
+    print("File renamed successfully.")
+except FileNotFoundError:
+    print("Source file does not exist.")
+except FileExistsError:
+    print("Target filename already exists.")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>os.rename()</code> is an atomic filesystem operation on POSIX systems, ensuring files are never left in a partially renamed state.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 26 -->
+    <article class="exercise-card" data-category="cat-os-ops" id="ex-26">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 26: Rename Multiple Files with Prefix</div>
+          <div class="card-meta"><span class="category-tag cat-os-ops">OS &amp; File System</span></div>
+        </div>
+        <label class="complete-toggle"><input type="checkbox" onchange="toggleComplete('ex-26')"> Solved</label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Add a <code>backup_</code> prefix to all <code>.txt</code> files in a target directory using <code>pathlib.Path</code>.</p>
+        <div class="purpose-box">Automates batch file renaming across directories.</div>
+        <div class="io-grid">
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>Files: doc1.txt, doc2.txt</div>
+          <div class="io-block"><div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>Renamed to backup_doc1.txt, backup_doc2.txt</div>
+        </div>
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-26')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-26')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+        <div class="drawer hint-drawer" id="hint-26">Iterate with <code>Path(".").glob("*.txt")</code> and call <code>file.rename(file.with_name(...))</code>.</div>
+        <div class="drawer solution-drawer" id="sol-26">
+          <div class="code-container">
+            <div class="code-header"><span>Python 3</span><button class="copy-btn" onclick="copyCode('code-26')"><i class="fa-regular fa-copy"></i> Copy</button></div>
+            <pre><code id="code-26">from pathlib import Path
+
+folder = Path(".")
+for file in folder.glob("*.txt"):
+    if not file.name.startswith("backup_"):
+        new_name = file.with_name(f"backup_{file.name}")
+        file.rename(new_name)
+        print(f"Renamed: {file.name} -> {new_name.name}")</code></pre>
+          </div>
+          <div class="explanation"><strong>Key Concept:</strong> <code>file.with_name()</code> returns a new Path object with the updated filename while keeping the directory path intact.</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 27 -->
+    <article class="exercise-card" data-category="cat-os-ops" id="ex-27">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title

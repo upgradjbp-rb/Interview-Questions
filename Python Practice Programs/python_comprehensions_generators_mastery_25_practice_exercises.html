@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Comprehensions &amp; Generators Mastery • 25 Practice Exercises</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls, Search, and Category Filtering */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Category Tag Colors */
+    .cat-list { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-dictset { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-nested { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-gen { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python Comprehensions &amp; Generators Mastery</h1>
+        <div class="badge-counter" id="progress-text">0 / 25 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Search, and Category Filtering -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises (e.g., generator, yield, matrix, dict comprehension, benchmark, flatten)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (25)</button>
+      <button class="filter-btn" data-filter="cat-list">List Comprehensions</button>
+      <button class="filter-btn" data-filter="cat-dictset">Dict &amp; Set Comprehensions</button>
+      <button class="filter-btn" data-filter="cat-nested">Nested &amp; Matrix</button>
+      <button class="filter-btn" data-filter="cat-gen">Generators &amp; Pipelines</button>
+
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+    <!-- Dynamically rendered via JavaScript -->
+  </main>
+
+  <footer>
+    Python Comprehensions &amp; Generators Mastery • 25 Interactive Practice Exercises
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Squares List",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Generate a list containing the squares of all integers from 1 to 10 using a concise list comprehension.",
+        purpose: "Master basic list comprehension syntax `[expr for item in iterable]`.",
+        input: "Integers 1 through 10",
+        output: "[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]",
+        hint: "Use `[x**2 for x in range(1, 11)]`.",
+        code: `squares = [x**2 for x in range(1, 11)]
+print("Squares:", squares)`,
+        explanation: "The comprehension iterates over `range(1, 11)`, evaluating `x**2` for each element and appending directly into a new list allocated in optimized C-level bytecode."
+      },
+      {
+        id: 2,
+        title: "Even Numbers",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Extract all even integers from a given list of numbers using a list comprehension with a trailing predicate filter.",
+        purpose: "Learn predicate filtering in list comprehensions using trailing `if` conditions.",
+        input: "numbers = [12, 17, 24, 33, 40, 55, 62, 71, 88]",
+        output: "[12, 24, 40, 62, 88]",
+        hint: "Place `if x % 2 == 0` at the end of the comprehension.",
+        code: `numbers = [12, 17, 24, 33, 40, 55, 62, 71, 88]
+evens = [x for x in numbers if x % 2 == 0]
+print("Even Numbers:", evens)`,
+        explanation: "Trailing `if` clauses filter elements from the source stream. Only items that evaluate the condition to `True` are yielded into the target list."
+      },
+      {
+        id: 3,
+        title: "String Lengths",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Given a list of words, compute a list of corresponding character lengths for each word.",
+        purpose: "Map sequence elements to extracted metadata properties.",
+        input: "words = ['comprehension', 'generator', 'python', 'yield', 'lazy']",
+        output: "[13, 9, 6, 5, 4]",
+        hint: "Call `len(word)` inside the transformation expression.",
+        code: `words = ['comprehension', 'generator', 'python', 'yield', 'lazy']
+lengths = [len(w) for w in words]
+print("Word Lengths:", lengths)`,
+        explanation: "Transforming elements via a built-in function inside a comprehension replaces the need for `map(len, words)` with clean, idiomatic Python."
+      },
+      {
+        id: 4,
+        title: "Uppercase Converter",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Filter a list of programming language names, retaining only names with 4 or more characters, converted to uppercase.",
+        purpose: "Combine string methods with conditional length predicates.",
+        input: "langs = ['c', 'go', 'python', 'rust', 'java', 'r']",
+        output: "['PYTHON', 'RUST', 'JAVA']",
+        hint: "Combine `.upper()` in the output expression with `if len(lang) >= 4` at the end.",
+        code: `langs = ['c', 'go', 'python', 'rust', 'java', 'r']
+long_upper = [lang.upper() for lang in langs if len(lang) >= 4]
+print("Filtered Uppercase:", long_upper)`,
+        explanation: "Elements are tested against `len(lang) >= 4` first. Only qualifying strings have `.upper()` invoked, avoiding unnecessary transformations on discarded items."
+      },
+      {
+        id: 5,
+        title: "Flatten a 2D List",
+        category: "cat-nested",
+        catLabel: "Nested & Matrix",
+        problem: "Flatten a 2D nested list (matrix) into a single 1D list using a nested list comprehension.",
+        purpose: "Master nested loop syntax in comprehensions.",
+        input: "matrix = [[1, 2, 3], [4, 5], [6, 7, 8, 9]]",
+        output: "[1, 2, 3, 4, 5, 6, 7, 8, 9]",
+        hint: "Order the `for` loops in comprehension in the same order as standard nested loops: `[item for row in matrix for item in row]`.",
+        code: `matrix = [[1, 2, 3], [4, 5], [6, 7, 8, 9]]
+flattened = [item for row in matrix for item in row]
+print("Flattened List:", flattened)`,
+        explanation: "Comprehension loop ordering reads left-to-right matching standard indentation: outer loop `for row in matrix` runs first, followed by inner loop `for item in row`."
+      },
+      {
+        id: 6,
+        title: "Filter & Transform Together",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Given a list of numbers, double only the odd numbers and leave the even numbers unchanged.",
+        purpose: "Apply ternary conditional expressions `(val_if_true if cond else val_if_false)` within the output expression.",
+        input: "nums = [1, 2, 3, 4, 5, 6, 7, 8]",
+        output: "[2, 2, 6, 4, 10, 6, 14, 8]",
+        hint: "Use an inline ternary: `[x * 2 if x % 2 != 0 else x for x in nums]` (do not put `if` at the end!).",
+        code: `nums = [1, 2, 3, 4, 5, 6, 7, 8]
+result = [x * 2 if x % 2 != 0 else x for x in nums]
+print("Doubled Odds:", result)`,
+        explanation: "A leading ternary expression `A if cond else B` transforms every incoming element without altering the list's output length, unlike a trailing filter `if`."
+      },
+      {
+        id: 7,
+        title: "Word Frequency Dict",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Count the frequency of each unique word in a sentence using a dictionary comprehension.",
+        purpose: "Create frequency lookup dictionaries with dictionary comprehensions.",
+        input: "sentence = 'apple banana apple cherry banana apple'",
+        output: "{'apple': 3, 'banana': 2, 'cherry': 1}",
+        hint: "Use `{w: words.count(w) for w in set(words)}` to avoid redundant calls.",
+        code: `sentence = "apple banana apple cherry banana apple"
+words = sentence.split()
+freq_dict = {w: words.count(w) for w in set(words)}
+print("Word Frequencies:", freq_dict)`,
+        explanation: "Iterating over `set(words)` ensures `words.count(w)` is called exactly once per distinct word, producing a clean `{word: frequency}` mapping."
+      },
+      {
+        id: 8,
+        title: "Invert a Dictionary",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Invert a dictionary so that its values become keys and its keys become values (assuming unique values).",
+        purpose: "Swap key-value pairs using dictionary comprehensions.",
+        input: "scores = {'Alice': 100, 'Bob': 85, 'Charlie': 92}",
+        output: "{100: 'Alice', 85: 'Bob', 92: 'Charlie'}",
+        hint: "Iterate over `.items()` and flip positions: `{v: k for k, v in d.items()}`.",
+        code: `scores = {'Alice': 100, 'Bob': 85, 'Charlie': 92}
+inverted = {v: k for k, v in scores.items()}
+print("Inverted Dict:", inverted)`,
+        explanation: "`.items()` yields key-value tuples `(k, v)`. Inverting the expression to `{v: k}` switches keys and values in a single O(n) sweep."
+      },
+      {
+        id: 9,
+        title: "Unique Vowels",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Extract all unique vowels present in a text string in lowercase using a set comprehension.",
+        purpose: "Extract deduplicated sets with set comprehensions `{expr for ...}`.",
+        input: "text = 'Comprehensions and Generators in Python'",
+        output: "{'a', 'e', 'i', 'o'}",
+        hint: "Use `{char.lower() for char in text if char.lower() in 'aeiou'}`.",
+        code: `text = "Comprehensions and Generators in Python"
+vowels = {c.lower() for c in text if c.lower() in 'aeiou'}
+print("Unique Vowels:", vowels)`,
+        explanation: "Set comprehensions use curly braces `{...}` without key colons. Duplicate characters are automatically discarded during insertion into the set."
+      },
+      {
+        id: 10,
+        title: "Square Mapping",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Map numbers 1 through 6 to their cube values, but only for even numbers, using a dictionary comprehension.",
+        purpose: "Combine key-value mappings with trailing predicate filters.",
+        input: "Numbers 1 to 6",
+        output: "{2: 8, 4: 64, 6: 216}",
+        hint: "Use `{x: x**3 for x in range(1, 7) if x % 2 == 0}`.",
+        code: `cube_map = {x: x**3 for x in range(1, 7) if x % 2 == 0}
+print("Even Cube Map:", cube_map)`,
+        explanation: "The condition `if x % 2 == 0` filters out odd numbers before evaluating the key expression `x` and value expression `x**3`."
+      },
+      {
+        id: 11,
+        title: "FizzBuzz with Comprehension",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Implement FizzBuzz for numbers 1 to 15 using a single list comprehension containing nested ternary operators.",
+        purpose: "Chain multiple conditional expressions inside list comprehensions.",
+        input: "Numbers 1 through 15",
+        output: "['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'FizzBuzz']",
+        hint: "Use `'FizzBuzz' if x % 15 == 0 else 'Fizz' if x % 3 == 0 else 'Buzz' if x % 5 == 0 else str(x)`.",
+        code: `fizzbuzz = [
+    'FizzBuzz' if x % 15 == 0
+    else 'Fizz' if x % 3 == 0
+    else 'Buzz' if x % 5 == 0
+    else str(x)
+    for x in range(1, 16)
+]
+print("FizzBuzz:", fizzbuzz)`,
+        explanation: "Chaining ternary expressions provides branching inline logic while preserving the exact sequence length of 15 elements."
+      },
+      {
+        id: 12,
+        title: "Matrix Transposition",
+        category: "cat-nested",
+        catLabel: "Nested & Matrix",
+        problem: "Transpose a $3 \\times 2$ matrix into a $2 \\times 3$ matrix using a nested list comprehension.",
+        purpose: "Swap rows and columns in 2D grids using comprehensions.",
+        input: "matrix = [[1, 2], [3, 4], [5, 6]]",
+        output: "[[1, 3, 5], [2, 4, 6]]",
+        hint: "Outer comprehension iterates column indices `range(len(matrix[0]))`; inner comprehension iterates rows.",
+        code: `matrix = [
+    [1, 2],
+    [3, 4],
+    [5, 6]
+]
+transposed = [[row[col] for row in matrix] for col in range(len(matrix[0]))]
+print("Transposed Matrix:", transposed)`,
+        explanation: "The outer loop creates each new row corresponding to column index `col`. The inner loop gathers `row[col]` from every original row."
+      },
+      {
+        id: 13,
+        title: "Cartesian Product",
+        category: "cat-nested",
+        catLabel: "Nested & Matrix",
+        problem: "Compute the Cartesian product of two lists: colors `['red', 'blue']` and sizes `['S', 'M', 'L']` as formatted pairs.",
+        purpose: "Simulate `itertools.product` using multi-clause list comprehensions.",
+        input: "colors = ['red', 'blue'], sizes = ['S', 'M', 'L']",
+        output: "['red-S', 'red-M', 'red-L', 'blue-S', 'blue-M', 'blue-L']",
+        hint: "Write `[f'{c}-{s}' for c in colors for s in sizes]`.",
+        code: `colors = ['red', 'blue']
+sizes = ['S', 'M', 'L']
+product = [f"{c}-{s}" for c in colors for s in sizes]
+print("Cartesian Product:", product)`,
+        explanation: "Multiple `for` clauses create a nested loop behavior: for every color `c`, it pairs through every size `s`, yielding $|colors| \\times |sizes|$ items."
+      },
+      {
+        id: 14,
+        title: "Extract Digits",
+        category: "cat-list",
+        catLabel: "List Comprehensions",
+        problem: "Extract all digits from an alphanumeric string and return them as integer values in a list.",
+        purpose: "Filter characters and cast data types in a single step.",
+        input: "text = 'Room 404, Floor 2, Building 17'",
+        output: "[4, 0, 4, 2, 1, 7]",
+        hint: "Use `[int(c) for c in text if c.isdigit()]`.",
+        code: `text = "Room 404, Floor 2, Building 17"
+digits = [int(c) for c in text if c.isdigit()]
+print("Extracted Digits:", digits)`,
+        explanation: "`c.isdigit()` acts as a gatekeeper. Passing valid characters directly to `int(c)` transforms them into numerical integers."
+      },
+      {
+        id: 15,
+        title: "Nested Filtering",
+        category: "cat-nested",
+        catLabel: "Nested & Matrix",
+        problem: "Given a 2D matrix of integers, extract only positive even numbers into a flat list.",
+        purpose: "Combine multi-level list flattening with compound predicate filters.",
+        input: "matrix = [[-2, 4, -6], [8, 9, -10], [12, -14, 16]]",
+        output: "[4, 8, 12, 16]",
+        hint: "Use `[val for row in matrix for val in row if val > 0 and val % 2 == 0]`.",
+        code: `matrix = [
+    [-2, 4, -6],
+    [8, 9, -10],
+    [12, -14, 16]
+]
+pos_evens = [val for row in matrix for val in row if val > 0 and val % 2 == 0]
+print("Positive Evens:", pos_evens)`,
+        explanation: "The filter clause `if val > 0 and val % 2 == 0` evaluates against each individual element `val` extracted from `row`."
+      },
+      {
+        id: 16,
+        title: "Conditional Dict Comprehension",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Classify items in a dictionary of inventory quantities as 'In Stock' or 'Restock' based on whether quantity exceeds 10.",
+        purpose: "Apply ternary conditional expressions to dictionary values.",
+        input: "inventory = {'pens': 45, 'notebooks': 5, 'markers': 12, 'erasers': 2}",
+        output: "{'pens': 'In Stock', 'notebooks': 'Restock', 'markers': 'In Stock', 'erasers': 'Restock'}",
+        hint: "Use `{item: ('In Stock' if qty > 10 else 'Restock') for item, qty in inventory.items()}`.",
+        code: `inventory = {'pens': 45, 'notebooks': 5, 'markers': 12, 'erasers': 2}
+status = {item: ('In Stock' if qty > 10 else 'Restock') for item, qty in inventory.items()}
+print("Inventory Status:", status)`,
+        explanation: "The value expression uses an inline ternary condition to dynamically determine the status string for each item key."
+      },
+      {
+        id: 17,
+        title: "Grouped Dict from Two Lists",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Given student names and their respective house teams, group students into team lists using dictionary comprehension and `set()`.",
+        purpose: "Group data using comprehensions without requiring `collections.defaultdict`.",
+        input: "names = ['Harry', 'Hermione', 'Draco', 'Ron'], houses = ['Gryffindor', 'Gryffindor', 'Slytherin', 'Gryffindor']",
+        output: "{'Gryffindor': ['Harry', 'Hermione', 'Ron'], 'Slytherin': ['Draco']}",
+        hint: "Iterate unique houses with `set(houses)`: `{h: [name for name, house in zip(names, houses) if house == h] for h in set(houses)}`.",
+        code: `names = ['Harry', 'Hermione', 'Draco', 'Ron']
+houses = ['Gryffindor', 'Gryffindor', 'Slytherin', 'Gryffindor']
+
+grouped = {
+    h: [n for n, house in zip(names, houses) if house == h]
+    for h in set(houses)
+}
+print("Grouped by House:", grouped)`,
+        explanation: "For each unique house `h`, an inner comprehension filters all matching student names paired by `zip`."
+      },
+      {
+        id: 18,
+        title: "Set of Common Elements",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Find the set of elements common to both lists A and B using a set comprehension.",
+        purpose: "Implement set intersection logic using set comprehensions.",
+        input: "list_a = [1, 2, 3, 4, 5, 2], list_b = [3, 4, 5, 6, 7, 4]",
+        output: "{3, 4, 5}",
+        hint: "Use `{x for x in list_a if x in set(list_b)}`.",
+        code: `list_a = [1, 2, 3, 4, 5, 2]
+list_b = [3, 4, 5, 6, 7, 4]
+set_b = set(list_b)  # O(1) membership lookups
+
+common = {x for x in list_a if x in set_b}
+print("Common Elements:", common)`,
+        explanation: "Pre-converting `list_b` into a set ensures that `x in set_b` executes in $O(1)$ time, yielding an overall $O(N + M)$ runtime."
+      },
+      {
+        id: 19,
+        title: "Character Frequency Set",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Extract a set of characters that appear more than once in a given string (duplicate characters).",
+        purpose: "Identify duplicates using set comprehensions and `str.count()`.",
+        input: "word = 'abracadabra'",
+        output: "{'a', 'b', 'r'}",
+        hint: "Iterate over `set(word)`: `{c for c in set(word) if word.count(c) > 1}`.",
+        code: `word = "abracadabra"
+duplicates = {c for c in set(word) if word.count(c) > 1}
+print("Duplicate Characters:", duplicates)`,
+        explanation: "Iterating over `set(word)` guarantees that `word.count(c)` runs only once per unique character rather than on every repeated letter."
+      },
+      {
+        id: 20,
+        title: "Lazy Squares",
+        category: "cat-gen",
+        catLabel: "Generators & Pipelines",
+        problem: "Create a generator expression that lazily computes the square of numbers from 1 to 1,000,000 and verify its small memory footprint.",
+        purpose: "Contrast generator expressions `(expr for ...)` with memory-heavy list comprehensions.",
+        input: "1,000,000 numbers",
+        output: "Generator object size: < 200 bytes",
+        hint: "Use parentheses instead of brackets: `(x**2 for x in range(1, 1000001))`.",
+        code: `import sys
+
+# Generator expression (Lazy evaluation)
+lazy_gen = (x**2 for x in range(1, 1000001))
+
+print("Type:", type(lazy_gen))
+print("Memory Size in Bytes:", sys.getsizeof(lazy_gen))
+print("First 3 values:", [next(lazy_gen), next(lazy_gen), next(lazy_gen)])`,
+        explanation: "Generator expressions compute items on-demand using the iterator protocol, retaining an $O(1)$ constant memory footprint regardless of stream size."
+      },
+      {
+        id: 21,
+        title: "Infinite Fibonacci Generator",
+        category: "cat-gen",
+        catLabel: "Generators & Pipelines",
+        problem: "Write a generator function using `yield` that produces an infinite Fibonacci sequence, and fetch the first 10 terms.",
+        purpose: "Master generator functions and `yield` for unbounded mathematical streams.",
+        input: "Fetch 10 terms",
+        output: "[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]",
+        hint: "Use a `while True:` loop inside a generator function, updating `a, b = b, a + b` after `yield a`.",
+        code: `def fibonacci_gen():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+fib = fibonacci_gen()
+first_10 = [next(fib) for _ in range(10)]
+print("First 10 Fibonacci:", first_10)`,
+        explanation: "`yield` suspends the generator's execution state and yields the current value. When `next()` is called again, execution resumes immediately after the yield statement."
+      },
+      {
+        id: 22,
+        title: "Chained Generator Pipeline",
+        category: "cat-gen",
+        catLabel: "Generators & Pipelines",
+        problem: "Chain three generator stages together: (1) stream numbers 1 to 20, (2) filter out odd numbers, (3) square remaining evens.",
+        purpose: "Build composable, lazy data processing pipelines.",
+        input: "Numbers 1 to 20",
+        output: "[4, 16, 36, 64, 100, 144, 196, 256, 324, 400]",
+        hint: "Chain generator expressions: `stage1 = ...`, `stage2 = (x for x in stage1 if ...)`, `stage3 = (x**2 for x in stage2)`.",
+        code: `# Stage 1: Source generator
+stream = (x for x in range(1, 21))
+
+# Stage 2: Filter generator
+evens = (x for x in stream if x % 2 == 0)
+
+# Stage 3: Transformation generator
+squares = (x**2 for x in evens)
+
+# Consume pipeline
+result = list(squares)
+print("Pipeline Output:", result)`,
+        explanation: "Data elements flow through the pipeline one item at a time. No intermediate lists are stored in memory during processing."
+      },
+      {
+        id: 23,
+        title: "CSV Row Parser",
+        category: "cat-gen",
+        catLabel: "Generators & Pipelines",
+        problem: "Create a generator function that takes raw multi-line CSV text and yields parsed dictionaries mapping headers to row values.",
+        purpose: "Implement streaming file parsers using generators.",
+        input: "CSV string with header and 3 data rows",
+        output: "[{'id': '1', 'name': 'Alice'}, {'id': '2', 'name': 'Bob'}, {'id': '3', 'name': 'Charlie'}]",
+        hint: "Split header row first, then yield `dict(zip(headers, line.split(',')))` for each remaining line.",
+        code: `raw_csv = """id,name,role
+1,Alice,Engineer
+2,Bob,Designer
+3,Charlie,Manager"""
+
+def parse_csv_stream(csv_text):
+    lines = (line.strip() for line in csv_text.strip().splitlines())
+    headers = next(lines).split(',')
+    for line in lines:
+        if line:
+            yield dict(zip(headers, line.split(',')))
+
+records = list(parse_csv_stream(raw_csv))
+print("Parsed Records:", records)`,
+        explanation: "By yielding row dictionaries one-by-one, streaming parsers can process multi-gigabyte log files without exhausting memory."
+      },
+      {
+        id: 24,
+        title: "Dict of Grouped Anagrams",
+        category: "cat-dictset",
+        catLabel: "Dict & Set Comprehensions",
+        problem: "Group a list of words into a dictionary where keys are sorted character tuples and values are lists of anagrams.",
+        purpose: "Group anagrams using tuple keys and dictionary comprehensions.",
+        input: "words = ['eat', 'tea', 'tan', 'ate', 'nat', 'bat']",
+        output: "{('a', 'e', 't'): ['eat', 'tea', 'ate'], ('a', 'n', 't'): ['tan', 'nat'], ('a', 'b', 't'): ['bat']}",
+        hint: "Use `tuple(sorted(w))` as the canonical anagram key inside `{k: [w for w in words if tuple(sorted(w)) == k] for k in unique_keys}`.",
+        code: `words = ['eat', 'tea', 'tan', 'ate', 'nat', 'bat']
+
+# Extract unique sorted-character signature keys
+keys = {tuple(sorted(w)) for w in words}
+
+# Group words matching each signature key
+anagram_groups = {
+    k: [w for w in words if tuple(sorted(w)) == k]
+    for k in keys
+}
+print("Anagram Groups:", anagram_groups)`,
+        explanation: "Anagrams share identical sorted character sequences (e.g., `'eat'` and `'tea'` both sort to `('a', 'e', 't')`), serving as canonical dictionary keys."
+      },
+      {
+        id: 25,
+        title: "Comprehension vs Generator Benchmark",
+        category: "cat-gen",
+        catLabel: "Generators & Pipelines",
+        problem: "Benchmark the memory allocation and consumption characteristics of a list comprehension vs a generator expression for 100,000 elements.",
+        purpose: "Empirically evaluate memory trade-offs using `sys.getsizeof()`.",
+        input: "N = 100,000 integers",
+        output: "List: ~800,000+ bytes vs Generator: < 200 bytes",
+        hint: "Compare `sys.getsizeof([x for x in range(N)])` with `sys.getsizeof((x for x in range(N)))`.",
+        code: `import sys
+
+n = 100_000
+
+# Eager evaluation: List Comprehension
+list_comp = [x * 2 for x in range(n)]
+
+# Lazy evaluation: Generator Expression
+gen_exp = (x * 2 for x in range(n))
+
+print(f"List Comprehension Size: {sys.getsizeof(list_comp):,} bytes")
+print(f"Generator Expression Size: {sys.getsizeof(gen_exp):,} bytes")
+print(f"Memory reduction ratio: ~{sys.getsizeof(list_comp) // sys.getsizeof(gen_exp)}x smaller!")`,
+        explanation: "List comprehensions allocate storage for all 100,000 pointers upfront in RAM. Generator expressions allocate only the generator state machine frame, consuming fixed minimal memory."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_comprehensions_25_solved';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+
+      // Reliable clipboard copying for iframe environments
+      const textArea = document.createElement("textarea");
+      textArea.value = codeText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--card-bg); border-radius: 8px; border: 1px dashed var(--card-border);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--accent);"></i>
+            <p>No matching exercises found. Try refining your search query.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}: ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Mark Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+                ${escapeHtml(ex.input)}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${escapeHtml(ex.output)}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> 💡 Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> ✅ Show Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>Why This Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query ||
+          ex.title.toLowerCase().includes(query) ||
+          ex.problem.toLowerCase().includes(query) ||
+          ex.code.toLowerCase().includes(query) ||
+          ex.catLabel.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    // Filter Button Listeners
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    // Real-time Search Listener
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial Mount
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

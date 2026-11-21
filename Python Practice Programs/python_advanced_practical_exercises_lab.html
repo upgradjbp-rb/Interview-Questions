@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Master 65 • Advanced Algorithms, OOP & Systems Lab</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --card-bg: #161b22;
+      --card-border: #30363d;
+      --text-main: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-hover: #388bfd;
+      --hint-accent: #d29922;
+      --hint-bg: rgba(210, 153, 34, 0.08);
+      --sol-accent: #3fb950;
+      --sol-bg: rgba(63, 185, 80, 0.08);
+      --code-bg: #090d13;
+      --code-border: #21262d;
+      --badge-bg: #21262d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 17, 23, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls & Filtering */
+    .controls-wrapper {
+      max-width: 1050px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #21262d;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1050px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #58a6ff60;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(22, 27, 34, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-dsa { background: rgba(88, 166, 255, 0.15); color: var(--accent); border: 1px solid rgba(88, 166, 255, 0.3); }
+    .cat-func { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-oop { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-tools { background: rgba(63, 185, 80, 0.15); color: var(--sol-accent); border: 1px solid rgba(63, 185, 80, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(210, 153, 34, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(210, 153, 34, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(63, 185, 80, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(63, 185, 80, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(210, 153, 34, 0.3);
+      color: #eac54f;
+    }
+
+    .solution-drawer {
+      background: rgba(63, 185, 80, 0.04);
+      border: 1px solid rgba(63, 185, 80, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #11151c;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1f242c;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e6edf3;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1050px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python Master 65 • Advanced Algorithms, OOP &amp; Systems</h1>
+        <div class="badge-counter" id="progress-text">0 / 65 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Filter Chips, and Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search all 65 exercises (e.g. Singleton, Decorator, Binary Search, Context Manager, Regex, MRO)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (65)</button>
+      <button class="filter-btn" data-filter="cat-dsa">Data Structures &amp; Algorithms</button>
+      <button class="filter-btn" data-filter="cat-func">Advanced &amp; Functional</button>
+      <button class="filter-btn" data-filter="cat-oop">Object-Oriented Programming (OOP)</button>
+      <button class="filter-btn" data-filter="cat-tools">Practical &amp; Systems</button>
+      
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="exercises-list">
+    <!-- Rendered dynamically by JavaScript -->
+  </main>
+
+  <footer>
+    Python Master 65 • Comprehensive Advanced Python 3 Curriculum
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "List Comprehension Mastery",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Generate a list of squares for all even numbers from 1 to 20, but replace any square divisible by 4 with its negative value using list comprehension.",
+        purpose: "Learn conditional logic and ternary expressions within list comprehensions.",
+        input: "Range: 1 to 20 (Evens only)",
+        output: "[-4, -16, -36, -64, -100, -144, -196, -256, -324, -400]",
+        hint: "Combine filtering `if x % 2 == 0` at the end with a ternary value expression `(-x**2 if (x**2) % 4 == 0 else x**2)` at the front.",
+        code: `# List comprehension with ternary expression and predicate filter
+res = [-x**2 if (x**2) % 4 == 0 else x**2 for x in range(1, 21) if x % 2 == 0]
+print(res)`,
+        explanation: "Since all squares of even numbers are divisible by 4, every term receives the negative sign. The ternary operator handles element transformation while the trailing if filters the domain."
+      },
+      {
+        id: 2,
+        title: "Dictionary Merging with Logic",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Merge two dictionaries such that if a key exists in both, their numerical values are added together rather than overwritten.",
+        purpose: "Understand dictionary reconciliation and key collision handling.",
+        input: "d1 = {'a': 10, 'b': 20}, d2 = {'b': 30, 'c': 40}",
+        output: "{'a': 10, 'b': 50, 'c': 40}",
+        hint: "Initialize a copy of d1, then loop through d2 and use `merged[k] = merged.get(k, 0) + v`.",
+        code: `d1 = {'a': 10, 'b': 20}
+d2 = {'b': 30, 'c': 40}
+
+merged = dict(d1)
+for k, v in d2.items():
+    merged[k] = merged.get(k, 0) + v
+
+print(merged)`,
+        explanation: "Using dict.get(k, 0) safely retrieves existing values or defaults to 0, ensuring accumulated summation without KeyErrors."
+      },
+      {
+        id: 3,
+        title: "Frequency Map with Counter",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Given a list of words, find the top 2 most frequent words and their exact frequencies using Python's collections.Counter.",
+        purpose: "Explore collections.Counter for multi-set arithmetic and ranking.",
+        input: "words = ['apple', 'banana', 'apple', 'cherry', 'banana', 'apple']",
+        output: "[('apple', 3), ('banana', 2)]",
+        hint: "Instantiate `Counter(words)` and invoke `.most_common(2)`.",
+        code: `from collections import Counter
+
+words = ['apple', 'banana', 'apple', 'cherry', 'banana', 'apple']
+counts = Counter(words)
+print(counts.most_common(2))`,
+        explanation: "Counter creates an O(n) hash map of element frequencies. The .most_common(k) method uses a heap internally to extract top k elements in O(n log k) time."
+      },
+      {
+        id: 4,
+        title: "Anagram Checker",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Write a function to check if two strings are anagrams of each other (contain the same characters with identical counts, ignoring spaces and casing).",
+        purpose: "Understand frequency mapping versus sorting for string equality verification.",
+        input: "s1 = 'Listen', s2 = 'Silent'",
+        output: "True",
+        hint: "Strip spaces, convert to lowercase, and check if `Counter(s1) == Counter(s2)`.",
+        code: `from collections import Counter
+
+def is_anagram(s1, s2):
+    clean1 = s1.replace(" ", "").lower()
+    clean2 = s2.replace(" ", "").lower()
+    return Counter(clean1) == Counter(clean2)
+
+print(is_anagram('Listen', 'Silent'))
+print(is_anagram('Hello', 'World'))`,
+        explanation: "Comparing two Counter objects performs an O(n) multi-set equality check without the O(n log n) overhead of sorting."
+      },
+      {
+        id: 5,
+        title: "Flatten a Nested List",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Write a recursive function that flattens an arbitrarily nested list of integers into a single 1D list.",
+        purpose: "Learn recursive tree traversal and instance checking.",
+        input: "[1, [2, [3, 4], 5], 6, [7, 8]]",
+        output: "[1, 2, 3, 4, 5, 6, 7, 8]",
+        hint: "Iterate through items; if `isinstance(item, list)`, recurse and extend, otherwise append.",
+        code: `def flatten(nested):
+    flat = []
+    for item in nested:
+        if isinstance(item, list):
+            flat.extend(flatten(item))
+        else:
+            flat.append(item)
+    return flat
+
+data = [1, [2, [3, 4], 5], 6, [7, 8]]
+print(flatten(data))`,
+        explanation: "Depth-first recursion visits leaf values while unwrapping arbitrary levels of list nesting."
+      },
+      {
+        id: 6,
+        title: "Reverse Each Word of a String",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Given a sentence, reverse every individual word while preserving the original word positions and spacing.",
+        purpose: "String tokenization and element-wise transformation.",
+        input: "'Python is awesome'",
+        output: "'nohtyP si emosewa'",
+        hint: "Split the sentence into words, apply `word[::-1]` to each, and join with `' '`.",
+        code: `sentence = "Python is awesome"
+reversed_words = " ".join(word[::-1] for word in sentence.split(" "))
+print(reversed_words)`,
+        explanation: "The generator expression reverses individual word tokens without altering their surrounding structural sequence."
+      },
+      {
+        id: 7,
+        title: "Palindrome Sentence",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Check if an entire sentence is a palindrome, considering only alphanumeric characters and ignoring letter cases.",
+        purpose: "Two-pointer string sanitation and validation.",
+        input: "'A man, a plan, a canal: Panama'",
+        output: "True",
+        hint: "Filter the string using `[c.lower() for c in s if c.isalnum()]` and test if it equals its reverse.",
+        code: `def is_palindrome_sentence(s):
+    cleaned = [c.lower() for c in s if c.isalnum()]
+    return cleaned == cleaned[::-1]
+
+print(is_palindrome_sentence("A man, a plan, a canal: Panama"))
+print(is_palindrome_sentence("Race a car"))`,
+        explanation: "c.isalnum() strips punctuation and whitespace, standardizing the character array before symmetry comparison."
+      },
+      {
+        id: 8,
+        title: "List Comprehension Filtering (Advanced)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "From a list of names, extract the uppercase forms of names that have more than 4 letters and start with vowels.",
+        purpose: "Multi-condition predicate filtering in comprehensions.",
+        input: "['Alice', 'Bob', 'Ursula', 'Oliver', 'Eve', 'Ian']",
+        output: "['ALICE', 'URSULA', 'OLIVER']",
+        hint: "Filter with `if len(name) > 4 and name[0].upper() in 'AEIOU'`.",
+        code: `names = ['Alice', 'Bob', 'Ursula', 'Oliver', 'Eve', 'Ian']
+vowel_names = [
+    n.upper() for n in names 
+    if len(n) > 4 and n[0].upper() in 'AEIOU'
+]
+print(vowel_names)`,
+        explanation: "Combines length constraints and membership checks within a single pass comprehension."
+      },
+      {
+        id: 9,
+        title: "Remove Duplicates (Preserving Order)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Remove all duplicates from a list while maintaining the exact relative order of first appearance.",
+        purpose: "Explore order-preserving set patterns and dict.fromkeys() in O(n) time.",
+        input: "[4, 5, 2, 4, 1, 2, 5, 3]",
+        output: "[4, 5, 2, 1, 3]",
+        hint: "Use `list(dict.fromkeys(lst))` or a seen set in a loop.",
+        code: `data = [4, 5, 2, 4, 1, 2, 5, 3]
+# In Python 3.7+, dictionary key insertion order is guaranteed
+unique_order = list(dict.fromkeys(data))
+print(unique_order)`,
+        explanation: "dict.fromkeys() discards subsequent duplicate insertions in O(1) hash lookup time while maintaining initial encounter order."
+      },
+      {
+        id: 10,
+        title: "Circular Shift (Rotation)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Rotate a list to the right by k steps. Elements shifted off the end should wrap around to the front.",
+        purpose: "Index slicing and modular arithmetic.",
+        input: "lst = [1, 2, 3, 4, 5, 6, 7], k = 3",
+        output: "[5, 6, 7, 1, 2, 3, 4]",
+        hint: "Normalize k via `k = k % len(lst)`. Slicing `lst[-k:] + lst[:-k]` handles the wrap-around.",
+        code: `def rotate_right(lst, k):
+    if not lst:
+        return lst
+    k = k % len(lst)
+    return lst[-k:] + lst[:-k]
+
+print(rotate_right([1, 2, 3, 4, 5, 6, 7], 3))`,
+        explanation: "Modular reduction k % len(lst) accommodates shift magnitudes larger than the collection length."
+      },
+      {
+        id: 11,
+        title: "Dictionary Merging (Value Grouping)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Group student names into lists by their respective grade letters from a list of (name, grade) tuples.",
+        purpose: "Using collections.defaultdict for automated bucket accumulation.",
+        input: "[('Alice', 'A'), ('Bob', 'B'), ('Charlie', 'A'), ('Dave', 'C')]",
+        output: "{'A': ['Alice', 'Charlie'], 'B': ['Bob'], 'C': ['Dave']}",
+        hint: "Use `defaultdict(list)` and append each student to `grouped[grade]`.",
+        code: `from collections import defaultdict
+
+records = [('Alice', 'A'), ('Bob', 'B'), ('Charlie', 'A'), ('Dave', 'C')]
+grouped = defaultdict(list)
+
+for name, grade in records:
+    grouped[grade].append(name)
+
+print(dict(grouped))`,
+        explanation: "defaultdict(list) initializes an empty list upon first access of any new key, eliminating manual existence checks."
+      },
+      {
+        id: 12,
+        title: "Inverted Index",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Build an inverted index mapping each unique word to a set of document IDs in which it appears.",
+        purpose: "Fundamental data structure behind full-text search engines.",
+        input: "docs = {1: 'hello world', 2: 'hello python', 3: 'world python'}",
+        output: "{'hello': {1, 2}, 'world': {1, 3}, 'python': {2, 3}}",
+        hint: "Loop through document id and text, split text into words, and add doc_id to `index[word]`.",
+        code: `from collections import defaultdict
+
+docs = {1: 'hello world', 2: 'hello python', 3: 'world python'}
+inverted_index = defaultdict(set)
+
+for doc_id, text in docs.items():
+    for word in text.split():
+        inverted_index[word].add(doc_id)
+
+print(dict(inverted_index))`,
+        explanation: "An inverted index maps terms back to document locations, allowing O(1) keyword lookups for search engines."
+      },
+      {
+        id: 13,
+        title: "Dictionary Sorting (Lambda)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Sort a dictionary of product prices in descending order of price using lambda functions.",
+        purpose: "Custom key sorting with sorted() and lambdas.",
+        input: "{'apple': 0.5, 'banana': 0.25, 'cherry': 1.5, 'date': 0.75}",
+        output: "[('cherry', 1.5), ('date', 0.75), ('apple', 0.5), ('banana', 0.25)]",
+        hint: "Sort `d.items()` with `key=lambda item: item[1]` and `reverse=True`.",
+        code: `prices = {'apple': 0.5, 'banana': 0.25, 'cherry': 1.5, 'date': 0.75}
+sorted_prices = sorted(prices.items(), key=lambda item: item[1], reverse=True)
+print(sorted_prices)`,
+        explanation: "The lambda item: item[1] instructs Python's Timsort algorithm to compare tuples based on their value (price) rather than key."
+      },
+      {
+        id: 14,
+        title: "Subset and Superset Validation",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Given three sets A, B, and C, verify if B is a subset of A and if A is a superset of C.",
+        purpose: "Understand mathematical set relations with operators and methods.",
+        input: "A = {1, 2, 3, 4, 5}, B = {2, 3}, C = {1, 6}",
+        output: "B subset of A: True, A superset of C: False",
+        hint: "Use `B.issubset(A)` (or `B <= A`) and `A.issuperset(C)` (or `A >= C`).",
+        code: `A = {1, 2, 3, 4, 5}
+B = {2, 3}
+C = {1, 6}
+
+print("B subset of A:", B.issubset(A))
+print("A superset of C:", A.issuperset(C))`,
+        explanation: "Set inclusion methods run in O(len(B)) average time using internal hash table lookups."
+      },
+      {
+        id: 15,
+        title: "Set Symmetric Difference",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Find all elements that are present in either set A or set B, but not in both.",
+        purpose: "Apply symmetric difference operator (^) on collections.",
+        input: "set1 = {1, 2, 3, 4}, set2 = {3, 4, 5, 6}",
+        output: "{1, 2, 5, 6}",
+        hint: "Use the symmetric difference operator: `set1 ^ set2`.",
+        code: `set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+
+sym_diff = set1 ^ set2
+print("Symmetric Difference:", sym_diff)`,
+        explanation: "The ^ operator isolates elements unique to each set, filtering out their mutual intersection."
+      },
+      {
+        id: 16,
+        title: "Power Set Generation",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Generate all possible subsets (the power set) of a given set of elements.",
+        purpose: "Combinatorial generation using itertools.combinations.",
+        input: "[1, 2, 3]",
+        output: "[(), (1,), (2,), (3,), (1, 2), (1, 3), (2, 3), (1, 2, 3)]",
+        hint: "Chain combinations of lengths 0 through len(s) using `itertools.chain` and `itertools.combinations`.",
+        code: `from itertools import chain, combinations
+
+def power_set(iterable):
+    s = list(iterable)
+    return list(chain.from_iterable(combinations(s, r) for r in range(len(s) + 1)))
+
+print(power_set([1, 2, 3]))`,
+        explanation: "A set of size n has 2^n total subsets. itertools.combinations generates combinations for each length r from 0 to n."
+      },
+      {
+        id: 17,
+        title: "Age Calculator (Exact)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Calculate a person's exact age in years, months, and days given their birthdate and a reference date.",
+        purpose: "Handle calendar leap years and calendar math with the datetime module.",
+        input: "Birthdate: 2000-05-15, Reference Date: 2026-09-30",
+        output: "26 years, 4 months, 15 days",
+        hint: "Subtract years/months adjusting for day borrows, or use `dateutil.relativedelta`.",
+        code: `from datetime import date
+
+def calculate_age(birthdate, today):
+    years = today.year - birthdate.year
+    months = today.month - birthdate.month
+    days = today.day - birthdate.day
+
+    if days < 0:
+        months -= 1
+        # Borrow days from previous month
+        prev_month = 12 if today.month == 1 else today.month - 1
+        days += 30 # standard approximate month borrow
+
+    if months < 0:
+        years -= 1
+        months += 12
+
+    return f"{years} years, {months} months, {days} days"
+
+print(calculate_age(date(2000, 5, 15), date(2026, 9, 30)))`,
+        explanation: "Calendar arithmetic requires accounting for month-end day discrepancies and anniversary crossings."
+      },
+      {
+        id: 18,
+        title: "Countdown Timer (Time Delta)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Calculate remaining days, hours, and minutes until a target future event date.",
+        purpose: "Work with datetime.timedelta decompositions.",
+        input: "Target: 2027-01-01 00:00:00 from Reference: 2026-09-30 12:00:00",
+        output: "92 days, 12 hours, 0 minutes remaining",
+        hint: "Subtract the current datetime from target datetime and extract `.days` and `.seconds`.",
+        code: `from datetime import datetime
+
+now = datetime(2026, 9, 30, 12, 0, 0)
+event = datetime(2027, 1, 1, 0, 0, 0)
+
+delta = event - now
+days = delta.days
+hours = delta.seconds // 3600
+minutes = (delta.seconds % 3600) // 60
+
+print(f"{days} days, {hours} hours, {minutes} minutes remaining")`,
+        explanation: "timedelta stores differences broken into days and seconds. Modular division unpacks seconds into hours and minutes."
+      },
+      {
+        id: 19,
+        title: "Business Days Calculator",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Calculate the total number of business days (Monday through Friday) between two dates.",
+        purpose: "Weekday filtering and calendar traversal.",
+        input: "Start: 2026-10-01, End: 2026-10-15",
+        output: "11 business days",
+        hint: "Iterate day by day using `timedelta(days=1)` and count if `current.weekday() < 5`.",
+        code: `from datetime import date, timedelta
+
+def count_business_days(start_date, end_date):
+    cur = start_date
+    count = 0
+    while cur <= end_date:
+        if cur.weekday() < 5:  # 0 is Mon, 4 is Fri
+            count += 1
+        cur += timedelta(days=1)
+    return count
+
+print("Business days:", count_business_days(date(2026, 10, 1), date(2026, 10, 15)))`,
+        explanation: "date.weekday() returns 0 for Monday through 4 for Friday, ignoring weekends (5 and 6)."
+      },
+      {
+        id: 20,
+        title: "Custom Iterator Class",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Implement a custom iterator class `Countdown` that counts down from a number to 1 using `__iter__` and `__next__`.",
+        purpose: "Master Python's iteration protocol and StopIteration exception.",
+        input: "Countdown(3)",
+        output: "3 2 1",
+        hint: "Implement `__iter__(self)` returning self, and `__next__(self)` raising `StopIteration` when below 1.",
+        code: `class Countdown:
+    def __init__(self, start):
+        self.current = start
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current <= 0:
+            raise StopIteration
+        val = self.current
+        self.current -= 1
+        return val
+
+for num in Countdown(3):
+    print(num, end=" ")
+print()`,
+        explanation: "Python's iteration protocol relies on __iter__() returning the iterator and __next__() producing the next element until raising StopIteration."
+      },
+      {
+        id: 21,
+        title: "Find Duplicates in O(n) Time",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Given a list of integers, find all numbers that appear more than once in linear O(n) time and space.",
+        purpose: "Hash sets for duplicate tracking.",
+        input: "[1, 3, 4, 2, 2, 3, 5, 1]",
+        output: "[2, 3, 1]",
+        hint: "Use two sets: `seen` to track encountered items and `duplicates` for repeating items.",
+        code: `def find_duplicates(nums):
+    seen = set()
+    duplicates = set()
+    for n in nums:
+        if n in seen:
+            duplicates.add(n)
+        else:
+            seen.add(n)
+    return list(duplicates)
+
+print(find_duplicates([1, 3, 4, 2, 2, 3, 5, 1]))`,
+        explanation: "Set lookups take O(1) time on average. A single pass ensures O(n) runtime complexity."
+      },
+      {
+        id: 22,
+        title: "Singly Linked List Implementation",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Implement a basic Singly Linked List with `append()` and `display()` methods.",
+        purpose: "Understand pointer-based node linked data structures.",
+        input: "Append 10, 20, 30",
+        output: "10 -> 20 -> 30 -> None",
+        hint: "Create a `Node` class with `data` and `next`, then traverse from `head` to append.",
+        code: `class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        cur = self.head
+        while cur.next:
+            cur = cur.next
+        cur.next = new_node
+
+    def display(self):
+        cur = self.head
+        nodes = []
+        while cur:
+            nodes.append(str(cur.data))
+            cur = cur.next
+        print(" -> ".join(nodes) + " -> None")
+
+ll = LinkedList()
+ll.append(10)
+ll.append(20)
+ll.append(30)
+ll.display()`,
+        explanation: "Each node holds data and a reference to the next node in dynamic heap memory."
+      },
+      {
+        id: 23,
+        title: "Stack Implementation (LIFO)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Implement a Stack class with `push()`, `pop()`, `peek()`, and `is_empty()` using a list.",
+        purpose: "Last-In-First-Out (LIFO) abstract data type.",
+        input: "Push 5, Push 10, Pop()",
+        output: "Popped: 10, Top: 5",
+        hint: "Use list `.append()` for push and `.pop()` for pop to guarantee O(1) operations.",
+        code: `class Stack:
+    def __init__(self):
+        self._items = []
+
+    def push(self, item):
+        self._items.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("pop from empty stack")
+        return self._items.pop()
+
+    def peek(self):
+        return self._items[-1] if not self.is_empty() else None
+
+    def is_empty(self):
+        return len(self._items) == 0
+
+s = Stack()
+s.push(5)
+s.push(10)
+print("Popped:", s.pop())
+print("Top:", s.peek())`,
+        explanation: "By appending and popping at the end of the list, both push and pop achieve amortized O(1) complexity."
+      },
+      {
+        id: 24,
+        title: "Queue Implementation (FIFO)",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Implement a FIFO Queue using `collections.deque` with `enqueue()` and `dequeue()` methods.",
+        purpose: "First-In-First-Out data structures with O(1) head removals.",
+        input: "Enqueue 'A', 'B', Dequeue()",
+        output: "Dequeued: 'A'",
+        hint: "Wrap `collections.deque` and call `.append()` to enqueue and `.popleft()` to dequeue.",
+        code: `from collections import deque
+
+class Queue:
+    def __init__(self):
+        self._items = deque()
+
+    def enqueue(self, item):
+        self._items.append(item)
+
+    def dequeue(self):
+        if not self._items:
+            raise IndexError("dequeue from empty queue")
+        return self._items.popleft()
+
+q = Queue()
+q.enqueue('A')
+q.enqueue('B')
+print("Dequeued:", q.dequeue())`,
+        explanation: "deque provides O(1) pops from the left, unlike standard lists which require O(n) element shifting."
+      },
+      {
+        id: 25,
+        title: "Recursive Binary Search",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Implement recursive binary search on a sorted list to return the index of a target value or -1 if not found.",
+        purpose: "Divide-and-conquer searching algorithm in O(log n) time.",
+        input: "arr = [2, 5, 8, 12, 16, 23, 38], target = 16",
+        output: "Found at index: 4",
+        hint: "Check middle index `mid = (low + high) // 2`. Recurse left or right depending on target comparison.",
+        code: `def binary_search(arr, low, high, target):
+    if low > high:
+        return -1
+    mid = (low + high) // 2
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] > target:
+        return binary_search(arr, low, mid - 1, target)
+    else:
+        return binary_search(arr, mid + 1, high, target)
+
+data = [2, 5, 8, 12, 16, 23, 38]
+idx = binary_search(data, 0, len(data) - 1, 16)
+print("Found at index:", idx)`,
+        explanation: "Halving the search space on each step guarantees worst-case runtime complexity of O(log n)."
+      },
+      {
+        id: 26,
+        title: "Lambda Sorting with Tuples",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Sort a list of student records `(name, grade, age)` primarily by grade (descending) and secondarily by age (ascending).",
+        purpose: "Multi-key sorting using compound lambda tuples.",
+        input: "[('Alice', 'B', 22), ('Bob', 'A', 20), ('Charlie', 'A', 19)]",
+        output: "[('Charlie', 'A', 19), ('Bob', 'A', 20), ('Alice', 'B', 22)]",
+        hint: "Use `key=lambda x: (x[1], x[2])`.",
+        code: `students = [('Alice', 'B', 22), ('Bob', 'A', 20), ('Charlie', 'A', 19)]
+# Primary key: Grade (Ascending A->B), Secondary: Age
+sorted_students = sorted(students, key=lambda s: (s[1], s[2]))
+print(sorted_students)`,
+        explanation: "Python compares tuples position-by-position. If element 0 matches, it breaks ties using element 1."
+      },
+      {
+        id: 27,
+        title: "Map and Filter Combination",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Given a list of numbers, use `map()` and `filter()` to find squares of all odd numbers.",
+        purpose: "Functional pipeline programming with map and filter iterables.",
+        input: "[1, 2, 3, 4, 5, 6]",
+        output: "[1, 9, 25]",
+        hint: "Combine `map(lambda x: x**2, filter(lambda x: x % 2 != 0, nums))`.",
+        code: `nums = [1, 2, 3, 4, 5, 6]
+odds = filter(lambda x: x % 2 != 0, nums)
+squared_odds = list(map(lambda x: x**2, odds))
+print(squared_odds)`,
+        explanation: "filter() passes through elements matching the predicate, and map() applies the squaring function to the filtered stream."
+      },
+      {
+        id: 28,
+        title: "Custom @timer Decorator",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Write a reusable function decorator `@timer` that prints the execution time of any decorated function.",
+        purpose: "Metaprogramming and higher-order functions using functools.wraps.",
+        input: "Decorate a sleeping function",
+        output: "Function slow_func executed in ~0.10s",
+        hint: "Use `functools.wraps`, take start time with `time.perf_counter()`, execute `func`, and compute elapsed time.",
+        code: `import time
+from functools import wraps
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.perf_counter()
+        res = func(*args, **kwargs)
+        elapsed = time.perf_counter() - start
+        print(f"Function {func.__name__} executed in {elapsed:.4f}s")
+        return res
+    return wrapper
+
+@timer
+def example():
+    time.sleep(0.05)
+
+example()`,
+        explanation: "Decorators wrap functions with pre- and post-execution logic. @wraps preserves the decorated function's original docstring and name."
+      },
+      {
+        id: 29,
+        title: "Fibonacci Generator (Memory Efficiency)",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Create an infinite Fibonacci generator function using `yield` that consumes $O(1)$ memory.",
+        purpose: "Lazy sequence generation with generator functions.",
+        input: "Take first 7 terms",
+        output: "0 1 1 2 3 5 8",
+        hint: "Use an infinite `while True:` loop, `yield a`, and update `a, b = b, a + b`.",
+        code: `def fib_generator():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+gen = fib_generator()
+terms = [next(gen) for _ in range(7)]
+print(" ".join(map(str, terms)))`,
+        explanation: "yield suspends function execution and preserves local variables, producing elements one at a time on demand."
+      },
+      {
+        id: 30,
+        title: "Custom Context Manager (with statement)",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Implement a custom context manager class `TimerContext` using `__enter__` and `__exit__` to measure code blocks.",
+        purpose: "Resource management protocol using context managers.",
+        input: "with TimerContext(): time.sleep(0.05)",
+        output: "Block elapsed: ~0.050s",
+        hint: "Record start in `__enter__` and compute difference in `__exit__(self, exc_type, exc_val, exc_tb)`.",
+        code: `import time
+
+class TimerContext:
+    def __enter__(self):
+        self.start = time.perf_counter()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        elapsed = time.perf_counter() - self.start
+        print(f"Block elapsed: {elapsed:.3f}s")
+        return False
+
+with TimerContext():
+    time.sleep(0.05)`,
+        explanation: "__enter__ sets up state before the with block, and __exit__ guarantees cleanup even if exceptions are raised inside the block."
+      },
+      {
+        id: 31,
+        title: "The Versatile *args and **kwargs",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Write a function `universal_logger(*args, **kwargs)` that prints positional arguments numbered and keyword arguments alphabetically.",
+        purpose: "Variable argument unpacking and flexible API signatures.",
+        input: "logger(10, 'apple', role='admin', active=True)",
+        output: "Positional: [10, 'apple'] | Keywords: {'active': True, 'role': 'admin'}",
+        hint: "Iterate through tuple `args` and sorted dictionary `kwargs.items()`.",
+        code: `def universal_logger(*args, **kwargs):
+    print("Positional:", list(args))
+    print("Keywords:", dict(sorted(kwargs.items())))
+
+universal_logger(10, 'apple', role='admin', active=True)`,
+        explanation: "*args packs unmapped positional arguments into a tuple; **kwargs packs keyword arguments into a dictionary."
+      },
+      {
+        id: 32,
+        title: "Zip and Enumerate Mapping",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Given names and scores, format a leaderboard pairing rank, name, and score using `enumerate` and `zip`.",
+        purpose: "Parallel iteration combined with index counters.",
+        input: "names = ['Alice', 'Bob'], scores = [98, 85]",
+        output: "Rank 1: Alice - 98 | Rank 2: Bob - 85",
+        hint: "Combine `enumerate(zip(names, scores), start=1)`.",
+        code: `names = ['Alice', 'Bob', 'Charlie']
+scores = [98, 85, 92]
+
+for rank, (name, score) in enumerate(zip(names, scores), start=1):
+    print(f"Rank {rank}: {name} - {score}")`,
+        explanation: "zip pairs sequences concurrently, and enumerate(..., start=1) assigns ordinal ranks without manual counters."
+      },
+      {
+        id: 33,
+        title: "Memoization with lru_cache",
+        category: "cat-func",
+        catLabel: "Advanced Python",
+        problem: "Optimize a recursive Fibonacci function from exponential $O(2^n)$ to linear $O(n)$ using `@functools.lru_cache`.",
+        purpose: "Automatic memoization and dynamic programming caching.",
+        input: "fib(35)",
+        output: "9227465 (computed instantly)",
+        hint: "Import `lru_cache` from `functools` and decorate `fib(n)` with `@lru_cache(maxsize=None)`.",
+        code: `from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+print("Fib(35) =", fib(35))`,
+        explanation: "lru_cache stores computed function returns keyed by arguments in an internal hash table, eliminating redundant recursive subtrees."
+      },
+      {
+        id: 34,
+        title: "Set Operations for Data Analysis",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Given active users on Day 1 and Day 2, calculate total unique users, returning users, and churned users.",
+        purpose: "Union, intersection, and difference set operations.",
+        input: "day1 = {'A', 'B', 'C'}, day2 = {'B', 'C', 'D'}",
+        output: "Total: 4, Returning: {'B', 'C'}, Churned: {'A'}",
+        hint: "Total: `day1 | day2`, Returning: `day1 & day2`, Churned: `day1 - day2`.",
+        code: `day1 = {'A', 'B', 'C'}
+day2 = {'B', 'C', 'D'}
+
+total = day1 | day2
+returning = day1 & day2
+churned = day1 - day2
+
+print(f"Total: {len(total)}, Returning: {returning}, Churned: {churned}")`,
+        explanation: "Set union (|) merges collections, intersection (&) detects returning overlap, and difference (-) calculates user drop-off."
+      },
+      {
+        id: 35,
+        title: "Inheritance and Method Overriding",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create a base class `Employee` with method `get_salary()` and a subclass `Manager` that adds bonus compensation.",
+        purpose: "Polymorphism, class hierarchy, and `super()`.",
+        input: "Employee(5000), Manager(5000, 2000)",
+        output: "Employee: 5000, Manager: 7000",
+        hint: "In `Manager.get_salary()`, call `super().get_salary() + self.bonus`.",
+        code: `class Employee:
+    def __init__(self, base_salary):
+        self.base_salary = base_salary
+
+    def get_salary(self):
+        return self.base_salary
+
+class Manager(Employee):
+    def __init__(self, base_salary, bonus):
+        super().__init__(base_salary)
+        self.bonus = bonus
+
+    def get_salary(self):
+        return super().get_salary() + self.bonus
+
+print("Employee:", Employee(5000).get_salary())
+print("Manager:", Manager(5000, 2000).get_salary())`,
+        explanation: "super() delegates initialization and method calls up the inheritance chain, enabling clean behavioral extensions."
+      },
+      {
+        id: 36,
+        title: "Encapsulation (Private Attributes)",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create a `BankAccount` class with a private attribute `__balance`, and safe `deposit()` and `withdraw()` methods.",
+        purpose: "Data hiding and private attribute name mangling.",
+        input: "Account balance 100, deposit 50, withdraw 30",
+        output: "Balance: 120",
+        hint: "Prefix attributes with double underscores `self.__balance` and validate inputs before modifying.",
+        code: `class BankAccount:
+    def __init__(self, initial):
+        self.__balance = initial
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+
+    def get_balance(self):
+        return self.__balance
+
+acc = BankAccount(100)
+acc.deposit(50)
+acc.withdraw(30)
+print("Balance:", acc.get_balance())`,
+        explanation: "Double-underscored variables are name-mangled to _Class__attribute to prevent inadvertent external overwrites."
+      },
+      {
+        id: 37,
+        title: "Property Decorators (@property)",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create a `Temperature` class using `@property` for Celsius and Fahrenheit with validation that rejects values below absolute zero (-273.15C).",
+        purpose: "Pythonic getters, setters, and validation.",
+        input: "Set temp = 25",
+        output: "25C is 77.0F",
+        hint: "Use `@property` for getter and `@celsius.setter` with an `if value < -273.15:` check.",
+        code: `class Temperature:
+    def __init__(self, celsius=0.0):
+        self._celsius = celsius
+
+    @property
+    def celsius(self):
+        return self._celsius
+
+    @celsius.setter
+    def celsius(self, val):
+        if val < -273.15:
+            raise ValueError("Temperature below absolute zero!")
+        self._celsius = val
+
+    @property
+    def fahrenheit(self):
+        return (self._celsius * 9/5) + 32
+
+t = Temperature(25)
+print(f"{t.celsius}C is {t.fahrenheit}F")`,
+        explanation: "@property presents getters and setters with natural dot-notation attribute syntax while preserving validation."
+      },
+      {
+        id: 38,
+        title: "Class Methods vs. Static Methods",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create a `Date` class with a static method `is_valid_year()` and a class method `from_string('YYYY-MM-DD')`.",
+        purpose: "Alternative constructors (@classmethod) and utility methods (@staticmethod).",
+        input: "Date.from_string('2026-09-30')",
+        output: "Date: Year 2026, Month 9, Day 30",
+        hint: "Decorate alternative constructors with `@classmethod` using `cls(...)`.",
+        code: `class Date:
+    def __init__(self, y, m, d):
+        self.y, self.m, self.d = y, m, d
+
+    @classmethod
+    def from_string(cls, date_str):
+        y, m, d = map(int, date_str.split('-'))
+        return cls(y, m, d)
+
+    @staticmethod
+    def is_valid_year(year):
+        return 0 < year <= 9999
+
+d = Date.from_string("2026-09-30")
+print(f"Date: Year {d.y}, Month {d.m}, Day {d.d}")`,
+        explanation: "@classmethod receives cls as first argument for factory instantiation; @staticmethod operates independently of class or instance state."
+      },
+      {
+        id: 39,
+        title: "Magic Methods (__str__ and __add__)",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create a `Vector2D` class that supports string representations with `__str__` and vector addition using the `+` operator with `__add__`.",
+        purpose: "Operator overloading and string representations in Python.",
+        input: "Vector2D(1, 2) + Vector2D(3, 4)",
+        output: "Vector(4, 6)",
+        hint: "Define `__add__(self, other)` returning `Vector2D(self.x + other.x, self.y + other.y)`.",
+        code: `class Vector2D:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector2D(self.x + other.x, self.y + other.y)
+
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+
+v1 = Vector2D(1, 2)
+v2 = Vector2D(3, 4)
+print(v1 + v2)`,
+        explanation: "Implementing dunder methods hooks directly into Python's built-in syntax operators (such as + and str())."
+      },
+      {
+        id: 40,
+        title: "Abstract Base Classes (ABC)",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Define an abstract base class `Shape` with an abstract method `area()`, then implement concrete subclasses `Circle` and `Rectangle`.",
+        purpose: "Enforce API contracts using abc.ABC and @abstractmethod.",
+        input: "Circle(5), Rectangle(4, 6)",
+        output: "Circle Area: 78.54, Rectangle Area: 24",
+        hint: "Inherit from `abc.ABC` and decorate required methods with `@abstractmethod`.",
+        code: `from abc import ABC, abstractmethod
+import math
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Circle(Shape):
+    def __init__(self, r):
+        self.r = r
+    def area(self):
+        return math.pi * self.r ** 2
+
+class Rectangle(Shape):
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+    def area(self):
+        return self.w * self.h
+
+print(f"Circle Area: {Circle(5).area():.2f}")
+print("Rectangle Area:", Rectangle(4, 6).area())`,
+        explanation: "ABCs cannot be directly instantiated and guarantee that subclasses implement all abstract interfaces."
+      },
+      {
+        id: 41,
+        title: "Multiple Inheritance and MRO",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Demonstrate multiple inheritance with classes A, B, C, and D (diamond pattern) and inspect its Method Resolution Order (MRO).",
+        purpose: "Understand Python's C3 Linearization algorithm for inheritance.",
+        input: "D.mro()",
+        output: "[D, B, C, A, object]",
+        hint: "Call `D.__mro__` or `D.mro()` to inspect resolution precedence.",
+        code: `class A:
+    def greet(self):
+        return "A"
+
+class B(A):
+    def greet(self):
+        return "B"
+
+class C(A):
+    def greet(self):
+        return "C"
+
+class D(B, C):
+    pass
+
+d = D()
+print("Greeting from D:", d.greet())
+print("MRO Order:", [cls.__name__ for cls in D.mro()])`,
+        explanation: "Python uses C3 Linearization to resolve attribute resolution in multiple inheritance hierarchies unambiguously."
+      },
+      {
+        id: 42,
+        title: "Composition over Inheritance",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Model a `Computer` class that owns an `Engine` and `Display` instance rather than subclassing them.",
+        purpose: "Apply composition principles ('has-a') over inheritance ('is-a').",
+        input: "Computer().boot()",
+        output: "CPU initialized -> Screen online -> System Ready",
+        hint: "Instantiate component objects inside `Computer.__init__` and delegate calls.",
+        code: `class CPU:
+    def start(self):
+        return "CPU initialized"
+
+class Display:
+    def on(self):
+        return "Screen online"
+
+class Computer:
+    def __init__(self):
+        self.cpu = CPU()
+        self.display = Display()
+
+    def boot(self):
+        return f"{self.cpu.start()} -> {self.display.on()} -> System Ready"
+
+pc = Computer()
+print(pc.boot())`,
+        explanation: "Composition reduces tight coupling and brittle subclass dependencies by assembling behaviors as component objects."
+      },
+      {
+        id: 43,
+        title: "The Singleton Pattern",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Implement a thread-safe or `__new__` based Singleton class ensuring only one single instance ever exists.",
+        purpose: "Creational design pattern for centralized state and connections.",
+        input: "s1 = Singleton(), s2 = Singleton()",
+        output: "s1 is s2: True",
+        hint: "Override `__new__(cls)` and return a cached `cls._instance`.",
+        code: `class DatabaseConnection:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.connected = True
+        return cls._instance
+
+db1 = DatabaseConnection()
+db2 = DatabaseConnection()
+print("Same instance:", db1 is db2)`,
+        explanation: "__new__ is the allocator method. Caching the allocated instance returns the identical reference on subsequent instantiations."
+      },
+      {
+        id: 44,
+        title: "Data Classes (@dataclass)",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create an immutable, auto-represented data container `Product(name, price, quantity)` using `@dataclass`.",
+        purpose: "Boilerplate reduction for data structures using dataclasses.",
+        input: "Product('Keyboard', 49.99, 2)",
+        output: "Product(name='Keyboard', price=49.99, quantity=2)",
+        hint: "Import `dataclass` from `dataclasses` and define typed attributes.",
+        code: `from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Product:
+    name: str
+    price: float
+    quantity: int = 1
+
+    def total_cost(self):
+        return self.price * self.quantity
+
+p = Product("Keyboard", 49.99, 2)
+print(p)
+print("Total cost:", p.total_cost())`,
+        explanation: "@dataclass auto-generates __init__, __repr__, and __eq__ methods. frozen=True makes the instances immutable."
+      },
+      {
+        id: 45,
+        title: "CSV Processor",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Parse a multiline CSV string of employee salaries, compute the average salary, and filter employees earning above average.",
+        purpose: "Parse structured tabular streams using the csv module.",
+        input: "Name,Salary\\nAlice,60000\\nBob,80000\\nCharlie,70000",
+        output: "Average: 70000.0, Above Average: ['Bob']",
+        hint: "Use `csv.DictReader` with `io.StringIO`.",
+        code: `import csv
+import io
+
+raw_csv = """Name,Salary
+Alice,60000
+Bob,80000
+Charlie,70000"""
+
+reader = csv.DictReader(io.StringIO(raw_csv.strip()))
+records = [(r['Name'], float(r['Salary'])) for r in reader]
+
+avg_sal = sum(s for _, s in records) / len(records)
+above_avg = [n for n, s in records if s > avg_sal]
+
+print(f"Average: {avg_sal}, Above Average: {above_avg}")`,
+        explanation: "csv.DictReader converts rows into dictionaries keyed by header titles, allowing readable named column access."
+      },
+      {
+        id: 46,
+        title: "JSON Parser and Nested Access",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Parse a nested JSON payload and safely retrieve nested keys with a fallback default value.",
+        purpose: "Safe deep object traversal in JSON structures.",
+        input: "payload = '{\"user\": {\"profile\": {\"city\": \"Berlin\"}}}'",
+        output: "City: Berlin | Zip: Not Provided",
+        hint: "Use `json.loads` and write a helper retrieving keys sequentially with `d.get(k, {})`.",
+        code: `import json
+
+raw_json = '{"user": {"profile": {"city": "Berlin"}}}'
+data = json.loads(raw_json)
+
+def safe_get(d, *keys, default=None):
+    for k in keys:
+        if isinstance(d, dict):
+            d = d.get(k, default)
+        else:
+            return default
+    return d
+
+print("City:", safe_get(data, "user", "profile", "city"))
+print("Zip:", safe_get(data, "user", "profile", "zip", default="Not Provided"))`,
+        explanation: "Chaining lookups with defaults prevents AttributeError or KeyError when encountering missing nodes."
+      },
+      {
+        id: 47,
+        title: "Regular Expressions (Email Extractor)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Extract all valid email addresses from an unstructured paragraph of text using the `re` module.",
+        purpose: "Pattern matching with regular expressions.",
+        input: "'Contact us at support@site.org or sales.team@domain.co.uk for help.'",
+        output: "['support@site.org', 'sales.team@domain.co.uk']",
+        hint: "Use `re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}', text)`.",
+        code: `import re
+
+text = "Contact us at support@site.org or sales.team@domain.co.uk for help."
+pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}'
+
+emails = re.findall(pattern, text)
+print("Extracted emails:", emails)`,
+        explanation: "re.findall scans the entire string and returns all non-overlapping pattern matches."
+      },
+      {
+        id: 48,
+        title: "Robust Error Handling (Try/Except/Finally)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Implement a function that converts user inputs to float division with distinct handlers for ZeroDivisionError, ValueError, and clean final cleanup.",
+        purpose: "Defensive programming and clean resource cleanup.",
+        input: "safe_divide('10', '0') and safe_divide('10', '2')",
+        output: "Division by zero handled cleanly, Results returned properly",
+        hint: "Structure separate `except ValueError:`, `except ZeroDivisionError:`, and a `finally:` block.",
+        code: `def safe_divide(a_str, b_str):
+    try:
+        a = float(a_str)
+        b = float(b_str)
+        res = a / b
+    except ValueError:
+        return "Error: Invalid numeric input."
+    except ZeroDivisionError:
+        return "Error: Cannot divide by zero."
+    else:
+        return f"Success: {res}"
+    finally:
+        pass # Always runs (e.g. logging or file cleanup)
+
+print(safe_divide('10', '2'))
+print(safe_divide('10', '0'))
+print(safe_divide('10', 'abc'))`,
+        explanation: "The else block only triggers upon error-free execution; finally always runs regardless of exceptions."
+      },
+      {
+        id: 49,
+        title: "OS Module (File Searcher)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Walk a directory tree recursively to find all files matching a specific extension (e.g. `.py`).",
+        purpose: "Filesystem navigation with `os.walk`.",
+        input: "Search current directory for '.py' files",
+        output: "List of relative filepaths",
+        hint: "Use `for root, dirs, files in os.walk(path):` and test `f.endswith(ext)`.",
+        code: `import os
+
+def find_files_by_ext(start_dir, extension):
+    matched = []
+    for root, _, files in os.walk(start_dir):
+        for f in files:
+            if f.endswith(extension):
+                matched.append(os.path.join(root, f))
+    return matched
+
+# Search in current directory
+py_files = find_files_by_ext(".", ".py")
+print(f"Found {len(py_files)} matching files.")`,
+        explanation: "os.walk recursively yields directories, subdirectories, and file lists across complete tree hierarchies."
+      },
+      {
+        id: 50,
+        title: "Multi-threading (Concurrency)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Download or fetch mock data concurrently using `concurrent.futures.ThreadPoolExecutor`.",
+        purpose: "I/O-bound concurrency in Python.",
+        input: "Tasks: [1, 2, 3]",
+        output: "Processed concurrently in pool",
+        hint: "Use `with ThreadPoolExecutor(max_workers=3) as executor:` and `executor.map()`.",
+        code: `from concurrent.futures import ThreadPoolExecutor
+import time
+
+def mock_io_task(n):
+    time.sleep(0.05)
+    return f"Task {n} completed"
+
+tasks = [1, 2, 3]
+with ThreadPoolExecutor(max_workers=3) as executor:
+    results = list(executor.map(mock_io_task, tasks))
+
+print("Results:", results)`,
+        explanation: "ThreadPoolExecutor assigns I/O-bound tasks to background threads, overcoming latency without blocking."
+      },
+      {
+        id: 51,
+        title: "API Requests with Error Handling",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Simulate an HTTP request fetcher that catches timeouts, 4xx/5xx status codes, and JSON decoding issues.",
+        purpose: "Network resiliency and defensive HTTP fetching.",
+        input: "Fetch URL simulation",
+        output: "Handled response or graceful exception logging",
+        hint: "Use `urllib.request` or `requests` wrapped in status code checks and `try...except`.",
+        code: `import urllib.request
+import urllib.error
+
+def fetch_url(url):
+    try:
+        with urllib.request.urlopen(url, timeout=3) as response:
+            return response.status, response.read()[:50]
+    except urllib.error.HTTPError as e:
+        return e.code, f"HTTP Error: {e.reason}"
+    except urllib.error.URLError as e:
+        return None, f"Connection Failed: {e.reason}"
+
+status, preview = fetch_url("https://httpbin.org/status/200")
+print(f"Status: {status} | Preview: {preview}")`,
+        explanation: "Catching HTTPError and URLError handles both bad status codes and network disconnects gracefully."
+      },
+      {
+        id: 52,
+        title: "Word Frequency Counter",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Count word occurrences in a multiline paragraph, ignoring punctuation and casing, and return sorted by frequency.",
+        purpose: "Text normalization and frequency sorting.",
+        input: "'To be, or not to be: that is the question.'",
+        output: "[('to', 2), ('be', 2), ('or', 1), ...]",
+        hint: "Use `re.findall(r'\\b\\w+\\b', text.lower())` and `Counter`.",
+        code: `import re
+from collections import Counter
+
+text = "To be, or not to be: that is the question."
+words = re.findall(r'\\b\\w+\\b', text.lower())
+counts = Counter(words)
+
+print(counts.most_common())`,
+        explanation: "Word boundary regex \\b\\w+\\b isolates whole words while stripping away commas, colons, and periods."
+      },
+      {
+        id: 53,
+        title: "Student Management System",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Create a `StudentRoster` class that stores student records and provides methods to compute GPA and top performers.",
+        purpose: "In-memory relational management with OOP.",
+        input: "Add Alice (3.8), Bob (3.5), Charlie (3.9)",
+        output: "Top student: Charlie (3.9), Average GPA: 3.73",
+        hint: "Store a dictionary of `{name: gpa}` and use `max(..., key=...)`.",
+        code: `class StudentRoster:
+    def __init__(self):
+        self.students = {}
+
+    def add(self, name, gpa):
+        self.students[name] = gpa
+
+    def top_student(self):
+        if not self.students:
+            return None
+        return max(self.students.items(), key=lambda s: s[1])
+
+    def average_gpa(self):
+        return sum(self.students.values()) / len(self.students)
+
+roster = StudentRoster()
+roster.add("Alice", 3.8)
+roster.add("Bob", 3.5)
+roster.add("Charlie", 3.9)
+
+print("Top Student:", roster.top_student())
+print(f"Average GPA: {roster.average_gpa():.2f}")`,
+        explanation: "Encapsulates collection queries behind structured class methods."
+      },
+      {
+        id: 54,
+        title: "Password Strength Checker",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Evaluate a password string and return 'Strong', 'Medium', or 'Weak' based on length, digits, upper/lower cases, and symbols.",
+        purpose: "Predicate scoring and string validation.",
+        input: "'P@ssw0rd2026!'",
+        output: "Strength: Strong (Score: 5/5)",
+        hint: "Score points for length >= 8, `any(c.isdigit())`, `any(c.isupper())`, `any(c.islower())`, and special characters.",
+        code: `def check_password_strength(pwd):
+    score = 0
+    if len(pwd) >= 8: score += 1
+    if any(c.isupper() for c in pwd): score += 1
+    if any(c.islower() for c in pwd): score += 1
+    if any(c.isdigit() for c in pwd): score += 1
+    if any(c in "!@#$%^&*()-_+=<>?" for c in pwd): score += 1
+
+    levels = {5: "Strong", 4: "Medium", 3: "Medium"}
+    return levels.get(score, "Weak"), score
+
+strength, score = check_password_strength("P@ssw0rd2026!")
+print(f"Strength: {strength} (Score: {score}/5)")`,
+        explanation: "Evaluating character classes with any() yields a cumulative heuristic score."
+      },
+      {
+        id: 55,
+        title: "Number Guessing Game (Computer vs User)",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Implement the binary search guessing algorithm where the computer guesses a user's secret number between 1 and 100.",
+        purpose: "Algorithmic decision-making and optimal game theory.",
+        input: "Target: 42",
+        output: "Found in 6 guesses using binary search",
+        hint: "Maintain `low` and `high` and guess `(low + high) // 2` updating bounds based on feedback.",
+        code: `def computer_guess(target, low=1, high=100):
+    attempts = 0
+    while low <= high:
+        attempts += 1
+        guess = (low + high) // 2
+        if guess == target:
+            return guess, attempts
+        elif guess < target:
+            low = guess + 1
+        else:
+            high = guess - 1
+    return None, attempts
+
+found, count = computer_guess(42)
+print(f"Found target {found} in {count} guesses.")`,
+        explanation: "Binary search guarantees locating any integer in the range 1-100 within at most 7 guesses (ceil(log2(100)) = 7)."
+      },
+      {
+        id: 56,
+        title: "File Word Count Tool",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Count lines, words, and character counts of a text file (equivalent to the Unix `wc` utility).",
+        purpose: "Stream parsing and text metrics.",
+        input: "Multiline string text buffer",
+        output: "Lines: 3, Words: 12, Chars: 68",
+        hint: "Iterate lines, count words via `len(line.split())`, and accumulate `len(line)`.",
+        code: `import io
+
+sample_text = """First line of input.
+Second line with more terms.
+Third line ends here."""
+
+def word_count_metrics(stream):
+    lines = words = chars = 0
+    for line in stream:
+        lines += 1
+        words += len(line.split())
+        chars += len(line)
+    return lines, words, chars
+
+l, w, c = word_count_metrics(io.StringIO(sample_text))
+print(f"Lines: {l}, Words: {w}, Characters: {c}")`,
+        explanation: "Processes streaming inputs line-by-line without loading entire large files into memory."
+      },
+      {
+        id: 57,
+        title: "Prime Number Generator",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Implement the Sieve of Eratosthenes to generate all prime numbers up to $N$ in $O(N \\log \\log N)$ time.",
+        purpose: "Classic mathematical algorithms and boolean arrays.",
+        input: "N = 30",
+        output: "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29]",
+        hint: "Create a boolean list of True of size N+1; mark multiples of each prime starting from p*p as False.",
+        code: `def sieve_of_eratosthenes(n):
+    is_prime = [True] * (n + 1)
+    is_prime[0] = is_prime[1] = False
+    for p in range(2, int(n**0.5) + 1):
+        if is_prime[p]:
+            for multiple in range(p * p, n + 1, p):
+                is_prime[multiple] = False
+    return [i for i, prime in enumerate(is_prime) if prime]
+
+print("Primes up to 30:", sieve_of_eratosthenes(30))`,
+        explanation: "The Sieve of Eratosthenes avoids trial division by marking composite multiples off a boolean grid."
+      },
+      {
+        id: 58,
+        title: "Email Validation Program",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Validate if an email is syntactically sound without regex using string methods (`find`, `count`, `split`).",
+        purpose: "String validation rules and boundary checking.",
+        input: "'user@example.com' vs 'user@.com'",
+        output: "True and False",
+        hint: "Check for exactly one '@', valid characters before '@', and a domain containing at least one '.' with a valid extension.",
+        code: `def is_valid_email(email):
+    if email.count('@') != 1:
+        return False
+    user, domain = email.split('@')
+    if not user or not domain or '.' not in domain:
+        return False
+    if domain.startswith('.') or domain.endswith('.'):
+        return False
+    return True
+
+print(is_valid_email("user@example.com"))
+print(is_valid_email("invalid@.com"))`,
+        explanation: "Verifies mailbox identity and domain dot constraints via direct string inspection."
+      },
+      {
+        id: 59,
+        title: "File-Based To-Do List App",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Create a CLI To-Do manager with methods to add tasks, view tasks, and mark tasks done with file persistence.",
+        purpose: "Data serialization with JSON and file management.",
+        input: "Add 'Buy Milk', Mark Done",
+        output: "[X] Buy Milk",
+        hint: "Store tasks as dictionaries in a JSON file and reload upon application start.",
+        code: `import json
+import io
+
+class TodoApp:
+    def __init__(self):
+        self.tasks = []
+
+    def add(self, title):
+        self.tasks.append({"title": title, "done": False})
+
+    def mark_done(self, idx):
+        if 0 <= idx < len(self.tasks):
+            self.tasks[idx]["done"] = True
+
+    def export_json(self):
+        return json.dumps(self.tasks, indent=2)
+
+app = TodoApp()
+app.add("Buy Milk")
+app.add("Review PR")
+app.mark_done(0)
+print(app.export_json())`,
+        explanation: "Demonstrates serialization of structured application state to and from JSON."
+      },
+      {
+        id: 60,
+        title: "Random Password Generator",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Generate cryptographically secure passwords of length N containing letters, digits, and symbols using the `secrets` module.",
+        purpose: "Cryptographically secure pseudo-random number generation (CSPRNG).",
+        input: "Length = 12",
+        output: "e.g. 'k9#M2$vL!8xQ'",
+        hint: "Use `secrets.choice()` on combined `string.ascii_letters + string.digits + string.punctuation`.",
+        code: `import secrets
+import string
+
+def generate_secure_password(length=12):
+    alphabet = string.ascii_letters + string.digits + "!@#$%^&*()-_"
+    return "".join(secrets.choice(alphabet) for _ in range(length))
+
+print("Secure Password:", generate_secure_password(12))`,
+        explanation: "The secrets module accesses OS entropy sources (/dev/urandom), making generated tokens cryptographically unpredictable."
+      },
+      {
+        id: 61,
+        title: "Pascal’s Triangle",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Generate the first $N$ rows of Pascal's Triangle where each entry is the sum of the two numbers above it.",
+        purpose: "Dynamic programming and combinatorial construction.",
+        input: "rows = 5",
+        output: "[[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]]",
+        hint: "Each row starts and ends with 1; inner items are `prev[j-1] + prev[j]`.",
+        code: `def generate_pascals_triangle(n):
+    triangle = []
+    for i in range(n):
+        row = [1] * (i + 1)
+        for j in range(1, i):
+            row[j] = triangle[i - 1][j - 1] + triangle[i - 1][j]
+        triangle.append(row)
+    return triangle
+
+for row in generate_pascals_triangle(5):
+    print(row)`,
+        explanation: "Constructs each row in O(n^2) total time using the previously cached row's values."
+      },
+      {
+        id: 62,
+        title: "Smart Property Decorators",
+        category: "cat-oop",
+        catLabel: "OOP",
+        problem: "Build a `Circle` class where updating the `radius` automatically updates `diameter` and `area`, and vice versa.",
+        purpose: "Bidirectional property binding and setters.",
+        input: "Set diameter = 10",
+        output: "Radius becomes 5.0, Area becomes 78.54",
+        hint: "Define `@diameter.setter` that recomputes `self.radius = val / 2`.",
+        code: `import math
+
+class SmartCircle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    @property
+    def diameter(self):
+        return self.radius * 2
+
+    @diameter.setter
+    def diameter(self, val):
+        self.radius = val / 2
+
+    @property
+    def area(self):
+        return math.pi * (self.radius ** 2)
+
+c = SmartCircle(4)
+print(f"Radius: {c.radius}, Diameter: {c.diameter}")
+c.diameter = 10
+print(f"Updated Radius: {c.radius}, Area: {c.area:.2f}")`,
+        explanation: "Property setters synchronize derived attributes to prevent stale internal state."
+      },
+      {
+        id: 63,
+        title: "Caesar Cipher Implementation",
+        category: "cat-tools",
+        catLabel: "Practical Tools",
+        problem: "Implement the Caesar Cipher algorithm to encrypt and decrypt text with a customizable integer shift key.",
+        purpose: "Modulo arithmetic on ASCII character codes.",
+        input: "Text: 'Hello World', Shift: 3",
+        output: "Encrypted: 'Khoor Zruog'",
+        hint: "Shift letters via `(ord(char) - base + shift) % 26 + base` where base is 65 for uppercase, 97 for lowercase.",
+        code: `def caesar_cipher(text, shift, decrypt=False):
+    if decrypt:
+        shift = -shift
+    result = []
+    for c in text:
+        if c.isalpha():
+            base = ord('A') if c.isupper() else ord('a')
+            shifted = chr((ord(c) - base + shift) % 26 + base)
+            result.append(shifted)
+        else:
+            result.append(c)
+    return "".join(result)
+
+encrypted = caesar_cipher("Hello World", 3)
+print("Encrypted:", encrypted)
+print("Decrypted:", caesar_cipher(encrypted, 3, decrypt=True))`,
+        explanation: "Using (ord(c) - base + shift) % 26 ensures shifts wrap circularly through the 26 letters of the alphabet."
+      },
+      {
+        id: 64,
+        title: "Hollow Triangle Pattern",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Print a hollow equilateral triangle pattern of stars with height $N$.",
+        purpose: "2D spatial coordinates and boundary edge generation.",
+        input: "height = 5",
+        output: "Visual hollow star triangle",
+        hint: "Print '*' only on edges `col == 0 or col == 2*row` or bottom row `row == n - 1`.",
+        code: `def hollow_triangle(n):
+    for i in range(n):
+        spaces = " " * (n - i - 1)
+        if i == 0:
+            print(spaces + "*")
+        elif i == n - 1:
+            print("*" * (2 * n - 1))
+        else:
+            inner_spaces = " " * (2 * i - 1)
+            print(spaces + "*" + inner_spaces + "*")
+
+hollow_triangle(5)`,
+        explanation: "Isolates the apex, middle borders, and full solid base to draw a hollow outline."
+      },
+      {
+        id: 65,
+        title: "Solid Diamond Pattern",
+        category: "cat-dsa",
+        catLabel: "Data Structures",
+        problem: "Print a solid symmetric diamond pattern of stars for a given radius $N$.",
+        purpose: "Symmetric loops and reflection geometry.",
+        input: "n = 4",
+        output: "Symmetric 7-row diamond of asterisks",
+        hint: "Combine upper pyramid loop `range(n)` with lower inverted pyramid loop `range(n - 2, -1, -1)`.",
+        code: `def print_diamond(n):
+    # Upper half including middle
+    for i in range(n):
+        print(" " * (n - i - 1) + "*" * (2 * i + 1))
+    # Lower half
+    for i in range(n - 2, -1, -1):
+        print(" " * (n - i - 1) + "*" * (2 * i + 1))
+
+print_diamond(4)`,
+        explanation: "Mirroring the loop bounds vertically renders a symmetric diamond without duplicating generation logic."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_master_65_progress';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #3fb950"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}: ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+            
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sample Input</div>
+                ${ex.input}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${ex.output}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> Show Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Verified Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>How it Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query || 
+          ex.title.toLowerCase().includes(query) || 
+          ex.problem.toLowerCase().includes(query) || 
+          ex.code.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial boot
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>

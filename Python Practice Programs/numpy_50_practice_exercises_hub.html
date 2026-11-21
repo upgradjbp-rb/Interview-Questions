@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NumPy Master 50: Interactive Practice Exercises</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            accent: {
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              violet: '#8b5cf6',
+              cyan: '#06b6d4'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['Fira Code', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts & Phosphor Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    /* Custom code scrollbars and micro-animations */
+    pre, code {
+      font-family: 'Fira Code', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.6);
+    }
+    .card-transition {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white transition-colors duration-200">
+
+  <!-- Top Navigation & Sticky Header -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-slate-900/90 border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/25 ring-2 ring-blue-500/30">
+          <i class="ph-bold ph-brackets-curly text-2xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-300 bg-clip-text text-transparent">NumPy Mastery 50</h1>
+            <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800">50 Problems</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Beginner to Intermediate Interactive Practice & Solutions</p>
+        </div>
+      </div>
+
+      <!-- Action Utilities: Dark Mode, Progress Stats -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 text-xs font-medium">
+          <span class="text-slate-500 dark:text-slate-400">Solved:</span>
+          <span id="navSolvedCount" class="font-bold text-blue-600 dark:text-blue-400">0</span>
+          <span class="text-slate-400">/ 50</span>
+          <div class="w-16 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden ml-1">
+            <div id="navProgressBar" class="h-full bg-blue-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <button id="themeToggle" aria-label="Toggle Dark/Light Mode" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-all border border-slate-200 dark:border-slate-700 focus:outline-none">
+          <i id="themeIcon" class="ph-bold ph-moon text-lg"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Filter Bar -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4 w-full">
+    <div class="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-blue-900 via-indigo-950 to-slate-900 text-white relative overflow-hidden shadow-2xl border border-blue-800/40">
+      <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-blue-500/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute right-1/4 -bottom-16 w-60 h-60 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 max-w-3xl">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 border border-blue-400/30 text-blue-300 mb-3">
+          <i class="ph-bold ph-sparkle text-amber-300"></i> Interactive Python NumPy Practice
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">50 Hands-On NumPy Challenges</h2>
+        <p class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
+          Level up your data manipulation and scientific computing skills. Complete each challenge, inspect hints when stuck, and explore beginner-friendly, clean solutions with detailed explanations.
+        </p>
+        
+        <!-- Live Progress Counter Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+            <span class="text-xs text-blue-200 font-medium block">Total Exercises</span>
+            <span class="text-xl sm:text-2xl font-black text-white">50</span>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+            <span class="text-xs text-emerald-200 font-medium block">Completed</span>
+            <span id="heroSolvedCount" class="text-xl sm:text-2xl font-black text-emerald-400">0</span>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+            <span class="text-xs text-indigo-200 font-medium block">Remaining</span>
+            <span id="heroRemainingCount" class="text-xl sm:text-2xl font-black text-indigo-300">50</span>
+          </div>
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+            <span class="text-xs text-amber-200 font-medium block">Completion Rate</span>
+            <span id="heroPercentRate" class="text-xl sm:text-2xl font-black text-amber-300">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="mt-6 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <i class="ph-bold ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+        <input 
+          id="searchInput"
+          type="text" 
+          placeholder="Search by topic, keyword (e.g. linspace, reshape, mask), or #..." 
+          class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 shadow-sm transition-all"
+        />
+      </div>
+
+      <!-- Quick Category Select -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+        <button data-cat="all" class="cat-pill active px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-blue-600 text-white shadow-sm transition-all">All (50)</button>
+        <button data-cat="Basics" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-blue-400 transition-all">Basics & Creation</button>
+        <button data-cat="Indexing" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-blue-400 transition-all">Slicing & Indexing</button>
+        <button data-cat="Math" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-blue-400 transition-all">Math & Statistics</button>
+        <button data-cat="LinearAlgebra" class="cat-pill px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-blue-400 transition-all">Linear Algebra & Random</button>
+      </div>
+    </div>
+
+    <!-- Secondary Toolbar -->
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
+      <div class="flex items-center gap-2">
+        <span>Showing <strong id="visibleCount" class="text-slate-800 dark:text-slate-200">50</strong> exercises</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="expandAllHintsBtn" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+          <i class="ph-bold ph-lightbulb"></i> Toggle All Hints
+        </button>
+        <button id="collapseAllBtn" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+          <i class="ph-bold ph-arrows-in-line-horizontal"></i> Collapse All Drawers
+        </button>
+        <button id="resetProgressBtn" class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/50 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50 transition-colors">
+          <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset Tracker
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Exercises Grid Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow">
+    <div id="exerciseList" class="grid grid-cols-1 gap-6">
+      <!-- Populated via JavaScript for all 50 exercises -->
+    </div>
+    
+    <!-- No Results Placeholder -->
+    <div id="noResults" class="hidden text-center py-16">
+      <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto text-slate-400 mb-3 text-2xl">
+        <i class="ph-bold ph-magnifying-glass"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-slate-700 dark:text-slate-300">No exercises found</h3>
+      <p class="text-sm text-slate-500 mt-1">Try adjusting your search query or switching filters.</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 dark:text-slate-400">
+      <p class="font-medium text-slate-600 dark:text-slate-300">NumPy Interactive Practice Hub &bull; 50 Curated Exercises</p>
+      <p class="mt-1">Built with modern responsive HTML5 & Tailwind CSS. Progress is saved locally in your browser.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-16 opacity-0 transition-all duration-300 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-2xl text-xs font-semibold">
+    <i class="ph-bold ph-check-circle text-emerald-400 dark:text-emerald-600 text-base"></i>
+    <span id="toastMsg">Code copied to clipboard!</span>
+  </div>
+
+  <script>
+    // 50 Clean, verified, curated NumPy exercises with correct outputs and beginner-friendly solutions
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Create a 1D NumPy array of numbers from 0 to 9",
+        category: "Basics",
+        description: "Generate a one-dimensional NumPy array containing consecutive integers from 0 up to 9.",
+        given: null,
+        expected: "[0 1 2 3 4 5 6 7 8 9]",
+        hint: "NumPy's `np.arange(stop)` generates integer values from 0 up to (but not including) `stop`.",
+        code: `import numpy as np
+
+# Generate array from 0 through 9
+arr = np.arange(10)
+print(arr)`,
+        explanation: "`np.arange(10)` creates evenly spaced values within the half-open interval [0, 10). The default start is 0 and step is 1."
+      },
+      {
+        id: 2,
+        title: "Convert 1D array to 2D array with 2 rows",
+        category: "Basics",
+        description: "Write code to reshape a 1D array of 6 elements into a 2D array having 2 rows and 3 columns.",
+        given: "import numpy as np\narr = np.arange(6)",
+        expected: "Original Array: [0 1 2 3 4 5]\nReshaped 2x3 Array:\n[[0 1 2]\n [3 4 5]]",
+        hint: "Use the `.reshape(rows, cols)` method or `arr.reshape(2, -1)` to let NumPy infer the columns.",
+        code: `import numpy as np
+
+arr = np.arange(6)
+print("Original Array:", arr)
+
+# Reshape into 2 rows and 3 columns
+arr_2d = arr.reshape(2, 3)
+print("Reshaped 2x3 Array:\\n", arr_2d)`,
+        explanation: "`arr.reshape(2, 3)` reorganizes the 6 elements into 2 rows and 3 columns without altering the underlying data. Note that total elements must match (2 * 3 = 6)."
+      },
+      {
+        id: 3,
+        title: "Inspect and Print Array Attributes",
+        category: "Basics",
+        description: "Print the shape, number of dimensions, and the size of each element in bytes for a given array.",
+        given: "import numpy as np\nmy_array = np.array([[1, 2], [3, 4], [5, 6], [7, 8]], dtype=np.uint16)",
+        expected: "The shape of the array is: (4, 2)\nThe number of dimensions is: 2\nThe size of each element in bytes is: 2",
+        hint: "Access the built-in attributes: `.shape`, `.ndim`, and `.itemsize`.",
+        code: `import numpy as np
+
+my_array = np.array([[1, 2], [3, 4], [5, 6], [7, 8]], dtype=np.uint16)
+
+print("The shape of the array is:", my_array.shape)
+print("The number of dimensions is:", my_array.ndim)
+print("The size of each element in bytes is:", my_array.itemsize)`,
+        explanation: "`.shape` returns a tuple of dimensions (4 rows, 2 cols), `.ndim` returns the dimension rank (2D), and `.itemsize` reports the size in bytes of each individual element (uint16 is 16 bits = 2 bytes)."
+      },
+      {
+        id: 4,
+        title: "Create a 3×3 NumPy array of all True",
+        category: "Basics",
+        description: "Generate a 3x3 boolean matrix where every single value is True.",
+        given: null,
+        expected: "[[ True  True  True]\n [ True  True  True]\n [ True  True  True]]",
+        hint: "You can use `np.ones((3, 3), dtype=bool)` or `np.full((3, 3), True)`.",
+        code: `import numpy as np
+
+# Method 1: Using np.full
+bool_arr = np.full((3, 3), True, dtype=bool)
+
+# Method 2 (Alternative): np.ones((3, 3), dtype=bool)
+print(bool_arr)`,
+        explanation: "`np.full(shape, fill_value)` creates an array filled entirely with the specified constant. Passing `dtype=bool` guarantees boolean values."
+      },
+      {
+        id: 5,
+        title: "Extract NumPy documentation for arange()",
+        category: "Basics",
+        description: "Display the official documentation, signatures, and docstring of NumPy's `arange` function using Python code.",
+        given: null,
+        expected: "arange([start,] stop[, step,], dtype=None, *, like=None)\n...\nReturns an ndarray with evenly spaced values.",
+        hint: "Use NumPy's interactive documentation tool `np.info()`.",
+        code: `import numpy as np
+
+# Display documentation directly in the console
+np.info(np.arange)`,
+        explanation: "`np.info(function_name)` inspects the docstring, parameter list, and usage examples of any NumPy function or module."
+      },
+      {
+        id: 6,
+        title: "Create 1D Arrays of Zeros and Ones",
+        category: "Basics",
+        description: "Create one 1D array of 5 zeros and another 1D array of 5 ones.",
+        given: null,
+        expected: "Zeros: [0. 0. 0. 0. 0.]\nOnes: [1. 1. 1. 1. 1.]",
+        hint: "Use `np.zeros(5)` and `np.ones(5)`.",
+        code: `import numpy as np
+
+zeros_arr = np.zeros(5)
+ones_arr = np.ones(5)
+
+print("Zeros:", zeros_arr)
+print("Ones:", ones_arr)`,
+        explanation: "`np.zeros(length)` and `np.ones(length)` generate float64 arrays initialized with 0.0 and 1.0 respectively."
+      },
+      {
+        id: 7,
+        title: "Create 10 Evenly Spaced Values Between 5 and 50",
+        category: "Basics",
+        description: "Generate a 1D array of 10 values evenly spaced between 5 and 50 (inclusive).",
+        given: null,
+        expected: "[ 5. 10. 15. 20. 25. 30. 35. 40. 45. 50.]",
+        hint: "Use `np.linspace(start, stop, num)`.",
+        code: `import numpy as np
+
+# Generates 10 numbers from 5 to 50 inclusive
+arr = np.linspace(5, 50, 10)
+print(arr)`,
+        explanation: "Unlike `arange()`, `np.linspace()` specifies the exact total count of samples (`num=10`) rather than the step size, including the endpoint by default."
+      },
+      {
+        id: 8,
+        title: "Convert a Python List into a NumPy Array",
+        category: "Basics",
+        description: "Convert a standard Python list of numbers into a NumPy `ndarray`.",
+        given: "py_list = [1, 2, 3, 4, 5]",
+        expected: "[1 2 3 4 5]\n<class 'numpy.ndarray'>",
+        hint: "Pass the list into `np.array()`.",
+        code: `import numpy as np
+
+py_list = [1, 2, 3, 4, 5]
+arr = np.array(py_list)
+
+print(arr)
+print(type(arr))`,
+        explanation: "`np.array(py_list)` allocates contiguous memory and provides vectorized array operations superior to Python's built-in list."
+      },
+      {
+        id: 9,
+        title: "Find Memory Size of a NumPy Array",
+        category: "Basics",
+        description: "Compute the total memory occupied by an array of 10 integers (0-9) in bytes.",
+        given: null,
+        expected: "Array: [0 1 2 3 4 5 6 7 8 9]\nMemory size in bytes: 80",
+        hint: "The `.nbytes` attribute returns total bytes consumed by array elements (or `.size * .itemsize`).",
+        code: `import numpy as np
+
+arr = np.arange(10) # 10 elements of int64 (8 bytes each)
+print("Array:", arr)
+print("Memory size in bytes:", arr.nbytes)`,
+        explanation: "The `.nbytes` attribute reports the total memory consumed. With 10 elements on 64-bit systems (8 bytes each), 10 * 8 = 80 bytes."
+      },
+      {
+        id: 10,
+        title: "Reverse a 1D NumPy Array",
+        category: "Indexing",
+        description: "Reverse all the elements of a 1D array so that the last element becomes the first.",
+        given: "import numpy as np\narr = np.arange(10)",
+        expected: "[9 8 7 6 5 4 3 2 1 0]",
+        hint: "Use slicing with a negative step `[::-1]` or `np.flip()`.",
+        code: `import numpy as np
+
+arr = np.arange(10)
+reversed_arr = arr[::-1]
+print(reversed_arr)`,
+        explanation: "The slice `[::-1]` traverses the array backwards from end to start with step -1 without making an expensive memory copy."
+      },
+      {
+        id: 11,
+        title: "Create a 3×3 Identity Matrix",
+        category: "LinearAlgebra",
+        description: "Construct a 3x3 identity matrix (a square matrix with ones on the main diagonal and zeros elsewhere).",
+        given: null,
+        expected: "[[1. 0. 0.]\n [0. 1. 0.]\n [0. 0. 1.]]",
+        hint: "Use the `np.eye(N)` function.",
+        code: `import numpy as np
+
+# Create a 3x3 identity matrix
+identity_matrix = np.eye(3)
+print(identity_matrix)`,
+        explanation: "`np.eye(N)` generates an N x N 2D array with 1.0 along the main diagonal and 0.0 in all off-diagonal entries."
+      },
+      {
+        id: 12,
+        title: "Extract First Row and Last Column of a 4×4 Array",
+        category: "Indexing",
+        description: "Given a 4x4 matrix with numbers 1 to 16, extract its first row and its last column.",
+        given: "import numpy as np\narr = np.arange(1, 17).reshape(4, 4)",
+        expected: "Array:\n[[ 1  2  3  4]\n [ 5  6  7  8]\n [ 9 10 11 12]\n [13 14 15 16]]\nFirst Row: [1 2 3 4]\nLast Column: [ 4  8 12 16]",
+        hint: "Use `arr[0]` or `arr[0, :]` for the first row, and `arr[:, -1]` for the last column.",
+        code: `import numpy as np
+
+arr = np.arange(1, 17).reshape(4, 4)
+print("Array:\\n", arr)
+
+first_row = arr[0, :]
+last_col = arr[:, -1]
+
+print("First Row:", first_row)
+print("Last Column:", last_col)`,
+        explanation: "The syntax `arr[row_index, col_index]` allows 2D indexing. Using `:` selects all elements along that dimension."
+      },
+      {
+        id: 13,
+        title: "Extract Odd Rows and Even Columns",
+        category: "Indexing",
+        description: "Extract an array of odd-indexed rows (1, 3) and even-indexed columns (0, 2) from a 5x4 array.",
+        given: "sampleArray = np.array([\n    [3, 6, 9, 12],\n    [15, 18, 21, 24],\n    [27, 30, 33, 36],\n    [39, 42, 45, 48],\n    [51, 54, 57, 60]\n])",
+        expected: "New Array with Odd Rows and Even Columns:\n[[15 21]\n [39 45]]",
+        hint: "Use slice strides `array[1::2, ::2]` (start at 1 step by 2 for rows; start at 0 step by 2 for columns).",
+        code: `import numpy as np
+
+sampleArray = np.array([
+    [3, 6, 9, 12], 
+    [15, 18, 21, 24], 
+    [27, 30, 33, 36], 
+    [39, 42, 45, 48], 
+    [51, 54, 57, 60]
+])
+
+# 1::2 selects rows at indices 1 and 3
+# ::2 selects columns at indices 0 and 2
+result = sampleArray[1::2, ::2]
+print("New Array with Odd Rows and Even Columns:\\n", result)`,
+        explanation: "`start:stop:step` specifies slicing. `1::2` starts at index 1 and steps by 2, while `::2` starts at 0 and steps by 2."
+      },
+      {
+        id: 14,
+        title: "Stack Arrays Horizontally",
+        category: "Basics",
+        description: "Stack two 1D NumPy arrays horizontally to form a combined continuous 1D array.",
+        given: "a = np.array([1, 2, 3])\nb = np.array([4, 5, 6])",
+        expected: "[1 2 3 4 5 6]",
+        hint: "Use `np.hstack((a, b))` or `np.concatenate((a, b))`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+stacked = np.hstack((a, b))
+print(stacked)`,
+        explanation: "`np.hstack` stacks arrays horizontally (along the second axis for 2D, or end-to-end for 1D arrays)."
+      },
+      {
+        id: 15,
+        title: "Slice First Two Rows and First Two Columns",
+        category: "Indexing",
+        description: "From a 4x4 array of numbers 1-16, slice out the top-left 2x2 sub-matrix.",
+        given: "arr = np.arange(1, 17).reshape(4, 4)",
+        expected: "First 2 rows and columns:\n[[1 2]\n [5 6]]",
+        hint: "Use slicing with range bounds `arr[0:2, 0:2]`.",
+        code: `import numpy as np
+
+arr = np.arange(1, 17).reshape(4, 4)
+sub_arr = arr[0:2, 0:2]
+
+print("First 2 rows and columns:\\n", sub_arr)`,
+        explanation: "`arr[0:2, 0:2]` extracts rows 0 and 1, and columns 0 and 1, returning a 2x2 view."
+      },
+      {
+        id: 16,
+        title: "Replace All Odd Numbers with -1",
+        category: "Indexing",
+        description: "Given a 1D array of integers from 1 to 10, replace all odd numbers with -1 in-place.",
+        given: "arr = np.arange(1, 11)",
+        expected: "Original Array: [ 1  2  3  4  5  6  7  8  9 10]\nModified Array: [-1  2 -1  4 -1  6 -1  8 -1 10]",
+        hint: "Use modulo condition `arr % 2 == 1` as a boolean mask for assignment: `arr[arr % 2 != 0] = -1`.",
+        code: `import numpy as np
+
+arr = np.arange(1, 11)
+print("Original Array:", arr)
+
+# Boolean indexing mask
+arr[arr % 2 != 0] = -1
+print("Modified Array:", arr)`,
+        explanation: "NumPy evaluates `arr % 2 != 0` to create a boolean mask of `[True, False, ...]`. Only elements corresponding to `True` are reassigned to -1."
+      },
+      {
+        id: 17,
+        title: "Get Indices of Non-Zero Elements",
+        category: "Indexing",
+        description: "Find the position indices of all elements that are not equal to zero.",
+        given: "arr = np.array([1, 0, 2, 0, 3, 0, 4])",
+        expected: "Indices of non-zero elements: (array([0, 2, 4, 6]),)",
+        hint: "Use `np.nonzero(arr)` or `np.where(arr != 0)`.",
+        code: `import numpy as np
+
+arr = np.array([1, 0, 2, 0, 3, 0, 4])
+indices = np.nonzero(arr)
+
+print("Indices of non-zero elements:", indices)`,
+        explanation: "`np.nonzero(arr)` returns a tuple of index arrays, one for each dimension, showing where elements are non-zero."
+      },
+      {
+        id: 18,
+        title: "Find Common Items Between Two Arrays",
+        category: "Math",
+        description: "Find the unique values that exist in both array `a` and array `b`.",
+        given: "a = np.array([1, 2, 3, 2, 8, 4, 2, 4])\nb = np.array([2, 4, 5, 6, 8])",
+        expected: "[2 4 8]",
+        hint: "Use `np.intersect1d(a, b)`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3, 2, 8, 4, 2, 4])
+b = np.array([2, 4, 5, 6, 8])
+
+common_items = np.intersect1d(a, b)
+print("Common items:", common_items)`,
+        explanation: "`np.intersect1d(a, b)` finds the sorted unique elements that appear in both 1D arrays."
+      },
+      {
+        id: 19,
+        title: "Element-Wise Arithmetic: Add and Multiply",
+        category: "Math",
+        description: "Perform element-wise addition and element-wise multiplication on two 1D NumPy arrays.",
+        given: "a = np.array([1, 2, 3])\nb = np.array([4, 5, 6])",
+        expected: "Element-wise Sum: [5 7 9]\nElement-wise Multiplication: [ 4 10 18]",
+        hint: "Use operators `+` and `*` or functions `np.add()` and `np.multiply()`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+sum_arr = a + b
+prod_arr = a * b
+
+print("Element-wise Sum:", sum_arr)
+print("Element-wise Multiplication:", prod_arr)`,
+        explanation: "NumPy operators like `+` and `*` operate element-by-element when shapes match, avoiding manual loops."
+      },
+      {
+        id: 20,
+        title: "Compute Dot Product / Matrix Multiplication",
+        category: "LinearAlgebra",
+        description: "Calculate the dot product of two 1D vectors.",
+        given: "a = np.array([1, 2, 3])\nb = np.array([4, 5, 6])",
+        expected: "Dot Product: 32",
+        hint: "Use `np.dot(a, b)` or the `@` matrix multiplication operator.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+dot_product = a @ b  # or np.dot(a, b)
+print("Dot Product:", dot_product)`,
+        explanation: "The dot product multiplies corresponding terms and sums them: (1*4) + (2*5) + (3*6) = 4 + 10 + 18 = 32."
+      },
+      {
+        id: 21,
+        title: "Compute Mean, Median, and Standard Deviation",
+        category: "Math",
+        description: "Calculate the mean, median, and standard deviation of an array of numbers.",
+        given: "arr = np.array([10, 20, 30, 100, 200, 300])",
+        expected: "Mean: 110.0\nMedian: 65.0\nStandard Deviation: 107.08252269472673",
+        hint: "Use `np.mean()`, `np.median()`, and `np.std()`.",
+        code: `import numpy as np
+
+arr = np.array([10, 20, 30, 100, 200, 300])
+
+mean_val = np.mean(arr)
+median_val = np.median(arr)
+std_val = np.std(arr)
+
+print(f"Mean: {mean_val}")
+print(f"Median: {median_val}")
+print(f"Standard Deviation: {std_val}")`,
+        explanation: "NumPy provides high-performance statistical aggregations: `mean` (average), `median` (middle value), and `std` (population standard deviation)."
+      },
+      {
+        id: 22,
+        title: "Remove Common Items from Array (Set Difference)",
+        category: "Math",
+        description: "From array `a`, remove all items that are also present in array `b`.",
+        given: "a = np.array([1, 2, 3, 4, 5])\nb = np.array([5, 6, 7, 8, 9])",
+        expected: "[1 2 3 4]",
+        hint: "Use `np.setdiff1d(a, b)` or boolean filtering with `~np.isin(a, b)`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3, 4, 5])
+b = np.array([5, 6, 7, 8, 9])
+
+# Beginner-friendly direct method:
+result = np.setdiff1d(a, b)
+print("Result:", result)`,
+        explanation: "`np.setdiff1d(a, b)` returns the unique values in `a` that are not in `b`."
+      },
+      {
+        id: 23,
+        title: "Normalize Array Values Between 0 and 1",
+        category: "Math",
+        description: "Apply min-max normalization to scale an array's elements into the range [0, 1].",
+        given: "arr = np.array([10, 20, 30, 40, 50])",
+        expected: "Normalized Array: [0.   0.25 0.5  0.75 1.  ]",
+        hint: "Use the formula `(arr - arr.min()) / (arr.max() - arr.min())`.",
+        code: `import numpy as np
+
+arr = np.array([10, 20, 30, 40, 50])
+normalized = (arr - arr.min()) / (arr.max() - arr.min())
+
+print("Normalized Array:", normalized)`,
+        explanation: "Subtracting the minimum sets the base to 0, and dividing by (max - min) scales the span proportionally to 1."
+      },
+      {
+        id: 24,
+        title: "Find Positions Where Two Arrays Match",
+        category: "Indexing",
+        description: "Given two arrays of equal length, find the indices where their values are identical.",
+        given: "a = np.array([1, 2, 3, 4, 5])\nb = np.array([1, 4, 3, 7, 8])",
+        expected: "(array([0, 2]),)",
+        hint: "Use `np.where(a == b)`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3, 4, 5])
+b = np.array([1, 4, 3, 7, 8])
+
+matching_indices = np.where(a == b)
+print("Matching positions:", matching_indices)`,
+        explanation: "`a == b` generates `[True, False, True, False, False]`. `np.where` converts the boolean array into coordinate index tuples."
+      },
+      {
+        id: 25,
+        title: "Extract Numbers Between 5 and 10 (Inclusive)",
+        category: "Indexing",
+        description: "Extract all integers from an array that lie between 5 and 10 inclusive.",
+        given: "arr = np.arange(15)",
+        expected: "[ 5  6  7  8  9 10]",
+        hint: "Combine two boolean conditions with `&`: `arr[(arr >= 5) & (arr <= 10)]`.",
+        code: `import numpy as np
+
+arr = np.arange(15)
+filtered = arr[(arr >= 5) & (arr <= 10)]
+
+print(filtered)`,
+        explanation: "In Python, logical `and` cannot evaluate whole arrays; we must use the bitwise operator `&` between two boolean masks with parentheses."
+      },
+      {
+        id: 26,
+        title: "Random 3×2 Matrix and Its Min/Max Values",
+        category: "LinearAlgebra",
+        description: "Create a 3x2 matrix of random floats between 0 and 1, and find its maximum and minimum values.",
+        given: null,
+        expected: "Random Array:\n[[0.82 0.15]\n [0.45 0.93]\n [0.12 0.67]] (values vary)\nMax Value: 0.93\nMin Value: 0.12",
+        hint: "Use `np.random.rand(3, 2)`, followed by `.max()` and `.min()`.",
+        code: `import numpy as np
+
+# Create 3x2 random uniform array
+rand_arr = np.random.rand(3, 2)
+print("Random Array:\\n", np.round(rand_arr, 2))
+
+print("Max Value:", np.round(rand_arr.max(), 2))
+print("Min Value:", np.round(rand_arr.min(), 2))`,
+        explanation: "`np.random.rand(3, 2)` draws random values from a uniform distribution over [0, 1). `.max()` and `.min()` compute the global extremes."
+      },
+      {
+        id: 27,
+        title: "Sort a 2D Array Based on a Specific Column",
+        category: "Indexing",
+        description: "Sort the rows of a 3x3 array according to the ascending order of its second column (index 1).",
+        given: "sampleArray = np.array([[34, 43, 73], [82, 22, 12], [53, 94, 66]])",
+        expected: "Original array:\n[[34 43 73]\n [82 22 12]\n [53 94 66]]\n\nSorted array:\n[[82 22 12]\n [34 43 73]\n [53 94 66]]",
+        hint: "Use `sampleArray[:, 1].argsort()` to obtain the row ordering permutation.",
+        code: `import numpy as np
+
+sampleArray = np.array([[34, 43, 73], [82, 22, 12], [53, 94, 66]])
+
+# Get sorting order based on column index 1 (second column)
+sorted_order = sampleArray[:, 1].argsort()
+sorted_array = sampleArray[sorted_order]
+
+print("Sorted array:\\n", sorted_array)`,
+        explanation: "`sampleArray[:, 1]` has values [43, 22, 94]. `.argsort()` produces index order `[1, 0, 2]`. Using this to index rows sorts the full matrix."
+      },
+      {
+        id: 28,
+        title: "Delete and Replace a Column in a 2D Array",
+        category: "Basics",
+        description: "Replace the second column (index 1) of a 3x3 array with new values [10, 10, 10].",
+        given: "sampleArray = np.array([[34, 43, 73], [82, 22, 12], [53, 94, 66]])\nnewColumn = np.array([10, 10, 10])",
+        expected: "[[34 10 73]\n [82 10 12]\n [53 10 66]]",
+        hint: "A beginner-friendly in-place approach is `sampleArray[:, 1] = newColumn`, or using `np.delete()` and `np.insert()`.",
+        code: `import numpy as np
+
+sampleArray = np.array([[34, 43, 73], [82, 22, 12], [53, 94, 66]])
+newColumn = np.array([10, 10, 10])
+
+# Direct in-place column assignment:
+sampleArray[:, 1] = newColumn
+print(sampleArray)`,
+        explanation: "Assigning directly via `[:, 1] = newColumn` cleanly replaces the values of column 1 across all rows."
+      },
+      {
+        id: 29,
+        title: "Swap Columns in a 2D Array",
+        category: "Indexing",
+        description: "Swap column 1 and column 2 in a 3x3 array (transform column order 0, 1, 2 to 0, 2, 1).",
+        given: "arr = np.arange(9).reshape(3, 3)",
+        expected: "Before:\n[[0 1 2]\n [3 4 5]\n [6 7 8]]\n\nAfter:\n[[0 2 1]\n [3 5 4]\n [6 8 7]]",
+        hint: "Index all rows with an ordered list of columns: `arr[:, [0, 2, 1]]`.",
+        code: `import numpy as np
+
+arr = np.arange(9).reshape(3, 3)
+print("Before:\\n", arr)
+
+# Permute columns using index list
+swapped = arr[:, [0, 2, 1]]
+print("After:\\n", swapped)`,
+        explanation: "Fancy indexing allows specifying the desired column sequence `[0, 2, 1]` in the second dimension, producing a reordered array."
+      },
+      {
+        id: 30,
+        title: "Generate 10 Random Integers Between 1 and 100",
+        category: "LinearAlgebra",
+        description: "Create an array containing 10 randomly selected integers from 1 up to 100 inclusive.",
+        given: null,
+        expected: "Random Integers: [42 87 12 95 3 67 19 80 54 22] (values vary)",
+        hint: "Use `np.random.randint(low, high, size)`.",
+        code: `import numpy as np
+
+# randint high is exclusive, so pass 101 to include 100
+arr = np.random.randint(1, 101, size=10)
+print("Random Integers:", arr)`,
+        explanation: "`np.random.randint(1, 101, size=10)` generates ten random discrete integers in the range [1, 100]."
+      },
+      {
+        id: 31,
+        title: "Create and Sort a 3×3 Random Array Row-Wise",
+        category: "LinearAlgebra",
+        description: "Generate a 3x3 matrix of random integers from 1 to 50, then sort each row in ascending order.",
+        given: null,
+        expected: "Row-wise Sorted Array:\n[[ 7 14 38]\n [ 2 19 45]\n [11 23 31]] (values vary)",
+        hint: "Use `np.sort(arr, axis=1)`.",
+        code: `import numpy as np
+
+arr = np.random.randint(1, 50, size=(3, 3))
+print("Original:\\n", arr)
+
+sorted_arr = np.sort(arr, axis=1)
+print("Row-wise Sorted:\\n", sorted_arr)`,
+        explanation: "Specifying `axis=1` tells `np.sort()` to operate along the horizontal columns, sorting each row's items independently."
+      },
+      {
+        id: 32,
+        title: "Shuffle an Array Randomly In-Place",
+        category: "LinearAlgebra",
+        description: "Take an array of numbers 0 to 9 and randomly shuffle the order of its items in-place.",
+        given: "arr = np.arange(10)",
+        expected: "Shuffled Array: [4 8 6 1 2 3 5 7 9 0] (order varies)",
+        hint: "Use `np.random.shuffle(arr)`.",
+        code: `import numpy as np
+
+arr = np.arange(10)
+print("Original:", arr)
+
+# Modifies array in-place
+np.random.shuffle(arr)
+print("Shuffled:", arr)`,
+        explanation: "`np.random.shuffle(arr)` modifies the sequence in place along the first axis. For a non-modifying version, `np.random.permutation()` can be used."
+      },
+      {
+        id: 33,
+        title: "Create 5×5 Matrix with 1s on Border and 0s Inside",
+        category: "Indexing",
+        description: "Build a 5x5 array where outer boundary elements are 1 and inner elements are 0.",
+        given: null,
+        expected: "[[1. 1. 1. 1. 1.]\n [1. 0. 0. 0. 1.]\n [1. 0. 0. 0. 1.]\n [1. 0. 0. 0. 1.]\n [1. 1. 1. 1. 1.]]",
+        hint: "Initialize with `np.ones((5, 5))` and slice the interior `arr[1:-1, 1:-1] = 0`.",
+        code: `import numpy as np
+
+arr = np.ones((5, 5))
+# Set the inner 3x3 core to 0
+arr[1:-1, 1:-1] = 0
+
+print(arr)`,
+        explanation: "`1:-1` begins at row/col 1 and stops just before the last row/col, isolating the internal cells."
+      },
+      {
+        id: 34,
+        title: "Check If an Array Contains Any NaN Values",
+        category: "Math",
+        description: "Determine whether a given array contains at least one NaN (Not a Number) value.",
+        given: "a = np.array([1.0, 2.0, np.nan, 4.0, 5.0])",
+        expected: "Contains NaN? True",
+        hint: "Combine `np.isnan(a)` with `.any()`.",
+        code: `import numpy as np
+
+a = np.array([1.0, 2.0, np.nan, 4.0, 5.0])
+has_nan = np.isnan(a).any()
+
+print("Contains NaN?", has_nan)`,
+        explanation: "`np.isnan(a)` evaluates to a boolean mask. Calling `.any()` returns `True` if any element of that mask is `True`."
+      },
+      {
+        id: 35,
+        title: "Sort Rows of 2D Array by Second Column",
+        category: "Indexing",
+        description: "Given a 3x3 array, sort its rows in ascending order based on the values in column index 1.",
+        given: "arr = np.array([[8, 4, 1],\n                [5, 2, 7],\n                [6, 9, 3]])",
+        expected: "[[5 2 7]\n [8 4 1]\n [6 9 3]]",
+        hint: "Use `arr[arr[:, 1].argsort()]`.",
+        code: `import numpy as np
+
+arr = np.array([
+    [8, 4, 1],
+    [5, 2, 7],
+    [6, 9, 3]
+])
+
+# Sort indices from column 1 values (4, 2, 9 -> 2, 4, 9)
+sorted_arr = arr[arr[:, 1].argsort()]
+print(sorted_arr)`,
+        explanation: "`arr[:, 1]` is `[4, 2, 9]`. The indices that sort this are `[1, 0, 2]`. Slicing `arr` with this array places row 1 first, then row 0, then row 2."
+      },
+      {
+        id: 36,
+        title: "Flatten a Multi-Dimensional NumPy Array",
+        category: "Basics",
+        description: "Convert a 2D 2x3 array into a 1D flattened array.",
+        given: "arr = np.array([[1, 2], [3, 4], [5, 6]])",
+        expected: "Original Array:\n[[1 2]\n [3 4]\n [5 6]]\nFlattened Array: [1 2 3 4 5 6]",
+        hint: "Use `.flatten()` (returns a copy) or `.ravel()` (returns a view if possible).",
+        code: `import numpy as np
+
+arr = np.array([[1, 2], [3, 4], [5, 6]])
+flattened = arr.flatten()
+
+print("Original Array:\\n", arr)
+print("Flattened Array:", flattened)`,
+        explanation: "`.flatten()` collapses any n-dimensional array into a single 1D array in row-major (C-style) order."
+      },
+      {
+        id: 37,
+        title: "Stack Two Arrays Vertically and Horizontally",
+        category: "Basics",
+        description: "Stack two 1D arrays `[1, 2, 3]` and `[4, 5, 6]` vertically (to form a 2x3 matrix) and horizontally (to form a 1D 6-element array).",
+        given: "a = np.array([1, 2, 3])\nb = np.array([4, 5, 6])",
+        expected: "Vertical Stack:\n[[1 2 3]\n [4 5 6]]\nHorizontal Stack:\n[1 2 3 4 5 6]",
+        hint: "Use `np.vstack((a, b))` and `np.hstack((a, b))`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+v_stacked = np.vstack((a, b))
+h_stacked = np.hstack((a, b))
+
+print("Vertical Stack:\\n", v_stacked)
+print("Horizontal Stack:\\n", h_stacked)`,
+        explanation: "`np.vstack` stacks along rows (dim 0), whereas `np.hstack` stacks along columns (dim 1)."
+      },
+      {
+        id: 38,
+        title: "Split an Array into 3 Equal Parts",
+        category: "Basics",
+        description: "Divide a 1D array of 9 elements into 3 equal sub-arrays of 3 elements each.",
+        given: "arr = np.arange(9)",
+        expected: "Original Array: [0 1 2 3 4 5 6 7 8]\nSplit Arrays: [array([0, 1, 2]), array([3, 4, 5]), array([6, 7, 8])]",
+        hint: "Use `np.split(arr, 3)`.",
+        code: `import numpy as np
+
+arr = np.arange(9)
+chunks = np.split(arr, 3)
+
+print("Original Array:", arr)
+print("Split Arrays:", chunks)`,
+        explanation: "`np.split(arr, sections)` partitions the array along axis 0 into `sections` equal parts."
+      },
+      {
+        id: 39,
+        title: "Matrix Element-Wise Addition and Squaring",
+        category: "Math",
+        description: "Add two 2x3 matrices element-wise, then calculate the square of every element in the resulting matrix.",
+        given: "arrayOne = np.array([[5, 6, 9], [21, 18, 27]])\narrayTwo = np.array([[15, 33, 24], [4, 7, 1]])",
+        expected: "Result of array addition:\n[[20 39 33]\n [25 25 28]]\n\nResult with each element squared:\n[[ 400 1521 1089]\n [ 625  625  784]]",
+        hint: "Use `+` for addition and `** 2` for squaring.",
+        code: `import numpy as np
+
+arrayOne = np.array([[5, 6, 9], [21, 18, 27]])
+arrayTwo = np.array([[15, 33, 24], [4, 7, 1]])
+
+# Element-wise addition
+sum_array = arrayOne + arrayTwo
+print("Result of array addition:\\n", sum_array)
+
+# Element-wise power
+squared_array = sum_array ** 2
+print("\\nResult with each element squared:\\n", squared_array)`,
+        explanation: "NumPy vectorization carries operations over entire arrays element by element without nested `for` loops."
+      },
+      {
+        id: 40,
+        title: "Compute Matrix Inverse",
+        category: "LinearAlgebra",
+        description: "Calculate the mathematical inverse of an invertible 2x2 matrix.",
+        given: "arr = np.array([[1, 2], [3, 4]])",
+        expected: "[[-2.   1. ]\n [ 1.5 -0.5]]",
+        hint: "Use `np.linalg.inv(arr)`.",
+        code: `import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+inv_arr = np.linalg.inv(arr)
+
+print(inv_arr)`,
+        explanation: "`np.linalg.inv()` calculates the multiplicative inverse matrix such that `arr @ inv_arr` produces the identity matrix `[[1, 0], [0, 1]]`."
+      },
+      {
+        id: 41,
+        title: "Filter Values Less Than 30 Using Boolean Masking",
+        category: "Indexing",
+        description: "From a 1D array of integers, filter and extract only values strictly less than 30.",
+        given: "arr = np.array([5, 12, 29, 30, 44, 7, 18])",
+        expected: "Values < 30: [ 5 12 29  7 18]",
+        hint: "Pass the boolean condition directly inside brackets: `arr[arr < 30]`.",
+        code: `import numpy as np
+
+arr = np.array([5, 12, 29, 30, 44, 7, 18])
+filtered = arr[arr < 30]
+
+print("Values < 30:", filtered)`,
+        explanation: "The condition `arr < 30` creates an array of booleans (`True` for values < 30). Placing this mask in `arr[...]` returns only matched values."
+      },
+      {
+        id: 42,
+        title: "Count Frequencies of Unique Elements",
+        category: "Math",
+        description: "Count how many times each distinct value occurs in an array.",
+        given: "arr = np.array([2, 3, 2, 5, 3, 3, 2, 5])",
+        expected: "Value 2 occurs 3 time(s)\nValue 3 occurs 3 time(s)\nValue 5 occurs 2 time(s)",
+        hint: "Call `np.unique(arr, return_counts=True)`.",
+        code: `import numpy as np
+
+arr = np.array([2, 3, 2, 5, 3, 3, 2, 5])
+values, counts = np.unique(arr, return_counts=True)
+
+for val, cnt in zip(values, counts):
+    print(f"Value {val} occurs {cnt} time(s)")`,
+        explanation: "Setting `return_counts=True` in `np.unique()` returns two arrays: the unique sorted values and their respective occurrence counts."
+      },
+      {
+        id: 43,
+        title: "Find Intersection and Union of Two Arrays",
+        category: "Math",
+        description: "Compute the set intersection (common items) and union (all distinct items) of two arrays.",
+        given: "a = np.array([1, 2, 3, 5, 7])\nb = np.array([3, 4, 5, 6, 7])",
+        expected: "Intersection: [3 5 7]\nUnion: [1 2 3 4 5 6 7]",
+        hint: "Use `np.intersect1d(a, b)` and `np.union1d(a, b)`.",
+        code: `import numpy as np
+
+a = np.array([1, 2, 3, 5, 7])
+b = np.array([3, 4, 5, 6, 7])
+
+intersection_arr = np.intersect1d(a, b)
+union_arr = np.union1d(a, b)
+
+print("Intersection:", intersection_arr)
+print("Union:", union_arr)`,
+        explanation: "`np.intersect1d` retrieves overlapping values; `np.union1d` combines all unique sorted values from both inputs."
+      },
+      {
+        id: 44,
+        title: "Transpose a Matrix",
+        category: "LinearAlgebra",
+        description: "Transpose a 2D matrix (switch rows and columns).",
+        given: "arr = np.array([[1, 2], [3, 4]])",
+        expected: "[[1 3]\n [2 4]]",
+        hint: "Use the attribute `arr.T` or function `np.transpose(arr)`.",
+        code: `import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+transposed = arr.T
+
+print(transposed)`,
+        explanation: "The `.T` property transposes an array, flipping row entries into columns without allocating a new underlying data buffer."
+      },
+      {
+        id: 45,
+        title: "Compute Eigenvalues and Eigenvectors",
+        category: "LinearAlgebra",
+        description: "Calculate the eigenvalues and right eigenvectors of a square matrix.",
+        given: "A = np.array([[4, 2], [1, 3]])",
+        expected: "Eigenvalues: [5. 2.]\nEigenvectors (columns):\n[[ 0.89442719 -0.70710678]\n [ 0.4472136   0.70710678]]",
+        hint: "Use `np.linalg.eig(A)`.",
+        code: `import numpy as np
+
+A = np.array([[4, 2], [1, 3]])
+eigvals, eigvecs = np.linalg.eig(A)
+
+print("Eigenvalues:", eigvals)
+print("Eigenvectors (columns):\\n", np.round(eigvecs, 8))`,
+        explanation: "`np.linalg.eig(A)` solves the equation `A * v = lambda * v`. The returned eigenvectors are normalized column vectors."
+      },
+      {
+        id: 46,
+        title: "Solve a System of Linear Equations",
+        category: "LinearAlgebra",
+        description: "Solve for variables x and y in the linear system: x + 2y = 8 and 3x + 4y = 18.",
+        given: "Equations:\n1*x + 2*y = 8\n3*x + 4*y = 18",
+        expected: "Solution [x, y]: [2. 3.]",
+        hint: "Formulate coefficient matrix A and constant vector b, then use `np.linalg.solve(A, b)`.",
+        code: `import numpy as np
+
+# Matrix of coefficients
+A = np.array([[1, 2], [3, 4]])
+# Vector of constants
+b = np.array([8, 18])
+
+solution = np.linalg.solve(A, b)
+print("Solution [x, y]:", solution)`,
+        explanation: "`np.linalg.solve(A, b)` uses LU decomposition to solve matrix equation `A * x = b` reliably and accurately."
+      },
+      {
+        id: 47,
+        title: "Create an 8×8 Checkerboard Pattern of 0s and 1s",
+        category: "Indexing",
+        description: "Create an 8x8 matrix filled with alternating 0s and 1s, resembling a chessboard.",
+        given: null,
+        expected: "[[0 1 0 1 0 1 0 1]\n [1 0 1 0 1 0 1 0]\n [0 1 0 1 0 1 0 1]\n [1 0 1 0 1 0 1 0]\n [0 1 0 1 0 1 0 1]\n [1 0 1 0 1 0 1 0]\n [0 1 0 1 0 1 0 1]\n [1 0 1 0 1 0 1 0]]",
+        hint: "Create an 8x8 array of zeros, then slice with step 2: `[1::2, ::2] = 1` and `[::2, 1::2] = 1`.",
+        code: `import numpy as np
+
+checkerboard = np.zeros((8, 8), dtype=int)
+
+# Set alternating cells to 1
+checkerboard[1::2, ::2] = 1
+checkerboard[::2, 1::2] = 1
+
+print(checkerboard)`,
+        explanation: "By combining slice strides of 2 on odd rows/even columns and even rows/odd columns, alternating 1s are assigned cleanly."
+      },
+      {
+        id: 48,
+        title: "Find the Nearest Value to a Target Number",
+        category: "Math",
+        description: "In a 1D array of floats, find the single value closest to the target number 3.",
+        given: "arr = np.array([1.5, 2.8, 3.2, 4.1])\ntarget = 3.0",
+        expected: "The value closest to 3.0 is: 2.8",
+        hint: "Compute absolute difference `np.abs(arr - target)` and locate the minimum index with `np.argmin()`.",
+        code: `import numpy as np
+
+arr = np.array([1.5, 2.8, 3.2, 4.1])
+target = 3.0
+
+# Index of minimum absolute distance
+idx = np.abs(arr - target).argmin()
+closest_val = arr[idx]
+
+print(f"The value closest to {target} is: {closest_val}")`,
+        explanation: "`np.abs(arr - target)` gives the distance from each point to the target. `argmin()` returns the index of the lowest difference."
+      },
+      {
+        id: 49,
+        title: "Create an Object Array for Heterogeneous Types",
+        category: "Basics",
+        description: "Create a NumPy array with `dtype='object'` capable of storing mixed data types (integers, strings, lists).",
+        given: null,
+        expected: "[1 'a' list([3, 4]) 5]\ndtype: object",
+        hint: "Initialize using `np.array([...], dtype=object)` or assign items into an empty object array.",
+        code: `import numpy as np
+
+# Object array allows storing heterogeneous Python objects
+obj_arr = np.array([1, 'a', [3, 4], 5], dtype=object)
+
+print(obj_arr)
+print("dtype:", obj_arr.dtype)`,
+        explanation: "Standard NumPy arrays enforce uniform primitive types. Setting `dtype=object` stores pointers to arbitrary Python objects, allowing mixed data types."
+      },
+      {
+        id: 50,
+        title: "Compute Statistical Summary Along a 2D Array Axis",
+        category: "Math",
+        description: "Given a 2D array, calculate the mean, standard deviation, and sum along its columns (axis=0).",
+        given: "arr = np.array([\n    [10, 20, 30],\n    [40, 50, 60],\n    [70, 80, 90]\n])",
+        expected: "Column Means: [40. 50. 60.]\nColumn Sums: [120 150 180]\nColumn Std Dev: [24.49489743 24.49489743 24.49489743]",
+        hint: "Supply the parameter `axis=0` to `np.mean()`, `np.sum()`, and `np.std()`.",
+        code: `import numpy as np
+
+arr = np.array([
+    [10, 20, 30],
+    [40, 50, 60],
+    [70, 80, 90]
+])
+
+col_mean = np.mean(arr, axis=0)
+col_sum = np.sum(arr, axis=0)
+col_std = np.std(arr, axis=0)
+
+print("Column Means:", col_mean)
+print("Column Sums:", col_sum)
+print("Column Std Dev:", col_std)`,
+        explanation: "In 2D NumPy arrays, `axis=0` aggregates down the columns (collapsing rows), yielding a summary vector per column."
+      }
+    ];
+
+    // Local Storage Progress State
+    const STORAGE_KEY = 'numpy_50_mastery_progress';
+    let completedSet = new Set();
+
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        completedSet = new Set(JSON.parse(saved));
+      }
+    } catch (e) {
+      console.warn("Storage access restricted:", e);
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedSet]));
+      } catch (e) {
+        console.warn("Could not save to localStorage:", e);
+      }
+      updateStats();
+    }
+
+    function updateStats() {
+      const total = exercisesData.length;
+      const solved = completedSet.size;
+      const remaining = total - solved;
+      const percent = Math.round((solved / total) * 100);
+
+      document.getElementById('navSolvedCount').textContent = solved;
+      document.getElementById('navProgressBar').style.width = `${percent}%`;
+
+      document.getElementById('heroSolvedCount').textContent = solved;
+      document.getElementById('heroRemainingCount').textContent = remaining;
+      document.getElementById('heroPercentRate').textContent = `${percent}%`;
+    }
+
+    function getCategoryBadge(cat) {
+      switch(cat) {
+        case 'Basics':
+          return '<span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-blue-100 text-blue-700 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800">Basics & Creation</span>';
+        case 'Indexing':
+          return '<span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-purple-100 text-purple-700 dark:bg-purple-950/80 dark:text-purple-300 border border-purple-200 dark:border-purple-800">Slicing & Indexing</span>';
+        case 'Math':
+          return '<span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">Math & Statistics</span>';
+        case 'LinearAlgebra':
+          return '<span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-200 dark:border-amber-800">Linear Algebra & Random</span>';
+        default:
+          return '<span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700">Practice</span>';
+      }
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exerciseList');
+      const noResults = document.getElementById('noResults');
+      
+      if (list.length === 0) {
+        container.innerHTML = '';
+        noResults.classList.remove('hidden');
+        document.getElementById('visibleCount').textContent = '0';
+        return;
+      }
+      
+      noResults.classList.add('hidden');
+      document.getElementById('visibleCount').textContent = list.length;
+
+      container.innerHTML = list.map(item => {
+        const isDone = completedSet.has(item.id);
+        const givenHtml = item.given ? `
+          <div class="mt-3">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-1">Given Input</span>
+            <pre class="bg-slate-100 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80 rounded-xl p-3 text-xs text-slate-700 dark:text-slate-300 overflow-x-auto"><code>${escapeHtml(item.given)}</code></pre>
+          </div>
+        ` : '';
+
+        return `
+          <div id="card-${item.id}" data-id="${item.id}" data-cat="${item.category}" class="exercise-card card-transition bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border ${isDone ? 'border-emerald-300 dark:border-emerald-800/60 ring-1 ring-emerald-500/20 shadow-sm' : 'border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow-md'}">
+            <!-- Header Row -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800/70">
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <span class="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-bold text-xs flex items-center justify-center border border-blue-200 dark:border-blue-900">
+                  #${item.id}
+                </span>
+                <h3 class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100">
+                  ${item.title}
+                </h3>
+              </div>
+              <div class="flex items-center gap-3 self-end sm:self-auto">
+                ${getCategoryBadge(item.category)}
+                <!-- Mark Complete Checkbox -->
+                <label class="flex items-center gap-1.5 cursor-pointer text-xs font-semibold select-none text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                  <input type="checkbox" onchange="toggleComplete(${item.id})" ${isDone ? 'checked' : ''} class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 dark:border-slate-700 cursor-pointer">
+                  <span>Solved</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              ${item.description}
+            </p>
+
+            ${givenHtml}
+
+            <!-- Expected Output -->
+            <div class="mt-3">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-1">Expected Output</span>
+              <pre class="bg-slate-900 text-emerald-400 rounded-xl p-3 text-xs overflow-x-auto font-mono"><code>${escapeHtml(item.expected)}</code></pre>
+            </div>
+
+            <!-- Action Buttons: Hint & Solution -->
+            <div class="mt-4 pt-3 flex flex-wrap items-center gap-2.5">
+              <button 
+                onclick="toggleHint(${item.id})" 
+                id="hintBtn-${item.id}"
+                class="px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-200 dark:border-amber-800/60 transition-all focus:outline-none">
+                <i class="ph-bold ph-lightbulb text-sm"></i>
+                <span class="btn-text">💡 Show Hint</span>
+              </button>
+
+              <button 
+                onclick="toggleSolution(${item.id})" 
+                id="solBtn-${item.id}"
+                class="px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/60 border border-blue-200 dark:border-blue-800/60 transition-all focus:outline-none">
+                <i class="ph-bold ph-code text-sm"></i>
+                <span class="btn-text">✅ Show Solution</span>
+              </button>
+            </div>
+
+            <!-- Collapsible Hint Drawer -->
+            <div id="hintDrawer-${item.id}" class="hidden mt-3 p-4 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/40 text-xs sm:text-sm text-amber-900 dark:text-amber-200 transition-all">
+              <div class="flex items-start gap-2.5">
+                <i class="ph-fill ph-lightbulb text-amber-500 text-lg flex-shrink-0 mt-0.5"></i>
+                <div>
+                  <strong class="font-semibold text-amber-800 dark:text-amber-300 block mb-0.5">Hint & Guidance</strong>
+                  <p class="leading-relaxed">${item.hint}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Collapsible Solution Drawer -->
+            <div id="solutionDrawer-${item.id}" class="hidden mt-3 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 text-white shadow-inner transition-all">
+              <!-- Code Header Bar -->
+              <div class="px-4 py-2 bg-slate-950 border-b border-slate-800 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span class="ml-2 font-mono text-slate-400">solution.py</span>
+                </div>
+                <button 
+                  onclick="copySolutionCode(${item.id})" 
+                  class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center gap-1.5 transition-colors focus:outline-none text-[11px] font-medium">
+                  <i class="ph-bold ph-copy"></i>
+                  <span>Copy Code</span>
+                </button>
+              </div>
+
+              <!-- Python Code Block -->
+              <div class="p-4 overflow-x-auto text-xs sm:text-sm font-mono leading-relaxed text-blue-200">
+                <pre><code id="codeText-${item.id}">${escapeHtml(item.code)}</code></pre>
+              </div>
+
+              <!-- Explanation Footer -->
+              <div class="p-4 bg-slate-950/80 border-t border-slate-800/90 text-xs text-slate-300">
+                <div class="flex items-start gap-2">
+                  <i class="ph-bold ph-info text-blue-400 text-sm flex-shrink-0 mt-0.5"></i>
+                  <div>
+                    <strong class="text-white font-semibold block mb-0.5">How It Works:</strong>
+                    <p class="text-slate-300 leading-relaxed">${item.explanation}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Helper: Escapes HTML chars
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function toggleHint(id) {
+      const drawer = document.getElementById(`hintDrawer-${id}`);
+      const btn = document.getElementById(`hintBtn-${id}`);
+      const textSpan = btn.querySelector('.btn-text');
+
+      if (drawer.classList.contains('hidden')) {
+        drawer.classList.remove('hidden');
+        textSpan.textContent = 'Hide Hint';
+        btn.classList.add('ring-2', 'ring-amber-400');
+      } else {
+        drawer.classList.add('hidden');
+        textSpan.textContent = '💡 Show Hint';
+        btn.classList.remove('ring-2', 'ring-amber-400');
+      }
+    }
+
+    function toggleSolution(id) {
+      const drawer = document.getElementById(`solutionDrawer-${id}`);
+      const btn = document.getElementById(`solBtn-${id}`);
+      const textSpan = btn.querySelector('.btn-text');
+
+      if (drawer.classList.contains('hidden')) {
+        drawer.classList.remove('hidden');
+        textSpan.textContent = 'Hide Solution';
+        btn.classList.add('ring-2', 'ring-blue-400');
+      } else {
+        drawer.classList.add('hidden');
+        textSpan.textContent = '✅ Show Solution';
+        btn.classList.remove('ring-2', 'ring-blue-400');
+      }
+    }
+
+    function toggleComplete(id) {
+      if (completedSet.has(id)) {
+        completedSet.delete(id);
+      } else {
+        completedSet.add(id);
+        showToast(`Exercise #${id} marked completed! 🎉`);
+      }
+      saveProgress();
+
+      const card = document.getElementById(`card-${id}`);
+      if (card) {
+        if (completedSet.has(id)) {
+          card.classList.add('border-emerald-300', 'dark:border-emerald-800/60', 'ring-1', 'ring-emerald-500/20');
+          card.classList.remove('border-slate-200/90', 'dark:border-slate-800');
+        } else {
+          card.classList.remove('border-emerald-300', 'dark:border-emerald-800/60', 'ring-1', 'ring-emerald-500/20');
+          card.classList.add('border-slate-200/90', 'dark:border-slate-800');
+        }
+      }
+    }
+
+    function copySolutionCode(id) {
+      const codeElem = document.getElementById(`codeText-${id}`);
+      if (!codeElem) return;
+      const text = codeElem.innerText;
+
+      // Safe copy fallback for cross-browser / iframe support
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'absolute';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Python solution copied to clipboard!");
+      } catch (err) {
+        console.error('Copy fallback failed:', err);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 2500);
+    }
+
+    // Filter & Search Logic
+    let currentCategory = 'all';
+    let currentSearchTerm = '';
+
+    function filterExercises() {
+      const term = currentSearchTerm.toLowerCase().trim();
+      const filtered = exercisesData.filter(item => {
+        const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+        const matchesSearch = 
+          item.id.toString() === term ||
+          item.title.toLowerCase().includes(term) ||
+          item.description.toLowerCase().includes(term) ||
+          (item.given && item.given.toLowerCase().includes(term)) ||
+          item.hint.toLowerCase().includes(term) ||
+          item.code.toLowerCase().includes(term);
+
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Dark Mode Handling
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      const isDark = localStorage.getItem('numpy_theme') === 'dark' || 
+        (!localStorage.getItem('numpy_theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        themeIcon.classList.replace('ph-moon', 'ph-sun');
+      }
+
+      themeToggle.addEventListener('click', () => {
+        const isCurrentlyDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('numpy_theme', isCurrentlyDark ? 'dark' : 'light');
+        if (isCurrentlyDark) {
+          themeIcon.classList.replace('ph-moon', 'ph-sun');
+        } else {
+          themeIcon.classList.replace('ph-sun', 'ph-moon');
+        }
+      });
+
+      // Category filter buttons
+      const catButtons = document.querySelectorAll('.cat-pill');
+      catButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          catButtons.forEach(b => {
+            b.classList.remove('bg-blue-600', 'text-white', 'shadow-sm', 'active');
+            b.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-600', 'dark:text-slate-300');
+          });
+          btn.classList.add('bg-blue-600', 'text-white', 'shadow-sm', 'active');
+          btn.classList.remove('bg-white', 'dark:bg-slate-900', 'text-slate-600', 'dark:text-slate-300');
+          currentCategory = btn.getAttribute('data-cat');
+          filterExercises();
+        });
+      });
+
+      // Search input handler
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value;
+        filterExercises();
+      });
+
+      // Bulk Controls
+      document.getElementById('expandAllHintsBtn').addEventListener('click', () => {
+        exercisesData.forEach(item => {
+          const drawer = document.getElementById(`hintDrawer-${item.id}`);
+          const btn = document.getElementById(`hintBtn-${item.id}`);
+          if (drawer && btn) {
+            drawer.classList.remove('hidden');
+            btn.querySelector('.btn-text').textContent = 'Hide Hint';
+          }
+        });
+      });
+
+      document.getElementById('collapseAllBtn').addEventListener('click', () => {
+        exercisesData.forEach(item => {
+          const hDrawer = document.getElementById(`hintDrawer-${item.id}`);
+          const sDrawer = document.getElementById(`solutionDrawer-${item.id}`);
+          const hBtn = document.getElementById(`hintBtn-${item.id}`);
+          const sBtn = document.getElementById(`solBtn-${item.id}`);
+
+          if (hDrawer) hDrawer.classList.add('hidden');
+          if (sDrawer) sDrawer.classList.add('hidden');
+          if (hBtn) hBtn.querySelector('.btn-text').textContent = '💡 Show Hint';
+          if (sBtn) sBtn.querySelector('.btn-text').textContent = '✅ Show Solution';
+        });
+      });
+
+      document.getElementById('resetProgressBtn').addEventListener('click', () => {
+        completedSet.clear();
+        saveProgress();
+        renderExercises(exercisesData);
+        showToast("Progress tracker reset!");
+      });
+
+      // Initial render & stats update
+      renderExercises(exercisesData);
+      updateStats();
+    });
+  </script>
+</body>
+</html>

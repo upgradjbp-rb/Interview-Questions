@@ -1,0 +1,2899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Core Programming Lab • 40 Practice Exercises</title>
+  
+  <!-- Inter & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Filter Controls & Search Bar */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-cond { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-loops { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-strings { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-data { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-files { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+    .cat-oop { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Checkbox Mark as Complete */
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    /* Action Buttons */
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    /* Collapsible Drawers */
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python Core Master Lab</h1>
+        <div class="badge-counter" id="progress-text">0 / 40 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls & Search -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search exercises by topic, syntax, or keyword (e.g. slicing, palindrome, factorial, dictionary)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (40)</button>
+      <button class="filter-btn" data-filter="cat-cond">Logic & Math</button>
+      <button class="filter-btn" data-filter="cat-loops">Loops & Patterns</button>
+      <button class="filter-btn" data-filter="cat-strings">Strings</button>
+      <button class="filter-btn" data-filter="cat-data">Lists, Sets & Dicts</button>
+      <button class="filter-btn" data-filter="cat-files">File I/O</button>
+      <button class="filter-btn" data-filter="cat-oop">OOP</button>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+
+    <!-- Exercise 1 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-1">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 1. Arithmetic Product and Conditional Logic</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-1')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a Python function that accepts two integers. If their product is &le; 1000, return their product; otherwise, return their sum.</p>
+        <div class="purpose-box">Learn basic control flow, threshold comparisons, and conditional return values.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Case 1: num1=20, num2=30<br>Case 2: num1=40, num2=30
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The result is 600<br>The result is 70
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-1')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-1')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-1">
+          Compute <code>product = num1 * num2</code>, then use <code>if product &lt;= 1000: return product</code> else <code>return num1 + num2</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-1">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-1')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-1">def multiplication_or_sum(num1, num2):
+    product = num1 * num2
+    if product <= 1000:
+        return product
+    return num1 + num2
+
+# Test Cases
+print("The result is", multiplication_or_sum(20, 30))
+print("The result is", multiplication_or_sum(40, 30))</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>if product &lt;= 1000</code> routes flow based on a boundary threshold before selecting the arithmetic operator.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 2 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-2">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 2. Cumulative Sum of a Range</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-2')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Iterate through the numbers 0 to 9. In each iteration, print the current number, the previous number, and their sum.</p>
+        <div class="purpose-box">State tracking: preserving memory from previous loop iterations.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            numbers = range(10)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Current Number 0 Previous Number 0 Sum: 0<br>Current Number 1 Previous Number 0 Sum: 1<br>... Current Number 9 Previous 8 Sum: 17
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-2')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-2')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-2">
+          Initialize <code>previous_num = 0</code> outside the loop. At the bottom of each iteration, set <code>previous_num = i</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-2">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-2')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-2">previous_num = 0
+
+for i in range(10):
+    total = previous_num + i
+    print(f"Current Number {i} Previous Number {previous_num} Sum: {total}")
+    previous_num = i</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Updating <code>previous_num = i</code> at the end of the block carries state into the subsequent cycle.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 3 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-3">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 3. String Indexing and Even Slicing</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-3')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Display only characters at even index numbers from a given string (e.g. <code>"pynative"</code>).</p>
+        <div class="purpose-box">Explore zero-based string indexing and Python's extended slice syntax (<code>[start::step]</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            word = "pynative"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            p<br>n<br>t<br>v
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-3')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-3')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-3">
+          Use the step parameter in slice notation: <code>word[::2]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-3">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-3')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-3">word = "pynative"
+
+# Method 1: Pythonic Slicing
+for char in word[::2]:
+    print(char)
+
+# Method 2: Index loop
+# for i in range(0, len(word), 2):
+#     print(word[i])</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>word[::2]</code> steps by 2, picking characters at positions 0, 2, 4, 6...
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 4 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-4">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 4. String Slicing and Substring Removal</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-4')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a function <code>remove_chars(word, n)</code> that removes the first <code>n</code> characters from a string.</p>
+        <div class="purpose-box">Data sanitization and slicing using start-offset indices (<code>word[n:]</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            remove_chars("pynative", 4)<br>remove_chars("pynative", 2)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            tive<br>native
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-4')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-4')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-4">
+          Return a slice starting at index <code>n</code> through to the end: <code>word[n:]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-4">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-4')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-4">def remove_chars(word, n):
+    return word[n:]
+
+print(remove_chars("pynative", 4))
+print(remove_chars("pynative", 2))</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Omitting the stop index keeps all elements from <code>n</code> onwards without modifying the immutable original string.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 5 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-5">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 5. Variable Swapping (In-Place)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-5')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Swap the values of two variables <code>a</code> and <code>b</code> without using a third temporary variable.</p>
+        <div class="purpose-box">Memory efficiency through Python's simultaneous tuple packing and unpacking.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            a = 5, b = 10
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Before: a = 5, b = 10<br>After: a = 10, b = 5
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-5')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-5')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-5">
+          Use Python's tuple assignment shortcut: <code>a, b = b, a</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-5">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-5')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-5">a, b = 5, 10
+print(f"Before Swap: a = {a}, b = {b}")
+
+# Simultaneous assignment
+a, b = b, a
+
+print(f"After Swap: a = {a}, b = {b}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Right side <code>(b, a)</code> evaluates into a temporary tuple before unpacking into <code>a, b</code>, eliminating the need for temporary variables.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 6 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-6">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 6. Calculating Factorial with a Loop</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-6')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a program that calculates the factorial of a given number (e.g. <code>5!</code>) using a loop.</p>
+        <div class="purpose-box">Mathematical accumulation pattern using product variables.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            number = 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The factorial of 5 is 120
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-6')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-6')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-6">
+          Initialize <code>fact = 1</code>. Multiply it by each integer from 1 up to <code>num</code> in a <code>range(1, num + 1)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-6">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-6')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-6">num = 5
+factorial = 1
+
+for i in range(1, num + 1):
+    factorial *= i
+
+print(f"The factorial of {num} is {factorial}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> The identity element for multiplication is 1. Incrementing up to <code>num + 1</code> ensures the target number is included.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 7 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-7">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 7. List Manipulation: Add and Remove</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-7')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a list of 5 fruits. Append a new fruit to the end, then remove the fruit at index 1.</p>
+        <div class="purpose-box">Dynamic list mutation using <code>.append()</code> and <code>.pop()</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            fruits = ["apple", "banana", "cherry", "date", "elderberry"]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            ['apple', 'cherry', 'date', 'elderberry', 'fig']
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-7')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-7')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-7">
+          Use <code>fruits.append("fig")</code> to add to the end, and <code>fruits.pop(1)</code> to remove index 1.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-7">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-7')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-7">fruits = ["apple", "banana", "cherry", "date", "elderberry"]
+
+# Add new fruit
+fruits.append("fig")
+
+# Remove fruit at index 1 ("banana")
+fruits.pop(1)
+
+print(fruits)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>.pop(1)</code> removes the element at that index and shifts subsequent elements to fill the vacant index.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 8 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-8">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 8. String Reversal</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-8')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Reverse a string (e.g. <code>"Python"</code> &rarr; <code>"nohtyP"</code>).</p>
+        <div class="purpose-box">Negative indexing and step slicing to invert sequence directions in $O(n)$ time.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            text = "Python"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Reversed: nohtyP
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-8')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-8')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-8">
+          A step of <code>-1</code> in slicing steps backward across the entire string: <code>text[::-1]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-8">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-8')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-8">text = "Python"
+reversed_text = text[::-1]
+
+print(f"Original: {text}")
+print(f"Reversed: {reversed_text}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>[::-1]</code> traverses sequences from right to left, returning a new reversed string.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 9 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-9">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 9. Vowel Frequency Counter</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-9')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Count the total number of vowels (a, e, i, o, u) present in a given sentence.</p>
+        <div class="purpose-box">Membership testing using the <code>in</code> operator and case-insensitive string parsing.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            "Learning Python is fun!"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Number of vowels: 6
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-9')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-9')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-9">
+          Check if <code>char.lower() in "aeiou"</code> using a loop or generator expression.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-9">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-9')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-9">sentence = "Learning Python is fun!"
+vowels = "aeiou"
+
+# Pythonic generator expression
+count = sum(1 for char in sentence.lower() if char in vowels)
+
+print(f"Number of vowels: {count}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>.lower()</code> standardizes casing so checking <code>char in vowels</code> matches upper and lower case letters identically.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 10 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-10">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 10. Finding Extremes (Min/Max) in a List</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-10')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Given a list of integers, find and display both the maximum and minimum values.</p>
+        <div class="purpose-box">Linear time aggregate functions for boundary detection and statistical normalization.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            nums = [45, 2, 89, 12, 7]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Largest: 89<br>Smallest: 2
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-10')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-10')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-10">
+          Use the built-in functions <code>max(nums)</code> and <code>min(nums)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-10">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-10')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-10">nums = [45, 2, 89, 12, 7]
+
+largest = max(nums)
+smallest = min(nums)
+
+print(f"Largest: {largest}")
+print(f"Smallest: {smallest}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>max()</code> and <code>min()</code> scan collections in $O(n)$ time using optimized internal loops.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 11 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-11">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 11. Removing Duplicates from a List</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-11')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a script that removes all duplicate items from a list while retaining unique values.</p>
+        <div class="purpose-box">Data deduplication via hash-based set structures and order-preserving dictionary tricks.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            data = [1, 2, 2, 3, 4, 4, 4, 5]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Unique List: [1, 2, 3, 4, 5]
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-11')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-11')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-11">
+          Converting to a set discards duplicates: <code>list(set(data))</code> or use <code>list(dict.fromkeys(data))</code> to preserve order.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-11">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-11')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-11">data = [1, 2, 2, 3, 4, 4, 4, 5]
+
+# Preserves original order while deduplicating
+unique_data = list(dict.fromkeys(data))
+
+print(f"Unique List: {unique_data}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>dict.fromkeys()</code> exploits Python 3.7+ ordered dictionaries to remove duplicates while preserving item ordering.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 12 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-12">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 12. List Comparison and Boundary Logic</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-12')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a function that returns <code>True</code> if the first and last numbers of a list are identical, and <code>False</code> otherwise.</p>
+        <div class="purpose-box">Boundary checks using positive and negative sequence indexing (<code>[0]</code> and <code>[-1]</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            numbers_x = [10, 20, 30, 40, 10]<br>numbers_y = [75, 65, 35, 75, 30]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            result is True<br>result is False
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-12')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-12')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-12">
+          Compare <code>number_list[0] == number_list[-1]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-12">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-12')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-12">def first_last_same(lst):
+    return bool(lst and lst[0] == lst[-1])
+
+print("result is", first_last_same([10, 20, 30, 40, 10]))
+print("result is", first_last_same([75, 65, 35, 75, 30]))</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>[-1]</code> accesses the tail element regardless of list length; checking <code>lst</code> guards against empty list errors.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 13 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-13">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 13. Filtering Lists with Conditional Logic</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-13')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Iterate through a list and display only numbers divisible by 5.</p>
+        <div class="purpose-box">Using the modulo operator (<code>%</code>) for predicate data filtering.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            num_list = [10, 20, 33, 46, 55]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Divisible by 5:<br>10<br>20<br>55
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-13')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-13')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-13">
+          Check if <code>num % 5 == 0</code> inside a loop or comprehension.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-13">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-13')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-13">num_list = [10, 20, 33, 46, 55]
+
+print("Divisible by 5:")
+for num in num_list:
+    if num % 5 == 0:
+        print(num)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>%</code> returns division remainder; a remainder of 0 indicates an exact multiple.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 14 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-14">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 14. Substring Frequency Analysis</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-14')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find how many times the substring "Emma" appears in a given sentence.</p>
+        <div class="purpose-box">Pattern matching using string counting methods.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            "Emma is good developer. Emma is a writer"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Emma appeared 2 times
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-14')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-14')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-14">
+          Call the built-in <code>str.count(sub)</code> method.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-14">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-14')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-14">str_x = "Emma is good developer. Emma is a writer"
+count = str_x.count("Emma")
+
+print(f"Emma appeared {count} times")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>.count()</code> executes exact, case-sensitive non-overlapping substring searches.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 15 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-15">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 15. Nested Loops for Pattern Generation</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-15')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print a triangular pattern where each line <code>i</code> repeats the digit <code>i</code> exactly <code>i</code> times.</p>
+        <div class="purpose-box">Coordinate nested loops or string multiplication for 2D console patterns.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Rows = 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            1<br>2 2<br>3 3 3<br>4 4 4 4<br>5 5 5 5 5
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-15')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-15')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-15">
+          Loop <code>i</code> from 1 to 5; print <code>f"{i} " * i</code> or use an inner loop.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-15">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-15')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-15">for num in range(1, 6):
+    # Repeat the number string 'num' times
+    print(" ".join([str(num)] * num))</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>[str(num)] * num</code> creates a list of identical digit strings, joined cleanly by spaces.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 16 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-16">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 16. Numerical Palindrome Check</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-16')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a function to check if a given number reads the same forwards and backwards.</p>
+        <div class="purpose-box">Symmetry detection and conversion between numerical and string representations.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Case 1: 121<br>Case 2: 125
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            121 is palindrome number<br>125 is not palindrome number
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-16')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-16')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-16">
+          Convert to string and test <code>s == s[::-1]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-16">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-16')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-16">def check_palindrome(number):
+    s = str(number)
+    if s == s[::-1]:
+        print(f"Number {number} is palindrome number")
+    else:
+        print(f"Number {number} is not palindrome number")
+
+check_palindrome(121)
+check_palindrome(125)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Converting numbers to strings allows symmetrical verification using <code>[::-1]</code>.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 17 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-17">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 17. Merging Lists with Parity Filtering</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-17')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a new list containing all odd numbers from the first list and all even numbers from the second list.</p>
+        <div class="purpose-box">Data synthesis combining conditional filtering across multiple sources.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            list1 = [10, 20, 25, 30, 35]<br>list2 = [40, 45, 60, 75, 90]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            result list: [25, 35, 40, 60, 90]
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-17')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-17')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-17">
+          Concatenate two list comprehensions: <code>[x for x in l1 if x % 2 != 0] + [y for y in l2 if y % 2 == 0]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-17">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-17')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-17">list1 = [10, 20, 25, 30, 35]
+list2 = [40, 45, 60, 75, 90]
+
+# List comprehension merger
+result_list = [x for x in list1 if x % 2 != 0] + [x for x in list2 if x % 2 == 0]
+
+print("result list:", result_list)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> List comprehensions isolate elements that satisfy parity conditions before joining them.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 18 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-18">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 18. Integer Digit Extraction and Reversal</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-18')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Extract each digit from an integer in reverse order using mathematical operators rather than string conversion.</p>
+        <div class="purpose-box">Digit extraction using modulo (<code>% 10</code>) and floor division (<code>// 10</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            number = 7536
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            6 3 5 7
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-18')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-18')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-18">
+          In a <code>while number &gt; 0</code> loop, grab <code>number % 10</code> and chop it off with <code>number //= 10</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-18">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-18')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-18">number = 7536
+
+while number > 0:
+    digit = number % 10
+    print(digit, end=" ")
+    number //= 10</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>% 10</code> yields the least significant digit, and <code>//= 10</code> shifts all digits right by one decimal place.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 19 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-19">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 19. Multi-Tiered Income Tax Calculation</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-19')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Calculate income tax for $45,000 where the first 10k is 0%, next 10k is 10%, and remainder is taxed at 20%.</p>
+        <div class="purpose-box">Tiered progressive calculation structures using branching boundaries.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            income = 45000
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Total income tax to pay is 6000.0
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-19')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-19')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-19">
+          Calculate incrementally: 0 on first 10,000, 10% on next 10,000 (1,000), and 20% on whatever is over 20,000.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-19">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-19')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-19">income = 45000
+tax = 0.0
+
+if income > 20000:
+    tax += (income - 20000) * 0.20
+    tax += 10000 * 0.10
+elif income > 10000:
+    tax += (income - 10000) * 0.10
+
+print("Total income tax to pay is", tax)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Progressive brackets only tax the portion of earnings that falls within each distinct threshold range.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 20 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-20">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 20. Nested Loops for Multiplication Tables</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-20')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print a formatted 10&times;10 multiplication table using tab-separated columns.</p>
+        <div class="purpose-box">2D matrix generation and terminal tab spacing with <code>\t</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Range: 1 to 10
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            1  2  3  4 ... 10<br>2  4  6  8 ... 20
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-20')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-20')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-20">
+          Use nested <code>range(1, 11)</code> loops and print with <code>end="\t"</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-20">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-20')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-20">for i in range(1, 11):
+    for j in range(1, 11):
+        print(i * j, end="\t")
+    print()</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>end="\t"</code> keeps values on the same row with fixed column spacing until <code>print()</code> issues a newline.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 21 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-21">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 21. Downward Half-Pyramid Pattern</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-21')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print a downward half-pyramid of asterisks (5 stars down to 1 star).</p>
+        <div class="purpose-box">Reverse loop iteration using negative step values in <code>range()</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Rows = 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            * * * * *<br>* * * *<br>* * *<br>* *<br>*
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-21')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-21')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-21">
+          Use <code>range(5, 0, -1)</code> and print <code>"* " * i</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-21">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-21')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-21">for i in range(5, 0, -1):
+    print("* " * i)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Python string multiplication repeats characters cleanly without needing an explicit nested loop.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 22 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-22">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 22. Custom Exponentiation Function</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-22')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write a custom function <code>exponent(base, exp)</code> that calculates $base^{exp}$ via repeated multiplication.</p>
+        <div class="purpose-box">Accumulator pattern for power calculations.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            base = 2, exp = 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            2 raises to the power of 5 is: 32
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-22')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-22')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-22">
+          Initialize <code>res = 1</code> and multiply <code>res *= base</code> inside a loop running <code>exp</code> times.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-22">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-22')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-22">def exponent(base, exp):
+    result = 1
+    for _ in range(exp):
+        result *= base
+    print(f"{base} raises to the power of {exp} is: {result}")
+
+exponent(2, 5)
+exponent(5, 4)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Repeated multiplication builds powers incrementally without depending on the built-in <code>**</code> operator.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 23 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-23">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 23. Algorithmic Palindrome Check (Math Method)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-23')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Check if a number is a palindrome using only arithmetic operations (no string conversion).</p>
+        <div class="purpose-box">Reconstruct an integer mathematically using modulo extraction and shift-and-add arithmetic.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            number = 121
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Yes. given number is palindrome number
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-23')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-23')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-23">
+          Construct reversed number: <code>rev = (rev * 10) + (temp % 10)</code> while <code>temp &gt; 0</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-23">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-23')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-23">def check_palindrome_math(num):
+    temp = num
+    reversed_num = 0
+    while temp > 0:
+        reversed_num = (reversed_num * 10) + (temp % 10)
+        temp //= 10
+    
+    if num == reversed_num:
+        print(f"Original number {num}\nYes. given number is palindrome number")
+    else:
+        print(f"Original number {num}\nNo. given number is not palindrome number")
+
+check_palindrome_math(121)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Shifting the accumulator by 10 and adding the remainder reverses integers without string overhead.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 24 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-24">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 24. Generate Fibonacci Series</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-24')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print the first 15 terms of the Fibonacci sequence starting with 0 and 1.</p>
+        <div class="purpose-box">Two-pointer state sliding window across sequential loop cycles.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Terms = 15
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-24')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-24')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-24">
+          Initialize <code>a, b = 0, 1</code> and advance with <code>a, b = b, a + b</code> in each step.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-24">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-24')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-24">a, b = 0, 1
+for _ in range(15):
+    print(a, end=" ")
+    a, b = b, a + b
+print()</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>a, b = b, a + b</code> atomically computes the next term and shifts pointers forward.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 25 -->
+    <article class="exercise-card" data-category="cat-cond" id="ex-25">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 25. Check Leap Year</div>
+          <div class="card-meta">
+            <span class="category-tag cat-cond">Logic & Math</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-25')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Check if a given year is a leap year based on Gregorian calendar rules.</p>
+        <div class="purpose-box">Complex boolean logic combining multiple <code>and</code> / <code>or</code> precedence conditions.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            year = 2024
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            2024 is a leap year
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-25')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-25')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-25">
+          A year is leap if <code>(year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-25">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-25')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-25">def is_leap(year):
+    if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+        print(f"{year} is a leap year")
+    else:
+        print(f"{year} is not a leap year")
+
+is_leap(2024)
+is_leap(2100)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Years divisible by 100 are not leap years unless they are also multiples of 400 (e.g. 2000 was a leap year, 2100 is not).
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 26 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-26">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 26. Merging Two Dictionaries</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-26')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Merge two dictionaries into a single combined dictionary.</p>
+        <div class="purpose-box">Learn dictionary merge mechanics using the union operator (<code>|</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            dict1 = {"name": "Alice", "age": 25}<br>dict2 = {"city": "New York", "job": "Engineer"}
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            {'name': 'Alice', 'age': 25', 'city': 'New York', 'job': 'Engineer'}
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-26')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-26')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-26">
+          In Python 3.9+, use the pipe operator: <code>merged = dict1 | dict2</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-26">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-26')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-26">dict1 = {"name": "Alice", "age": 25}
+dict2 = {"city": "New York", "job": "Engineer"}
+
+# Modern merge operator (Python 3.9+)
+merged_dict = dict1 | dict2
+
+print(merged_dict)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>|</code> non-destructively merges dictionaries; if duplicate keys exist, right-hand values take precedence.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 27 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-27">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 27. Finding Common Elements (Intersections)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-27')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find elements present in both lists using mathematical set intersections.</p>
+        <div class="purpose-box">Fast set intersections using the ampersand operator (<code>&amp;</code>) in $O(n)$ time.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            list_a = [1, 2, 3, 4, 5]<br>list_b = [4, 5, 6, 7, 8]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Common Elements: {4, 5}
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-27')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-27')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-27">
+          Convert both to sets and use the intersection operator: <code>set(a) &amp; set(b)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-27">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-27')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-27">list_a = [1, 2, 3, 4, 5]
+list_b = [4, 5, 6, 7, 8]
+
+# Set intersection
+common = set(list_a) & set(list_b)
+
+print(f"Common Elements: {common}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>&amp;</code> provides an $O(\min(N, M))$ set intersection, which is much faster than nested loops.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 28 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-28">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 28. Odd/Even List Splitter</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-28')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Partition a list of 10 integers into two separate lists: one containing even numbers and the other containing odd numbers.</p>
+        <div class="purpose-box">Partitioning datasets conditionally across distinct containers.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            [12, 7, 34, 21, 5, 10, 8, 3, 19, 2]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Even: [12, 34, 10, 8, 2]<br>Odd: [7, 21, 5, 3, 19]
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-28')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-28')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-28">
+          Initialize two lists: <code>evens = []</code>, <code>odds = []</code> and branch using <code>num % 2 == 0</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-28">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-28')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-28">numbers = [12, 7, 34, 21, 5, 10, 8, 3, 19, 2]
+evens = [n for n in numbers if n % 2 == 0]
+odds = [n for n in numbers if n % 2 != 0]
+
+print(f"Even numbers: {evens}")
+print(f"Odd numbers: {odds}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Dual list comprehensions partition numbers cleanly based on parity.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 29 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-29">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 29. Word Length Analysis</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-29')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Iterate through a list of words and print each word paired with its character count.</p>
+        <div class="purpose-box">Extract metadata and sequence lengths using <code>len()</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            ["Apple", "Banana", "Cherry", "Date"]
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Apple - 5<br>Banana - 6<br>Cherry - 6<br>Date - 4
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-29')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-29')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-29">
+          Loop through words and format using <code>f"{word} - {len(word)}"</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-29">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-29')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-29">words = ["Apple", "Banana", "Cherry", "Date", "Elderberry"]
+
+for word in words:
+    print(f"{word} - {len(word)}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>len()</code> checks sequence size in $O(1)$ time by reading internal object headers.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 30 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-30">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 30. Word Frequency Counter (The Histogram)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-30')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Count the occurrences of each word in a string and store counts in a dictionary.</p>
+        <div class="purpose-box">Build frequency tables for text processing and NLP applications.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            "apple banana apple cherry banana apple"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            {'apple': 3, 'banana': 2, 'cherry': 1}
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-30')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-30')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-30">
+          Split words and increment using <code>counts[w] = counts.get(w, 0) + 1</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-30">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-30')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-30">text = "apple banana apple cherry banana apple"
+frequency = {}
+
+for word in text.split():
+    frequency[word] = frequency.get(word, 0) + 1
+
+print(frequency)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>dict.get(key, default)</code> provides a fallback value when keys don't yet exist, avoiding <code>KeyError</code> exceptions.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 31 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-31">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 31. Print Alternate Prime Numbers</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-31')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Find all prime numbers up to 20, but display only every second (alternate) prime found.</p>
+        <div class="purpose-box">Primality testing combined with stepped slice sampling.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Limit = 20
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            [2, 5, 11, 17]
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-31')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-31')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-31">
+          Collect primes up to 20 in a list, then slice with step 2: <code>primes[::2]</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-31">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-31')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-31">primes = []
+
+for num in range(2, 21):
+    # Check factors up to sqrt(num)
+    if all(num % i != 0 for i in range(2, int(num**0.5) + 1)):
+        primes.append(num)
+
+# Select every second element
+print("Alternate primes:", primes[::2])</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>all(...)</code> efficiently validates primality, and <code>[::2]</code> filters for alternate items.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 32 -->
+    <article class="exercise-card" data-category="cat-data" id="ex-32">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 32. Dictionary of Squares (Mapping Logic)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-data">Data Structures</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-32')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a dictionary where keys are numbers from 1 to 10 and values are their squares.</p>
+        <div class="purpose-box">Construct dictionary lookup tables using comprehension mappings.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Range: 1 to 10
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            {1: 1, 2: 4, 3: 9, ..., 10: 100}
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-32')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-32')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-32">
+          Use a dictionary comprehension: <code>{i: i * i for i in range(1, 11)}</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-32">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-32')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-32"># Dictionary comprehension
+squares = {i: i * i for i in range(1, 11)}
+print(squares)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> Dictionary comprehensions map keys to calculated values in a single readable line.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 33 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-33">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 33. Character Replacer (Data Sanitization)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-33')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Replace every space in a sentence with an underscore (<code>_</code>).</p>
+        <div class="purpose-box">Sanitize strings for URL slugs and filesystem naming conventions.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            "I love coding in Python"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            I_love_coding_in_Python
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-33')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-33')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-33">
+          Use the <code>str.replace(" ", "_")</code> method.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-33">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-33')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-33">sentence = "I love coding in Python"
+sanitized = sentence.replace(" ", "_")
+
+print(sanitized)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>.replace()</code> creates a new string with all matches substituted, leaving the original string unmodified.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 34 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-34">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 34. Print Reverse Number Pattern</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-34')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Print a downward number staircase pattern starting from 5 down to 1.</p>
+        <div class="purpose-box">Nested loop coordination with decreasing ranges.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Rows = 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            5 4 3 2 1<br>4 3 2 1<br>3 2 1<br>2 1<br>1
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-34')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-34')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-34">
+          Outer loop steps backwards: <code>range(rows, 0, -1)</code>. The inner loop counts down from that row's starting value.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-34">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-34')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-34">rows = 5
+for i in range(rows, 0, -1):
+    for j in range(i, 0, -1):
+        print(j, end=" ")
+    print()</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> The inner loop start parameter relies directly on the outer loop index <code>i</code>, decreasing each row's width.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 35 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-35">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 35. Digit Detection in Strings</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-35')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Check if a string contains any numeric digits using character analysis.</p>
+        <div class="purpose-box">Short-circuit string validation using <code>any()</code> and character predicate methods.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            "Python3"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The string 'Python3' contains digits: True
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-35')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-35')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-35">
+          Use the <code>any(char.isdigit() for char in s)</code> built-in expression.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-35">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-35')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-35">user_input = "Python3"
+has_digits = any(char.isdigit() for char in user_input)
+
+print(f"The string '{user_input}' contains digits: {has_digits}")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>any()</code> evaluates lazily, returning <code>True</code> immediately when the first digit is encountered.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 36 -->
+    <article class="exercise-card" data-category="cat-strings" id="ex-36">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 36. Capitalize First Letter (Title Case)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-strings">Strings</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-36')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Capitalize the first letter of each word in a string without using the built-in <code>.title()</code> method.</p>
+        <div class="purpose-box">Tokenization with <code>.split()</code>, capitalization, and rejoining with <code>" ".join()</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            "hello world from python"
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Hello World From Python
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-36')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-36')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-36">
+          Split the words, apply <code>word.capitalize()</code> to each, and join them with spaces.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-36">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-36')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-36">text = "hello world from python"
+
+# Split, capitalize individual words, and join
+result = " ".join(word.capitalize() for word in text.split())
+
+print(result)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>.capitalize()</code> ensures only the first character is capitalized while keeping remaining letters lowercase.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 37 -->
+    <article class="exercise-card" data-category="cat-loops" id="ex-37">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 37. Simple Countdown Timer</div>
+          <div class="card-meta">
+            <span class="category-tag cat-loops">Loops</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-37')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a countdown timer that counts down from 5 to 1 using a <code>while</code> loop, then displays "Blast off!".</p>
+        <div class="purpose-box">Loop termination conditions and timing management with <code>time.sleep</code>.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            start_count = 5
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            5 4 3 2 1 Blast off!
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-37')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-37')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-37">
+          Decrement counter with <code>count -= 1</code> inside <code>while count &gt; 0:</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-37">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-37')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-37">import time
+
+count = 5
+while count > 0:
+    print(count, end=" ", flush=True)
+    # time.sleep(1)  # Uncomment for real-time delays
+    count -= 1
+
+print("Blast off!")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>flush=True</code> ensures characters print immediately to the console without buffering delays.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 38 -->
+    <article class="exercise-card" data-category="cat-files" id="ex-38">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 38. File Creation and Basic I/O</div>
+          <div class="card-meta">
+            <span class="category-tag cat-files">File I/O</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-38')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Write three lines to <code>notes.txt</code>, then read and print the file's contents.</p>
+        <div class="purpose-box">File persistence workflows using read/write context managers (<code>with open(...)</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            3 lines of notes
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            Hello, this is my first note.<br>Python file handling is simple.<br>End of file.
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-38')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-38')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-38">
+          Use mode <code>"w"</code> to write and mode <code>"r"</code> to read. Always wrap in <code>with open(...)</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-38">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-38')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-38">lines = [
+    "Hello, this is my first note.\n",
+    "Python file handling is simple.\n",
+    "End of file.\n"
+]
+
+# Write lines
+with open("notes.txt", "w") as f:
+    f.writelines(lines)
+
+# Read file contents back
+with open("notes.txt", "r") as f:
+    content = f.read()
+
+print("Reading file contents:\n" + content)</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>f.writelines()</code> writes sequences directly to disk without manual loop iterations.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 39 -->
+    <article class="exercise-card" data-category="cat-files" id="ex-39">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 39. External File Word Counter</div>
+          <div class="card-meta">
+            <span class="category-tag cat-files">File I/O</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-39')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Open an external text file, count its words, and handle missing file errors cleanly.</p>
+        <div class="purpose-box">Defensive file processing with exception handling (<code>try / except FileNotFoundError</code>).</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            File: sample.txt ("Coding is the language of the future.")
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The file contains 7 words.
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-39')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-39')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-39">
+          Read file contents with <code>f.read().split()</code> and take <code>len()</code> of the resulting word list.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-39">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-39')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-39">try:
+    with open("sample.txt", "r") as f:
+        words = f.read().split()
+        print(f"The file contains {len(words)} words.")
+except FileNotFoundError:
+    print("Error: The file 'sample.txt' was not found.")</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>try-except</code> shields programs from abruptly crashing if target resources are missing.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Exercise 40 -->
+    <article class="exercise-card" data-category="cat-oop" id="ex-40">
+      <div class="card-header">
+        <div class="card-header-left">
+          <div class="card-title">Exercise 40. Introduction to Classes (OOP)</div>
+          <div class="card-meta">
+            <span class="category-tag cat-oop">OOP</span>
+          </div>
+        </div>
+        <label class="complete-toggle">
+          <input type="checkbox" onchange="toggleComplete('ex-40')"> Solved
+        </label>
+      </div>
+      <div class="card-body">
+        <p><strong>Practice Problem:</strong> Create a <code>Car</code> class with attributes <code>make</code>, <code>model</code>, and <code>year</code>, along with a <code>start_engine()</code> method.</p>
+        <div class="purpose-box">Object-Oriented Programming: classes, constructors (<code>__init__</code>), and instance encapsulation.</div>
+        
+        <div class="io-grid">
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Given Input</div>
+            Car("Toyota", "Camry", 2022)
+          </div>
+          <div class="io-block">
+            <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+            The 2022 Toyota Camry's engine is now running!
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn btn-hint" onclick="toggleDrawer('hint-40')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+          <button class="btn btn-solution" onclick="toggleDrawer('sol-40')"><i class="fa-solid fa-code"></i> Solution</button>
+        </div>
+
+        <div class="drawer hint-drawer" id="hint-40">
+          Define <code>__init__(self, make, model, year)</code> and bind attributes with <code>self.make = make</code>.
+        </div>
+
+        <div class="drawer solution-drawer" id="sol-40">
+          <div class="code-container">
+            <div class="code-header">
+              <span>Python 3</span>
+              <button class="copy-btn" onclick="copyCode('code-40')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre><code id="code-40">class Car:
+    def __init__(self, make, model, year):
+        self.make = make
+        self.model = model
+        self.year = year
+
+    def start_engine(self):
+        print(f"The {self.year} {self.make} {self.model}'s engine is now running!")
+
+# Instantiation & Method invocation
+my_car = Car("Toyota", "Camry", 2022)
+my_car.start_engine()</code></pre>
+          </div>
+          <div class="explanation">
+            <strong>Key Concept:</strong> <code>self</code> binds instance variables to specific object instances, enabling clean object encapsulation.
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    Python Core Programming Lab • 40 Interactive Practice Exercises
+  </footer>
+
+  <script>
+    // Toggle Hint/Solution Accordion
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    // Copy Code snippet to clipboard
+    function copyCode(elementId) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        const btn = event.currentTarget;
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      });
+    }
+
+    // Filter by Category
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.exercise-card');
+    const searchInput = document.getElementById('searchInput');
+
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+
+        const matchesFilter = (currentFilter === 'all' || category === currentFilter);
+        const matchesSearch = (!query || textContent.includes(query));
+
+        if (matchesFilter && matchesSearch) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    // Progress Tracker with LocalStorage
+    const TOTAL_EXERCISES = 40;
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem('py_core_solved_exercises') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem('py_core_solved_exercises', JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const pct = Math.round((count / TOTAL_EXERCISES) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${TOTAL_EXERCISES} Solved (${pct}%)`;
+
+      // Update checkboxes state
+      cards.forEach(card => {
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = solved.includes(card.id);
+        }
+      });
+    }
+
+    // Initialize progress on load
+    document.addEventListener('DOMContentLoaded', updateProgress);
+  </script>
+</body>
+</html>

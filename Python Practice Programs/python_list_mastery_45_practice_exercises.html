@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python List Mastery: 45 Practice Questions</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-color: #0b0f17;
+      --card-bg: #141b26;
+      --card-border: #243042;
+      --text-main: #f0f6fc;
+      --text-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --hint-accent: #f59e0b;
+      --hint-bg: rgba(245, 158, 11, 0.08);
+      --sol-accent: #10b981;
+      --sol-bg: rgba(16, 185, 129, 0.08);
+      --code-bg: #080c14;
+      --code-border: #1e293b;
+      --badge-bg: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 0 1rem 3rem 1rem;
+    }
+
+    /* Sticky Header & Progress Bar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 0;
+      margin-bottom: 1.8rem;
+    }
+
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .title-row h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .title-row h1 i {
+      color: var(--accent);
+    }
+
+    .badge-counter {
+      background: var(--badge-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--card-border);
+      border-radius: 999px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--sol-accent));
+      transition: width 0.3s ease;
+    }
+
+    /* Controls, Search, and Category Filtering */
+    .controls-wrapper {
+      max-width: 1000px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1.1rem;
+      border-radius: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0b0f17;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .action-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--text-main);
+      border-color: var(--text-muted);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Exercise Card */
+    .exercise-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .exercise-card:hover {
+      border-color: #38bdf850;
+    }
+
+    .card-header {
+      padding: 1.15rem 1.4rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      background: rgba(20, 27, 38, 0.7);
+    }
+
+    .card-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .card-title {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .category-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .diff-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .diff-easy { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .diff-medium { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .diff-hard { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .cat-basics { background: rgba(56, 189, 248, 0.15); color: var(--accent); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .cat-manip { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-comp { background: rgba(245, 158, 11, 0.15); color: var(--hint-accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-algo { background: rgba(16, 185, 129, 0.15); color: var(--sol-accent); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .card-body {
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .purpose-box {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.8rem;
+      font-style: italic;
+    }
+
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+
+    .io-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      overflow-x: auto;
+    }
+
+    .io-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .complete-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .complete-toggle input {
+      accent-color: var(--sol-accent);
+      width: 1.15rem;
+      height: 1.15rem;
+      cursor: pointer;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-hint {
+      background: var(--hint-bg);
+      color: var(--hint-accent);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-hint:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-solution {
+      background: var(--sol-bg);
+      color: var(--sol-accent);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-solution:hover {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .drawer {
+      display: none;
+      border-radius: 6px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      animation: slideDown 0.2s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .drawer.active {
+      display: block;
+    }
+
+    .hint-drawer {
+      background: var(--hint-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    .solution-drawer {
+      background: rgba(16, 185, 129, 0.04);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .code-container {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.35rem 0.8rem;
+      background: #0f1623;
+      border-bottom: 1px solid var(--code-border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: #1e293b;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .explanation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--sol-accent);
+    }
+
+    .explanation strong {
+      color: var(--text-main);
+    }
+
+    footer {
+      max-width: 1000px;
+      margin: 3rem auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-content">
+      <div class="title-row">
+        <h1><i class="fa-brands fa-python"></i> Python List Mastery • 45 Practice Questions</h1>
+        <div class="badge-counter" id="progress-text">0 / 45 Solved (0%)</div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls, Search, and Category Filtering -->
+  <div class="controls-wrapper">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search all 45 list exercises (e.g., slicing, comprehension, recursion, rotate, flatten, prefix)..." />
+    <div class="controls">
+      <button class="filter-btn active" data-filter="all">All (45)</button>
+      <button class="filter-btn" data-filter="cat-basics">Basics &amp; Creation</button>
+      <button class="filter-btn" data-filter="cat-manip">Manipulation &amp; Slicing</button>
+      <button class="filter-btn" data-filter="cat-comp">Comprehensions &amp; Filtering</button>
+      <button class="filter-btn" data-filter="cat-algo">Algorithms &amp; Nested Lists</button>
+
+      <div class="quick-actions">
+        <button class="action-btn" onclick="toggleAllHints()"><i class="fa-regular fa-lightbulb"></i> Toggle Hints</button>
+        <button class="action-btn" onclick="collapseAll()"><i class="fa-solid fa-compress"></i> Collapse All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercises Container -->
+  <main id="exercises-list">
+    <!-- Dynamically rendered via JavaScript -->
+  </main>
+
+  <footer>
+    Python List Mastery • 45 Practice Questions • Clean, Self-Contained Learning Lab
+  </footer>
+
+  <script>
+    const exercisesData = [
+      {
+        id: 1,
+        title: "Perform Basic List Operations",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Create a list containing five integers. Print its length, the first item, the middle item, and the last item using indexing.",
+        purpose: "Learn list creation and zero-based as well as negative indexing in Python.",
+        input: "numbers = [10, 20, 30, 40, 50]",
+        output: "Length: 5, First: 10, Middle: 30, Last: 50",
+        hint: "Use `len()`, index `0` for the first item, `len(lst) // 2` for the middle, and index `-1` for the last item.",
+        code: `numbers = [10, 20, 30, 40, 50]
+
+print(f"Length: {len(numbers)}")
+print(f"First: {numbers[0]}")
+print(f"Middle: {numbers[len(numbers) // 2]}")
+print(f"Last: {numbers[-1]}")`,
+        explanation: "Python lists are 0-indexed. Negative indices count backward from the end, making `-1` the last element."
+      },
+      {
+        id: 2,
+        title: "Perform List Manipulation",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Start with an empty list. Append three numbers, insert a number at index 1, and remove the last number using `pop()`.",
+        purpose: "Practice mutating lists in-place using `append()`, `insert()`, and `pop()`.",
+        input: "Start empty; append 10, 20, 30; insert 15 at index 1; pop last",
+        output: "[10, 15, 20] (popped: 30)",
+        hint: "Use `lst.append(x)`, `lst.insert(1, y)`, and `popped_val = lst.pop()`.",
+        code: `items = []
+items.append(10)
+items.append(20)
+items.append(30)
+items.insert(1, 15)
+popped = items.pop()
+
+print("Result List:", items)
+print("Popped Element:", popped)`,
+        explanation: "`.append()` adds to the end in O(1) amortized time, `.insert(index, val)` shifts elements right, and `.pop()` removes and returns the trailing element."
+      },
+      {
+        id: 3,
+        title: "Sum and Average of All Numbers in a List",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Given a list of numbers, compute both the sum and average without using external libraries.",
+        purpose: "Learn accumulation and basic statistical calculations on lists.",
+        input: "scores = [85, 90, 78, 92, 88]",
+        output: "Sum: 433, Average: 86.60",
+        hint: "Use `sum(scores)` and divide by `len(scores)` with a zero-length guard.",
+        code: `scores = [85, 90, 78, 92, 88]
+
+total = sum(scores)
+average = total / len(scores) if scores else 0
+
+print(f"Sum: {total}")
+print(f"Average: {average:.2f}")`,
+        explanation: "`sum()` iterates through list elements in linear time O(n). Guarding against `len == 0` prevents a `ZeroDivisionError`."
+      },
+      {
+        id: 4,
+        title: "Find Maximum and Minimum from List",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Find the maximum and minimum values in a list of integers using a manual loop (without `max()` and `min()`).",
+        purpose: "Understand extreme-value search algorithms and running trackers.",
+        input: "nums = [23, 7, 89, 45, 2, 60]",
+        output: "Max: 89, Min: 2",
+        hint: "Initialize `max_val` and `min_val` with the first element `nums[0]`, then iterate through the remainder.",
+        code: `nums = [23, 7, 89, 45, 2, 60]
+
+if nums:
+    max_val = nums[0]
+    min_val = nums[0]
+    for n in nums[1:]:
+        if n > max_val:
+            max_val = n
+        if n < min_val:
+            min_val = n
+    print(f"Max: {max_val}, Min: {min_val}")`,
+        explanation: "Starting trackers with `nums[0]` ensures correct results regardless of negative or positive ranges."
+      },
+      {
+        id: 5,
+        title: "Calculate the Product of All Elements",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Calculate the total product of all numbers in a list using a loop or `math.prod()`.",
+        purpose: "Learn product accumulator patterns where the multiplicative identity is 1.",
+        input: "factors = [2, 3, 4, 5]",
+        output: "Product: 120",
+        hint: "Initialize `product = 1` and multiply each element inside a `for` loop.",
+        code: `factors = [2, 3, 4, 5]
+
+product = 1
+for x in factors:
+    product *= x
+
+print(f"Product: {product}")`,
+        explanation: "Unlike sums initialized to 0, product accumulators must start at 1 so initial multiplications remain unchanged."
+      },
+      {
+        id: 6,
+        title: "Count Even and Odd Numbers",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Count how many even and odd integers exist inside a given list.",
+        purpose: "Apply parity branching with the modulo operator (`% 2`).",
+        input: "nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]",
+        output: "Evens: 4, Odds: 5",
+        hint: "Check if `x % 2 == 0` for evens, otherwise increment the odd counter.",
+        code: `nums = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+evens = sum(1 for x in nums if x % 2 == 0)
+odds = len(nums) - evens
+
+print(f"Evens: {evens}, Odds: {odds}")`,
+        explanation: "A generator expression counts even elements; subtracting that count from `len(nums)` instantly gives the odd count."
+      },
+      {
+        id: 7,
+        title: "Reverse a List",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Reverse a list in two ways: one producing a new list, and one modifying the original list in-place.",
+        purpose: "Distinguish between slicing (`[::-1]`) and in-place mutation (`.reverse()`).",
+        input: "original = [1, 2, 3, 4, 5]",
+        output: "Reversed (copy): [5, 4, 3, 2, 1], In-place: [5, 4, 3, 2, 1]",
+        hint: "Use `original[::-1]` to create a copy, or `original.reverse()` to mutate in-place.",
+        code: `original = [1, 2, 3, 4, 5]
+
+# Method 1: New copy using slicing
+reversed_copy = original[::-1]
+print("Reversed (copy):", reversed_copy)
+
+# Method 2: In-place modification
+original.reverse()
+print("In-place:", original)`,
+        explanation: "`[::-1]` leaves the original intact and allocates a new list, while `.reverse()` runs in O(1) auxiliary space."
+      },
+      {
+        id: 8,
+        title: "Sort a List of Numbers",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Sort a list in both ascending and descending order using both `sorted()` and `.sort()`.",
+        purpose: "Understand Timsort and how `reverse=True` configures order.",
+        input: "values = [42, 12, 88, 3, 25]",
+        output: "Ascending: [3, 12, 25, 42, 88], Descending: [88, 42, 25, 12, 3]",
+        hint: "`sorted(values)` returns a new list; `values.sort(reverse=True)` mutates in-place.",
+        code: `values = [42, 12, 88, 3, 25]
+
+# Ascending order copy
+asc = sorted(values)
+# Descending in-place
+values.sort(reverse=True)
+
+print("Ascending (sorted):", asc)
+print("Descending (.sort):", values)`,
+        explanation: "Python's Timsort operates in O(n log n) time. `sorted()` returns a new list; `.sort()` mutates the existing one."
+      },
+      {
+        id: 9,
+        title: "Create a Copy of a List",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Demonstrate creating a shallow copy versus a deep copy of a list containing nested sublists.",
+        purpose: "Understand reference assignment, shallow copies (`.copy()`), and `copy.deepcopy()`.",
+        input: "nested = [[1, 2], [3, 4]]",
+        output: "Deep copy isolates internal mutations from the original",
+        hint: "Use `copy.deepcopy()` from the standard library to duplicate nested structures completely.",
+        code: `import copy
+
+original = [[1, 2], [3, 4]]
+shallow = original.copy()
+deep = copy.deepcopy(original)
+
+# Modify nested element in deep copy
+deep[0][0] = 99
+
+print("Original:", original)
+print("Deep Copy:", deep)`,
+        explanation: "Shallow copies share pointers to inner objects. `copy.deepcopy()` recursively duplicates all nested objects."
+      },
+      {
+        id: 10,
+        title: "Combine Two Lists",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Combine two lists using the `+` operator, `.extend()`, and sequence unpacking (`*`).",
+        purpose: "Explore multiple ways to concatenate and extend list collections.",
+        input: "a = [1, 2, 3], b = [4, 5, 6]",
+        output: "[1, 2, 3, 4, 5, 6]",
+        hint: "You can write `a + b`, `[*a, *b]`, or call `a.extend(b)`.",
+        code: `a = [1, 2, 3]
+b = [4, 5, 6]
+
+# Using concatenation operator
+combined_plus = a + b
+# Using iterable unpacking
+combined_unpack = [*a, *b]
+
+print("With + :", combined_plus)
+print("With * :", combined_unpack)`,
+        explanation: "The `+` and `[*a, *b]` patterns create new merged lists, while `a.extend(b)` appends items into `a` in-place."
+      },
+      {
+        id: 11,
+        title: "List Slicing: Extract Middle Elements",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Extract all elements except the first two and the last two from a list.",
+        purpose: "Master start and negative stop slice bounds.",
+        input: "nums = [10, 20, 30, 40, 50, 60, 70]",
+        output: "[30, 40, 50]",
+        hint: "Slice from index 2 up to -2: `nums[2:-2]`.",
+        code: `nums = [10, 20, 30, 40, 50, 60, 70]
+middle = nums[2:-2]
+
+print("Middle elements:", middle)`,
+        explanation: "`nums[2:-2]` skips the first two elements and excludes the final two elements in a single slice."
+      },
+      {
+        id: 12,
+        title: "Swap Two Elements at Given Indices",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Swap the elements at index 1 and index 3 of a list in-place.",
+        purpose: "Use Python's tuple unpacking to swap values without a temporary variable.",
+        input: "arr = ['a', 'b', 'c', 'd'], swap indices 1 and 3",
+        output: "['a', 'd', 'c', 'b']",
+        hint: "Assign simultaneously: `arr[i], arr[j] = arr[j], arr[i]`.",
+        code: `arr = ['a', 'b', 'c', 'd']
+i, j = 1, 3
+
+arr[i], arr[j] = arr[j], arr[i]
+print("After Swap:", arr)`,
+        explanation: "Python evaluates the right side into an anonymous tuple before unpacking into the left side, swapping values safely."
+      },
+      {
+        id: 13,
+        title: "Access Nested Lists (Simple Indexing)",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Given a 2D matrix list, access and print the center element and update it to 99.",
+        purpose: "Work with 2D row-column matrix indexing (`matrix[row][col]`).",
+        input: "matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]",
+        output: "Center was 5; updated to 99",
+        hint: "Row 1, column 1 is `matrix[1][1]`.",
+        code: `matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+center = matrix[1][1]
+print("Center element was:", center)
+
+matrix[1][1] = 99
+print("Updated Matrix:", matrix)`,
+        explanation: "The first index selects the inner list row, and the second index retrieves or modifies the item at that column."
+      },
+      {
+        id: 14,
+        title: "Check if List Contains a Specific Item",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Check if an item exists in a list using the `in` operator and retrieve its index if found.",
+        purpose: "Understand linear search membership testing and `.index()` lookups.",
+        input: "colors = ['red', 'green', 'blue'], target = 'green'",
+        output: "'green' found at index 1",
+        hint: "Always check `if target in colors:` before calling `colors.index(target)` to avoid a ValueError.",
+        code: `colors = ['red', 'green', 'blue']
+target = 'green'
+
+if target in colors:
+    idx = colors.index(target)
+    print(f"'{target}' found at index {idx}")
+else:
+    print(f"'{target}' not in list")`,
+        explanation: "`target in lst` performs an O(n) membership check. Calling `.index()` only after verifying membership avoids unhandled exceptions."
+      },
+      {
+        id: 15,
+        title: "Find the Longest String in a List",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Find the longest string in a list of words using the `key=len` argument with `max()`.",
+        purpose: "Use key functions with Python's built-in aggregation utilities.",
+        input: "words = ['apple', 'strawberry', 'kiwi', 'banana']",
+        output: "Longest: 'strawberry' (Length: 10)",
+        hint: "Pass `key=len` to `max(words, key=len)`.",
+        code: `words = ['apple', 'strawberry', 'kiwi', 'banana']
+longest = max(words, key=len)
+
+print(f"Longest: '{longest}' (Length: {len(longest)})")`,
+        explanation: "The `key` parameter tells `max()` to compare elements by their length rather than alphabetical order."
+      },
+      {
+        id: 16,
+        title: "Turn Every Item of a List into its Square (List Comprehension)",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Transform a list of numbers into their squares using list comprehension.",
+        purpose: "Master concise and idiomatic list transformations.",
+        input: "numbers = [1, 2, 3, 4, 5]",
+        output: "[1, 4, 9, 16, 25]",
+        hint: "Write `[x ** 2 for x in numbers]`.",
+        code: `numbers = [1, 2, 3, 4, 5]
+squares = [x ** 2 for x in numbers]
+
+print("Squares:", squares)`,
+        explanation: "List comprehensions run in optimized C bytecode, outperforming manual loop initialization and appends."
+      },
+      {
+        id: 17,
+        title: "Count Occurrences of an Item",
+        category: "cat-basics",
+        catLabel: "Basics & Creation",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Count how many times an element appears in a list using `.count()`.",
+        purpose: "Learn frequency counting on list sequences.",
+        input: "letters = ['a', 'b', 'a', 'c', 'a', 'b'], target = 'a'",
+        output: "'a' occurs 3 times",
+        hint: "Call `letters.count('a')`.",
+        code: `letters = ['a', 'b', 'a', 'c', 'a', 'b']
+target = 'a'
+count = letters.count(target)
+
+print(f"'{target}' occurs {count} times")`,
+        explanation: "`.count()` performs a linear pass over the list, counting matches in O(n) time."
+      },
+      {
+        id: 18,
+        title: "Remove All Occurrences of a Specific Item",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Remove all instances of the number 20 from a list containing duplicate values.",
+        purpose: "Filter unwanted values cleanly using comprehensions instead of error-prone in-place loop deletion.",
+        input: "nums = [10, 20, 30, 20, 40, 20, 50], remove 20",
+        output: "[10, 30, 40, 50]",
+        hint: "Filter with `[x for x in nums if x != 20]`.",
+        code: `nums = [10, 20, 30, 20, 40, 20, 50]
+target = 20
+
+cleaned = [x for x in nums if x != target]
+print("Cleaned List:", cleaned)`,
+        explanation: "Mutating a list while iterating over it can skip elements. A comprehension creates a clean, filtered copy safely."
+      },
+      {
+        id: 19,
+        title: "Remove Empty Strings from a List of Strings",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Remove all empty strings and whitespace-only strings from a list of strings.",
+        purpose: "Filter collections using string methods and truthiness.",
+        input: 'items = ["apple", "", "banana", "   ", "cherry", ""]',
+        output: "['apple', 'banana', 'cherry']",
+        hint: "Keep elements where `s and s.strip()` evaluates to True.",
+        code: `items = ["apple", "", "banana", "   ", "cherry", ""]
+cleaned = [s for s in items if s and s.strip()]
+
+print("Cleaned List:", cleaned)`,
+        explanation: "`s.strip()` trims whitespace; empty strings evaluate to `False` in boolean contexts, filtering them out."
+      },
+      {
+        id: 20,
+        title: "Remove Duplicates from List",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Remove all duplicate elements from a list while preserving their original order of appearance.",
+        purpose: "Use `dict.fromkeys()` for order-preserving deduplication.",
+        input: "[1, 2, 2, 3, 4, 1, 5, 3]",
+        output: "[1, 2, 3, 4, 5]",
+        hint: "In Python 3.7+, dictionary key insertion order is preserved. Use `list(dict.fromkeys(lst))`.",
+        code: `data = [1, 2, 2, 3, 4, 1, 5, 3]
+unique_data = list(dict.fromkeys(data))
+
+print("Deduplicated:", unique_data)`,
+        explanation: "`dict.fromkeys()` eliminates duplicates in O(1) hash lookup time per item while preserving their original order."
+      },
+      {
+        id: 21,
+        title: "List Comprehension for Filtering Numbers",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Given numbers 1 to 30, create a new list containing only numbers divisible by both 2 and 3.",
+        purpose: "Apply compound boolean conditions in comprehension predicates.",
+        input: "range(1, 31)",
+        output: "[6, 12, 18, 24, 30]",
+        hint: "Check `if x % 6 == 0` or `if x % 2 == 0 and x % 3 == 0`.",
+        code: `filtered = [x for x in range(1, 31) if x % 2 == 0 and x % 3 == 0]
+print("Divisible by 2 and 3:", filtered)`,
+        explanation: "Combining conditions with `and` restricts the output to common multiples (multiples of 6)."
+      },
+      {
+        id: 22,
+        title: "Concatenate Two Lists Index-wise",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Given two lists of strings, concatenate them element-by-element at matching indices.",
+        purpose: "Pair elements using `zip()` inside list comprehensions.",
+        input: "l1 = ['M', 'na', 'i', 'Ke'], l2 = ['y', 'me', 's', 'lly']",
+        output: "['My', 'name', 'is', 'Kelly']",
+        hint: "Use `[i + j for i, j in zip(l1, l2)]`.",
+        code: `l1 = ["M", "na", "i", "Ke"]
+l2 = ["y", "me", "s", "lly"]
+
+result = [i + j for i, j in zip(l1, l2)]
+print("Concatenated:", result)`,
+        explanation: "`zip(l1, l2)` yields tuples `('M', 'y')`, `('na', 'me')`, etc., which are concatenated into single strings."
+      },
+      {
+        id: 23,
+        title: "Iterate Both Lists Simultaneously",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Iterate over two lists simultaneously, but traverse the second list in reverse order.",
+        purpose: "Combine `zip()` with reversed sequences.",
+        input: "list1 = [10, 20, 30, 40], list2 = [100, 200, 300, 400]",
+        output: "10 400\\n20 300\\n30 200\\n40 100",
+        hint: "Pass `list1` and `list2[::-1]` (or `reversed(list2)`) into `zip()`.",
+        code: `list1 = [10, 20, 30, 40]
+list2 = [100, 200, 300, 400]
+
+for x, y in zip(list1, reversed(list2)):
+    print(x, y)`,
+        explanation: "`reversed(list2)` returns an iterator that traverses backward without allocating a new reversed list."
+      },
+      {
+        id: 24,
+        title: "Add New Item After a Specified Item",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Find the element 60 in a list and insert the value 65 immediately following it.",
+        purpose: "Locate target indices dynamically and insert elements using offset math.",
+        input: "nums = [10, 20, 60, 70, 80], insert 65 after 60",
+        output: "[10, 20, 60, 65, 70, 80]",
+        hint: "Find `idx = nums.index(60)`, then call `nums.insert(idx + 1, 65)`.",
+        code: `nums = [10, 20, 60, 70, 80]
+target = 60
+
+if target in nums:
+    idx = nums.index(target)
+    nums.insert(idx + 1, 65)
+
+print("Updated List:", nums)`,
+        explanation: "`.index(60)` returns 2. Inserting at index 3 places the new value directly after 60 and shifts subsequent items right."
+      },
+      {
+        id: 25,
+        title: "Replace List’s Item with New Value if Found",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Find the first occurrence of 20 and replace it with 200. If not found, leave the list unchanged.",
+        purpose: "Locate and update elements in-place with index assignment.",
+        input: "nums = [5, 10, 15, 20, 25, 50, 20]",
+        output: "[5, 10, 15, 200, 25, 50, 20]",
+        hint: "Check `if 20 in nums:`, get `idx = nums.index(20)`, and set `nums[idx] = 200`.",
+        code: `nums = [5, 10, 15, 20, 25, 50, 20]
+target = 20
+
+if target in nums:
+    idx = nums.index(target)
+    nums[idx] = 200
+
+print("Updated List:", nums)`,
+        explanation: "`.index()` returns the index of the first matching item, allowing in-place assignment without rebuilding the list."
+      },
+      {
+        id: 26,
+        title: "Find the Second Largest Number in a List",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Find the second largest unique value in a list of numbers without sorting the entire list.",
+        purpose: "Track top two extremes in single-pass linear time O(n).",
+        input: "nums = [12, 45, 2, 45, 89, 89, 34]",
+        output: "Second Largest: 45",
+        hint: "Keep `first` and `second` trackers, or deduplicate with `set()` and use `.remove(max())`.",
+        code: `nums = [12, 45, 2, 45, 89, 89, 34]
+unique_nums = list(set(nums))
+
+if len(unique_nums) >= 2:
+    unique_nums.remove(max(unique_nums))
+    second_largest = max(unique_nums)
+    print("Second Largest:", second_largest)
+else:
+    print("List must have at least two distinct values")`,
+        explanation: "Deduplicating with `set()` removes tied maximums. Removing the overall maximum leaves the second largest value."
+      },
+      {
+        id: 27,
+        title: "Find the Most Frequent Element",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Find the most frequently occurring element in a list without using external libraries.",
+        purpose: "Learn frequency mapping with dictionaries or `max(set(lst), key=lst.count)`.",
+        input: "votes = ['cat', 'dog', 'cat', 'bird', 'cat', 'dog']",
+        output: "Most frequent: 'cat'",
+        hint: "Use `max(set(votes), key=votes.count)`.",
+        code: `votes = ['cat', 'dog', 'cat', 'bird', 'cat', 'dog']
+most_frequent = max(set(votes), key=votes.count)
+
+print("Most frequent:", most_frequent)`,
+        explanation: "`set(votes)` extracts unique options, and `key=votes.count` instructs `max()` to choose the element with the highest count."
+      },
+      {
+        id: 28,
+        title: "Extract Every Nth Element from a List",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Extract every 3rd element from a list starting from the first item.",
+        purpose: "Use slice stepping notation (`lst[::n]`).",
+        input: "data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], n = 3",
+        output: "[0, 3, 6, 9]",
+        hint: "Use `data[::3]`.",
+        code: `data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+nth_elements = data[::3]
+
+print("Every 3rd element:", nth_elements)`,
+        explanation: "`data[::3]` steps through the list by 3, returning elements at indices 0, 3, 6, and 9."
+      },
+      {
+        id: 29,
+        title: "Check if List is Palindrome",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Check if a list reads the same forward and backward.",
+        purpose: "Test list symmetry using slice comparison.",
+        input: "l1 = [1, 2, 3, 2, 1] and l2 = [1, 2, 3, 4, 5]",
+        output: "True and False",
+        hint: "Compare `lst == lst[::-1]`.",
+        code: `def is_palindrome(lst):
+    return lst == lst[::-1]
+
+print("l1 is palindrome:", is_palindrome([1, 2, 3, 2, 1]))
+print("l2 is palindrome:", is_palindrome([1, 2, 3, 4, 5]))`,
+        explanation: "`lst[::-1]` creates a reversed copy. Comparing with `==` checks value equality across all elements."
+      },
+      {
+        id: 30,
+        title: "Find All Common Elements Between Three Lists",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Find elements that appear in all three given lists.",
+        purpose: "Compute set intersections across multiple collections.",
+        input: "a = [1, 2, 3, 4], b = [2, 3, 5, 6], c = [3, 2, 7, 8]",
+        output: "[2, 3]",
+        hint: "Convert to sets and use the intersection operator: `set(a) & set(b) & set(c)`.",
+        code: `a = [1, 2, 3, 4]
+b = [2, 3, 5, 6]
+c = [3, 2, 7, 8]
+
+common = sorted(list(set(a) & set(b) & set(c)))
+print("Common to all three:", common)`,
+        explanation: "Set intersection `&` finds common elements in O(min(len)) time, avoiding slow nested loops."
+      },
+      {
+        id: 31,
+        title: "Filter Strings by Length in a List",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Filter a list of words, keeping only strings with 5 or more characters.",
+        purpose: "Filter string lengths with list comprehensions.",
+        input: "words = ['cat', 'elephant', 'dog', 'tiger', 'lion', 'giraffe']",
+        output: "['elephant', 'tiger', 'giraffe']",
+        hint: "Filter with `[w for w in words if len(w) >= 5]`.",
+        code: `words = ['cat', 'elephant', 'dog', 'tiger', 'lion', 'giraffe']
+long_words = [w for w in words if len(w) >= 5]
+
+print("Filtered words:", long_words)`,
+        explanation: "`len(w) >= 5` checks string length in O(1) time, filtering the list in a single pass."
+      },
+      {
+        id: 32,
+        title: "Check if List is Sorted",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Check if a list is sorted in non-decreasing order using `all()`.",
+        purpose: "Pairwise neighbor comparison with `zip()` and `all()`.",
+        input: "a = [1, 2, 2, 5, 9] and b = [1, 3, 2, 4]",
+        output: "True and False",
+        hint: "Check `all(lst[i] <= lst[i+1] for i in range(len(lst) - 1))`.",
+        code: `def is_sorted(lst):
+    return all(x <= y for x, y in zip(lst, lst[1:]))
+
+print("List A sorted:", is_sorted([1, 2, 2, 5, 9]))
+print("List B sorted:", is_sorted([1, 3, 2, 4]))`,
+        explanation: "`zip(lst, lst[1:])` pairs adjacent neighbors `(a[i], a[i+1])`. `all()` returns `True` only if every pair is in non-decreasing order."
+      },
+      {
+        id: 33,
+        title: "List to Dictionary Conversion",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Convert two separate lists (one of keys, one of values) into a dictionary.",
+        purpose: "Use `zip()` and `dict()` to construct key-value mappings.",
+        input: "keys = ['Ten', 'Twenty', 'Thirty'], values = [10, 20, 30]",
+        output: "{'Ten': 10, 'Twenty': 20, 'Thirty': 30}",
+        hint: "Pass zipped pairs into `dict()`: `dict(zip(keys, values))`.",
+        code: `keys = ['Ten', 'Twenty', 'Thirty']
+values = [10, 20, 30]
+
+mapped_dict = dict(zip(keys, values))
+print("Dictionary:", mapped_dict)`,
+        explanation: "`zip()` generates key-value tuple pairs, which `dict()` parses directly into a dictionary mapping."
+      },
+      {
+        id: 34,
+        title: "Find the Difference Between Two Lists",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Find all elements in list `a` that are not present in list `b`.",
+        purpose: "Compute set differences while preserving original order.",
+        input: "a = [1, 2, 3, 4, 5], b = [3, 4, 6]",
+        output: "[1, 2, 5]",
+        hint: "Convert `b` to a set for fast lookup, then filter `a`: `[x for x in a if x not in b_set]`.",
+        code: `a = [1, 2, 3, 4, 5]
+b = [3, 4, 6]
+
+b_set = set(b)
+diff = [x for x in a if x not in b_set]
+
+print("Difference (a - b):", diff)`,
+        explanation: "Converting `b` to a set makes lookups O(1) instead of O(n), keeping total runtime at O(len(a) + len(b))."
+      },
+      {
+        id: 35,
+        title: "Remove Negative Numbers In-place",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Remove all negative numbers from a list in-place without reassigning to a new variable.",
+        purpose: "Use slice assignment (`nums[:] = ...`) to update list contents in-place.",
+        input: "nums = [12, -7, 5, -3, -14, 8, 22]",
+        output: "[12, 5, 8, 22]",
+        hint: "Use slice assignment: `nums[:] = [x for x in nums if x >= 0]`.",
+        code: `nums = [12, -7, 5, -3, -14, 8, 22]
+
+# Slice assignment modifies original list object in-place
+nums[:] = [x for x in nums if x >= 0]
+
+print("Non-negative List:", nums)`,
+        explanation: "`nums[:] = ...` mutates the existing list buffer in-place, ensuring all external references observe the updated contents."
+      },
+      {
+        id: 36,
+        title: "Extend Nested List by Adding a Sublist",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Given a nested list, navigate to an internal sublist and extend it by adding new items.",
+        purpose: "Access and mutate nested list structures.",
+        input: "lst = ['a', 'b', ['c', ['d', 'e'], 'f'], 'g'], add ['h', 'i'] to ['d', 'e']",
+        output: "['a', 'b', ['c', ['d', 'e', 'h', 'i'], 'f'], 'g']",
+        hint: "Locate the sublist with `lst[2][1]` and call `.extend(['h', 'i'])`.",
+        code: `lst = ['a', 'b', ['c', ['d', 'e'], 'f'], 'g']
+sublist = lst[2][1]
+sublist.extend(['h', 'i'])
+
+print("Extended Nested List:", lst)`,
+        explanation: "`lst[2][1]` accesses the inner `['d', 'e']` sublist by reference. Mutating it with `.extend()` updates the parent list."
+      },
+      {
+        id: 37,
+        title: "Concatenate Two Lists in a Specific Order",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Given `['Hello ', 'Take ']` and `['Dear', 'Sir']`, generate all concatenated combinations in cartesian product order.",
+        purpose: "Use nested list comprehensions for cartesian products.",
+        input: "l1 = ['Hello ', 'Take '], l2 = ['Dear', 'Sir']",
+        output: "['Hello Dear', 'Hello Sir', 'Take Dear', 'Take Sir']",
+        hint: "Write `[x + y for x in l1 for y in l2]`.",
+        code: `l1 = ["Hello ", "Take "]
+l2 = ["Dear", "Sir"]
+
+combinations = [x + y for x in l1 for y in l2]
+print("Combinations:", combinations)`,
+        explanation: "Nested comprehensions iterate over outer and inner loops in order, producing all combined pairs."
+      },
+      {
+        id: 38,
+        title: "Flatten Nested List (2D to 1D)",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Easy",
+        diffClass: "diff-easy",
+        problem: "Flatten a 2D matrix list into a 1D list using a comprehension.",
+        purpose: "Unpack rows into a single list.",
+        input: "matrix = [[1, 2, 3], [4, 5], [6, 7, 8]]",
+        output: "[1, 2, 3, 4, 5, 6, 7, 8]",
+        hint: "Write `[item for row in matrix for item in row]`.",
+        code: `matrix = [[1, 2, 3], [4, 5], [6, 7, 8]]
+flat = [item for row in matrix for item in row]
+
+print("Flattened 1D List:", flat)`,
+        explanation: "Reading left-to-right (`for row in matrix` then `for item in row`) matches standard nested loop order."
+      },
+      {
+        id: 39,
+        title: "Flatten a Deeply Nested List (Recursion)",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Hard",
+        diffClass: "diff-hard",
+        problem: "Write a recursive function that flattens a list with arbitrary levels of nesting.",
+        purpose: "Use recursive tree traversal to flatten nested lists.",
+        input: "deep = [1, [2, [3, 4], 5], 6, [7, [8, [9]]]]",
+        output: "[1, 2, 3, 4, 5, 6, 7, 8, 9]",
+        hint: "Loop through items; if `isinstance(item, list)`, recurse and extend, otherwise append.",
+        code: `def flatten_deep(nested):
+    result = []
+    for item in nested:
+        if isinstance(item, list):
+            result.extend(flatten_deep(item))
+        else:
+            result.append(item)
+    return result
+
+deep = [1, [2, [3, 4], 5], 6, [7, [8, [9]]]]
+print("Deeply Flattened:", flatten_deep(deep))`,
+        explanation: "Recursion unwraps sublists down to primitive values, assembling them into a single list."
+      },
+      {
+        id: 40,
+        title: "Calculate Cumulative Sum (Prefix Sums)",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Generate a prefix sum list where each element at index `i` is the sum of all elements up to index `i`.",
+        purpose: "Compute prefix sums for efficient range-sum queries.",
+        input: "nums = [1, 2, 3, 4, 5]",
+        output: "[1, 3, 6, 10, 15]",
+        hint: "Keep a running total and append to a new list, or use `itertools.accumulate()`.",
+        code: `nums = [1, 2, 3, 4, 5]
+
+prefix_sum = []
+running_total = 0
+for x in nums:
+    running_total += x
+    prefix_sum.append(running_total)
+
+print("Cumulative Sum:", prefix_sum)`,
+        explanation: "Prefix sum arrays enable O(1) range-sum calculations by subtracting `prefix[R] - prefix[L-1]`."
+      },
+      {
+        id: 41,
+        title: "Rotate a List (Left or Right by k positions)",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Rotate a list to the right by `k` steps so trailing elements wrap around to the front.",
+        purpose: "Combine slice extraction with modulo index arithmetic.",
+        input: "lst = [1, 2, 3, 4, 5, 6, 7], k = 3",
+        output: "[5, 6, 7, 1, 2, 3, 4]",
+        hint: "Normalize `k = k % len(lst)`. The rotated list is `lst[-k:] + lst[:-k]`.",
+        code: `def rotate_right(lst, k):
+    if not lst:
+        return lst
+    k = k % len(lst)
+    return lst[-k:] + lst[:-k]
+
+print("Rotated List:", rotate_right([1, 2, 3, 4, 5, 6, 7], 3))`,
+        explanation: "`k % len(lst)` handles rotation counts larger than the list length. Combining slices rotates elements in O(n) time."
+      },
+      {
+        id: 42,
+        title: "Split List into Chunks of Size N",
+        category: "cat-manip",
+        catLabel: "Manipulation & Slicing",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Split a list into smaller sublist chunks, each having a maximum size of `n`.",
+        purpose: "Use range stepping with slice windows.",
+        input: "lst = [1, 2, 3, 4, 5, 6, 7, 8], chunk size = 3",
+        output: "[[1, 2, 3], [4, 5, 6], [7, 8]]",
+        hint: "Use a comprehension: `[lst[i:i + n] for i in range(0, len(lst), n)]`.",
+        code: `def chunk_list(lst, n):
+    return [lst[i:i + n] for i in range(0, len(lst), n)]
+
+print("Chunks:", chunk_list([1, 2, 3, 4, 5, 6, 7, 8], 3))`,
+        explanation: "`range(0, len, n)` steps forward in chunk intervals, extracting sublist windows up to the remaining length."
+      },
+      {
+        id: 43,
+        title: "Move All Zeros to the End (Maintaining Order)",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Medium",
+        diffClass: "diff-medium",
+        problem: "Move all zeros in a list to the end while preserving the relative order of non-zero elements.",
+        purpose: "Partition list elements based on predicate checks.",
+        input: "nums = [0, 1, 0, 3, 12, 0, 8]",
+        output: "[1, 3, 12, 8, 0, 0, 0]",
+        hint: "Extract non-zeros with a comprehension, count zeros, and concatenate `non_zeros + [0] * zero_count`.",
+        code: `nums = [0, 1, 0, 3, 12, 0, 8]
+
+non_zeros = [x for x in nums if x != 0]
+zero_count = len(nums) - len(non_zeros)
+result = non_zeros + [0] * zero_count
+
+print("Zeros moved to end:", result)`,
+        explanation: "Separating non-zeros and padding the remaining length with zeros preserves relative order in O(n) time."
+      },
+      {
+        id: 44,
+        title: "Generate Prime Numbers using List Comprehension",
+        category: "cat-comp",
+        catLabel: "Comprehensions & Filtering",
+        difficulty: "Hard",
+        diffClass: "diff-hard",
+        problem: "Generate all prime numbers between 2 and 50 using list comprehension and `all()`.",
+        purpose: "Combine functional predicates with nested list comprehensions.",
+        input: "Limit = 50",
+        output: "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]",
+        hint: "Check `all(x % i != 0 for i in range(2, int(x ** 0.5) + 1))` for each number `x`.",
+        code: `primes = [
+    x for x in range(2, 51)
+    if all(x % i != 0 for i in range(2, int(x ** 0.5) + 1))
+]
+
+print("Primes up to 50:", primes)`,
+        explanation: "`x ** 0.5` checks trial divisors up to the square root of `x`. `all()` returns `True` only if no divisors divide `x` evenly."
+      },
+      {
+        id: 45,
+        title: "Find All Subsets of a List (Power Set)",
+        category: "cat-algo",
+        catLabel: "Algorithms & Nested Lists",
+        difficulty: "Hard",
+        diffClass: "diff-hard",
+        problem: "Generate all possible subsets (the power set) of a given list of unique elements.",
+        purpose: "Explore combinatorics with `itertools.combinations`.",
+        input: "[1, 2, 3]",
+        output: "[[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]",
+        hint: "Use `itertools.combinations` across lengths `r` from 0 up to `len(lst)`.",
+        code: `from itertools import combinations
+
+def power_set(lst):
+    result = []
+    for r in range(len(lst) + 1):
+        result.extend([list(c) for c in combinations(lst, r)])
+    return result
+
+print("Power Set:", power_set([1, 2, 3]))`,
+        explanation: "A set of size `n` has `2^n` total subsets. `combinations(lst, r)` generates all combinations for each length `r`."
+      }
+    ];
+
+    const STORAGE_KEY = 'py_lists_45_solved';
+
+    function getSolvedList() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSolvedList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleComplete(id) {
+      let solved = getSolvedList();
+      if (solved.includes(id)) {
+        solved = solved.filter(item => item !== id);
+      } else {
+        solved.push(id);
+      }
+      saveSolvedList(solved);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const solved = getSolvedList();
+      const count = solved.length;
+      const total = exercisesData.length;
+      const pct = Math.round((count / total) * 100);
+
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').innerText = `${count} / ${total} Solved (${pct}%)`;
+
+      exercisesData.forEach(ex => {
+        const checkbox = document.getElementById(`check-${ex.id}`);
+        if (checkbox) {
+          checkbox.checked = solved.includes(ex.id);
+        }
+      });
+    }
+
+    function toggleDrawer(id) {
+      const drawer = document.getElementById(id);
+      if (drawer) {
+        drawer.classList.toggle('active');
+      }
+    }
+
+    function copyCode(elementId, btn) {
+      const codeElement = document.getElementById(elementId);
+      if (!codeElement) return;
+      const codeText = codeElement.innerText;
+
+      const textArea = document.createElement("textarea");
+      textArea.value = codeText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981"></i> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = origText;
+        }, 1800);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function toggleAllHints() {
+      const hints = document.querySelectorAll('.hint-drawer');
+      const anyOpen = Array.from(hints).some(d => d.classList.contains('active'));
+      hints.forEach(d => {
+        if (anyOpen) d.classList.remove('active');
+        else d.classList.add('active');
+      });
+    }
+
+    function collapseAll() {
+      document.querySelectorAll('.drawer').forEach(d => d.classList.remove('active'));
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderExercises(list) {
+      const container = document.getElementById('exercises-list');
+      const solved = getSolvedList();
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-muted); background: var(--card-bg); border-radius: 8px; border: 1px dashed var(--card-border);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 0.8rem; color: var(--accent);"></i>
+            <p>No matching exercises found. Try a different search keyword.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(ex => `
+        <article class="exercise-card" data-category="${ex.category}" id="ex-${ex.id}">
+          <div class="card-header">
+            <div class="card-header-left">
+              <div class="card-title">Exercise ${ex.id}. ${ex.title}</div>
+              <div class="card-meta">
+                <span class="category-tag ${ex.category}">${ex.catLabel}</span>
+                <span class="diff-badge ${ex.diffClass}">${ex.difficulty}</span>
+              </div>
+            </div>
+            <label class="complete-toggle">
+              <input type="checkbox" id="check-${ex.id}" onchange="toggleComplete(${ex.id})" ${solved.includes(ex.id) ? 'checked' : ''}> Solved
+            </label>
+          </div>
+          <div class="card-body">
+            <p><strong>Practice Problem:</strong> ${ex.problem}</p>
+            <div class="purpose-box">${ex.purpose}</div>
+
+            <div class="io-grid">
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sample Input</div>
+                ${escapeHtml(ex.input)}
+              </div>
+              <div class="io-block">
+                <div class="io-label"><i class="fa-solid fa-square-poll-vertical"></i> Expected Output</div>
+                ${escapeHtml(ex.output)}
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn btn-hint" onclick="toggleDrawer('hint-${ex.id}')"><i class="fa-regular fa-lightbulb"></i> Hint</button>
+              <button class="btn btn-solution" onclick="toggleDrawer('sol-${ex.id}')"><i class="fa-solid fa-code"></i> Show Solution</button>
+            </div>
+
+            <div class="drawer hint-drawer" id="hint-${ex.id}">
+              <i class="fa-solid fa-circle-info"></i> ${ex.hint}
+            </div>
+
+            <div class="drawer solution-drawer" id="sol-${ex.id}">
+              <div class="code-container">
+                <div class="code-header">
+                  <span>Python 3 • Clean Solution</span>
+                  <button class="copy-btn" onclick="copyCode('code-${ex.id}', this)"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                </div>
+                <pre><code id="code-${ex.id}">${escapeHtml(ex.code)}</code></pre>
+              </div>
+              <div class="explanation">
+                <strong>Why This Works:</strong> ${ex.explanation}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    let currentCategory = 'all';
+
+    function filterCards() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+      const filtered = exercisesData.filter(ex => {
+        const matchesCategory = currentCategory === 'all' || ex.category === currentCategory;
+        const matchesSearch = !query ||
+          ex.title.toLowerCase().includes(query) ||
+          ex.problem.toLowerCase().includes(query) ||
+          ex.code.toLowerCase().includes(query) ||
+          ex.catLabel.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderExercises(filtered);
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', filterCards);
+
+    // Initial render and progress sync on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      renderExercises(exercisesData);
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
+`
